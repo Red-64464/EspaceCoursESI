@@ -1,0 +1,509 @@
+
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap");
+:root{
+  --color-background-primary:#2a2723;
+  --color-background-secondary:#332f2b;
+  --color-background-info:#183448;
+  --color-border-secondary:#57514b;
+  --color-border-tertiary:#48423d;
+  --color-border-info:#2a5f83;
+  --color-text-primary:#f3ede3;
+  --color-text-secondary:#b8aea0;
+  --color-text-info:#8fd3ff;
+  --font-mono:"JetBrains Mono", monospace;
+}
+html,body{
+  margin:0;
+  padding:0;
+  background:#1f1d1a;
+  color:var(--color-text-primary);
+  font-family:"Lexend", sans-serif;
+}
+body{
+  padding:22px;
+}
+body > div:first-of-type{
+  max-width:1120px;
+  margin:0 auto;
+  padding:22px 24px !important;
+  background:linear-gradient(180deg, #2a2723 0%, #26231f 100%);
+  border:1px solid #413b35;
+  border-radius:28px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.35);
+}
+svg{
+  max-width:100%;
+  height:auto;
+}
+a{
+  color:#8fd3ff;
+}
+</style>
+<style>
+* { box-sizing: border-box; }
+.nb { font-size:13px; padding:6px 14px; border-radius:8px; border:0.5px solid var(--color-border-secondary); background:transparent; color:var(--color-text-primary); cursor:pointer; transition:background .15s; }
+.nb:hover { background:var(--color-background-secondary); }
+.nb.on { background:var(--color-background-info); color:var(--color-text-info); border-color:var(--color-border-info); }
+.card { background:var(--color-background-primary); border:0.5px solid var(--color-border-tertiary); border-radius:12px; padding:14px 16px; margin:10px 0; }
+.code { font-family:var(--font-mono); font-size:12px; background:var(--color-background-secondary); border-radius:8px; padding:12px 14px; line-height:1.9; white-space:pre; overflow-x:auto; color:var(--color-text-primary); margin:8px 0; }
+.kw{color:#534AB7;font-weight:500} .fl{color:#185FA5;font-weight:500} .cm{color:#888780} .st{color:#0F6E56} .nm{color:#993C1D}
+@media(prefers-color-scheme:dark){.kw{color:#AFA9EC}.fl{color:#85B7EB}.st{color:#5DCAA5}.nm{color:#F0997B}}
+.pill{display:inline-block;font-size:11px;padding:2px 9px;border-radius:12px;font-weight:500;margin-right:4px}
+.pb{background:#E6F1FB;color:#0C447C} .pg{background:#E1F5EE;color:#085041} .pp{background:#EEEDFE;color:#3C3489} .pa{background:#FAEEDA;color:#633806} .pc{background:#FAECE7;color:#712B13}
+@media(prefers-color-scheme:dark){.pb{background:#0C447C;color:#B5D4F4}.pg{background:#085041;color:#9FE1CB}.pp{background:#3C3489;color:#CECBF6}.pa{background:#633806;color:#FAC775}.pc{background:#712B13;color:#F5C4B3}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.fade{animation:fadeIn .22s ease}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+@keyframes flow{from{stroke-dashoffset:20}to{stroke-dashoffset:0}}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.flowing{stroke-dasharray:6 4;animation:flow 1s linear infinite}
+</style>
+
+<div style="padding:1rem 0">
+
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.5rem">
+  <button class="nb on"  onclick="tab('concepts',this)">Concepts</button>
+  <button class="nb"     onclick="tab('commandes',this)">Commandes</button>
+  <button class="nb"     onclick="tab('proxy',this)">Reverse proxy</button>
+  <button class="nb"     onclick="tab('lb',this)">Load balancer</button>
+  <button class="nb"     onclick="tab('compose',this)">Docker Compose</button>
+</div>
+
+<div id="zone"></div>
+</div>
+
+<script>
+/* ══════════════════════ DONNÉES ══════════════════════ */
+const TABS = {
+
+/* ─── CONCEPTS ─── */
+concepts: `<div class="fade">
+<p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 12px;line-height:1.7">
+  Avant de lire une seule commande, comprends d'abord <strong>à quoi sert chaque brique</strong>. Clique sur une brique pour la découvrir.
+</p>
+
+<svg id="svg-concepts" width="100%" viewBox="0 0 680 320">
+  <defs><marker id="a2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+
+  <!-- Internet/User -->
+  <g onclick="explain('user')" style="cursor:pointer">
+    <rect x="20" y="120" width="110" height="50" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+    <text font-size="13" font-weight="500" x="75" y="150" text-anchor="middle" fill="#0C447C">🌐 User</text>
+  </g>
+
+  <!-- Flèche user → nginx -->
+  <line class="flowing" x1="132" y1="145" x2="194" y2="145" stroke="#378ADD" stroke-width="2" marker-end="url(#a2)"/>
+  <text font-size="10" x="163" y="138" text-anchor="middle" fill="#888780">requête HTTP</text>
+
+  <!-- NGINX -->
+  <g onclick="explain('nginx')" style="cursor:pointer">
+    <rect x="196" y="100" width="140" height="90" rx="10" fill="#EEEDFE" stroke="#534AB7" stroke-width="1"/>
+    <text font-size="14" font-weight="500" x="266" y="135" text-anchor="middle" fill="#3C3489">NGINX</text>
+    <text font-size="11" x="266" y="155" text-anchor="middle" fill="#534AB7">reverse proxy</text>
+    <text font-size="11" x="266" y="172" text-anchor="middle" fill="#534AB7">load balancer</text>
+  </g>
+
+  <!-- flèches nginx → apps -->
+  <line class="flowing" x1="337" y1="125" x2="420" y2="90"  stroke="#7F77DD" stroke-width="1.5" marker-end="url(#a2)"/>
+  <line class="flowing" x1="337" y1="145" x2="420" y2="155" stroke="#7F77DD" stroke-width="1.5" marker-end="url(#a2)"/>
+  <line class="flowing" x1="337" y1="165" x2="420" y2="215" stroke="#7F77DD" stroke-width="1.5" marker-end="url(#a2)"/>
+
+  <!-- App 1 -->
+  <g onclick="explain('app')" style="cursor:pointer">
+    <rect x="422" y="60" width="130" height="50" rx="8" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/>
+    <text font-size="12" font-weight="500" x="487" y="90" text-anchor="middle" fill="#085041">Spring Boot 1</text>
+  </g>
+  <!-- App 2 -->
+  <g onclick="explain('app')" style="cursor:pointer">
+    <rect x="422" y="130" width="130" height="50" rx="8" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/>
+    <text font-size="12" font-weight="500" x="487" y="160" text-anchor="middle" fill="#085041">Spring Boot 2</text>
+  </g>
+  <!-- App 3 -->
+  <g onclick="explain('app')" style="cursor:pointer">
+    <rect x="422" y="200" width="130" height="50" rx="8" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/>
+    <text font-size="12" font-weight="500" x="487" y="230" text-anchor="middle" fill="#085041">Spring Boot 3</text>
+  </g>
+
+  <!-- Docker network box -->
+  <rect x="180" y="52" width="402" height="230" rx="14" fill="none" stroke="#D85A30" stroke-width="0.8" stroke-dasharray="6 4"/>
+  <text font-size="11" x="381" y="48" text-anchor="middle" fill="#D85A30">Docker network (app-network)</text>
+
+  <!-- Port labels -->
+  <text font-size="10" x="266" y="200" text-anchor="middle" fill="#888780">port 8080:80</text>
+  <text font-size="10" x="487" y="295" text-anchor="middle" fill="#888780">pas exposés à l'extérieur</text>
+</svg>
+
+<div id="explain-box" class="card" style="min-height:80px;margin-top:4px">
+  <p style="font-size:13px;color:var(--color-text-secondary);margin:0">👆 Clique sur une brique dans le schéma pour voir son explication.</p>
+</div>
+</div>`,
+
+/* ─── COMMANDES ─── */
+commandes: `<div class="fade">
+<p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 12px;line-height:1.7">Chaque commande du TD, décortiquée mot par mot. Clique sur une commande pour voir chaque partie expliquée.</p>
+
+<div id="cmd-list"></div>
+</div>`,
+
+/* ─── REVERSE PROXY ─── */
+proxy: `<div class="fade">
+<p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 10px;line-height:1.7">
+  Un <strong>reverse proxy</strong>, c'est un agent secret entre toi et les serveurs. Tu parles toujours à NGINX, et lui sait vers qui rediriger.
+</p>
+
+<svg width="100%" viewBox="0 0 680 260">
+  <defs><marker id="a3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+
+  <rect x="20" y="100" width="100" height="50" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+  <text font-size="12" font-weight="500" x="70" y="120" text-anchor="middle" fill="#0C447C">Navigateur</text>
+  <text font-size="10" x="70" y="138" text-anchor="middle" fill="#185FA5">localhost:8081</text>
+
+  <line x1="122" y1="125" x2="178" y2="125" stroke="#378ADD" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#a3)"/>
+  <text font-size="10" x="150" y="118" text-anchor="middle" fill="#888780">GET /he2b</text>
+
+  <rect x="180" y="80" width="150" height="90" rx="10" fill="#EEEDFE" stroke="#534AB7" stroke-width="1"/>
+  <text font-size="13" font-weight="500" x="255" y="110" text-anchor="middle" fill="#3C3489">NGINX</text>
+  <text font-size="10" x="255" y="128" text-anchor="middle" fill="#534AB7">/he2b → he2b.be</text>
+  <text font-size="10" x="255" y="146" text-anchor="middle" fill="#534AB7">/documents → google</text>
+  <text font-size="10" x="255" y="163" text-anchor="middle" fill="#534AB7">/demo-no-db → app</text>
+
+  <line x1="332" y1="105" x2="408" y2="75"  stroke="#7F77DD" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#a3)"/>
+  <line x1="332" y1="125" x2="408" y2="135" stroke="#7F77DD" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#a3)"/>
+  <line x1="332" y1="155" x2="408" y2="195" stroke="#7F77DD" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#a3)"/>
+
+  <rect x="410" y="50" width="140" height="42" rx="8" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/>
+  <text font-size="11" font-weight="500" x="480" y="68" text-anchor="middle" fill="#085041">he2b.be</text>
+  <text font-size="10" x="480" y="84" text-anchor="middle" fill="#0F6E56">site externe</text>
+
+  <rect x="410" y="112" width="140" height="42" rx="8" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/>
+  <text font-size="11" font-weight="500" x="480" y="130" text-anchor="middle" fill="#085041">Google Sites</text>
+  <text font-size="10" x="480" y="146" text-anchor="middle" fill="#0F6E56">site externe</text>
+
+  <rect x="410" y="174" width="140" height="42" rx="8" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.5"/>
+  <text font-size="11" font-weight="500" x="480" y="192" text-anchor="middle" fill="#633806">Spring Boot</text>
+  <text font-size="10" x="480" y="208" text-anchor="middle" fill="#854F0B">conteneur interne</text>
+
+  <text font-size="10" x="340" y="250" text-anchor="middle" fill="#888780">Le client ne voit jamais les adresses réelles des serveurs — il parle uniquement à NGINX</text>
+</svg>
+
+<div class="card">
+  <p style="font-size:13px;margin:0;line-height:1.8;color:var(--color-text-primary)">
+    <strong>nginx.conf essentiel :</strong><br>
+    <code style="font-family:var(--font-mono);font-size:12px;color:#534AB7">location /he2b { proxy_pass https://he2b.be/; }</code><br>
+    → Quand tu vas sur <code style="font-family:var(--font-mono);font-size:12px">/he2b</code>, NGINX redirige vers <code style="font-family:var(--font-mono);font-size:12px">he2b.be</code>. Ton navigateur ne le sait pas.
+  </p>
+</div>
+</div>`,
+
+/* ─── LOAD BALANCER ─── */
+lb: `<div class="fade">
+<p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 10px;line-height:1.7">
+  Un <strong>load balancer</strong>, c'est un serveur qui distribue les requêtes entre plusieurs instances de l'application. Comme une caissière qui répartit les clients entre 3 caisses.
+</p>
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap">
+  <label style="font-size:13px;color:var(--color-text-secondary)">Vitesse simulation :</label>
+  <input type="range" id="spd" min="500" max="2500" step="100" value="1200" style="width:120px" oninput="setSpd(this.value)">
+  <button class="nb" id="lb-btn" onclick="toggleLB()">▶ Lancer des requêtes</button>
+  <span id="req-count" style="font-size:13px;font-weight:500;color:var(--color-text-primary)">0 requêtes</span>
+</div>
+<canvas id="lb-canvas" width="660" height="270" style="width:100%;border-radius:10px;border:0.5px solid var(--color-border-tertiary);background:var(--color-background-secondary)"></canvas>
+<div style="display:flex;gap:16px;margin-top:8px;font-size:12px;color:var(--color-text-secondary);flex-wrap:wrap">
+  <span id="c1">app1 : 0</span><span id="c2">app2 : 0</span><span id="c3">app3 : 0</span>
+</div>
+</div>`,
+
+/* ─── DOCKER COMPOSE ─── */
+compose: `<div class="fade">
+<p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 10px;line-height:1.7">
+  Docker Compose = un seul fichier YAML qui lance <em>tous</em> tes conteneurs d'un coup. Sans lui tu devrais taper 4+ commandes <code style="font-family:var(--font-mono);font-size:12px">docker run</code> à la main.
+</p>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+  <div class="card" style="border-left:3px solid #D85A30">
+    <p style="font-size:12px;font-weight:500;color:var(--color-text-primary);margin:0 0 4px">Sans Docker Compose</p>
+    <pre class="code" style="font-size:11px">docker network create my-net
+docker run --network my-net \\
+  --name no-db ...
+docker run --network my-net \\
+  --name nginx-proxy ...
+<span style="color:#D85A30">→ 3 commandes, risque d'oubli</span></pre>
+  </div>
+  <div class="card" style="border-left:3px solid #1D9E75">
+    <p style="font-size:12px;font-weight:500;color:var(--color-text-primary);margin:0 0 4px">Avec Docker Compose</p>
+    <pre class="code" style="font-size:11px">docker-compose up
+
+<span style="color:#1D9E75">→ 1 commande, tout démarre</span>
+<span style="color:#1D9E75">  réseau créé automatiquement</span></pre>
+  </div>
+</div>
+
+<pre class="code"><span class="cm"># docker-compose.yml — structure</span>
+<span class="kw">services:</span>
+  <span class="fl">app:</span>                     <span class="cm"># nom du service</span>
+    <span class="kw">build:</span> ./              <span class="cm"># construit l'image depuis le Dockerfile local</span>
+    <span class="kw">container_name:</span> no-db  <span class="cm"># nom du conteneur</span>
+    <span class="kw">ports:</span>
+      - <span class="st">"8082:8080"</span>          <span class="cm"># hôte:conteneur</span>
+    <span class="kw">networks:</span>
+      - app-network
+
+  <span class="fl">nginx:</span>
+    <span class="kw">image:</span> nginx:latest      <span class="cm"># image depuis Docker Hub</span>
+    <span class="kw">volumes:</span>
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:<span class="nm">ro</span>
+    <span class="kw">ports:</span>
+      - <span class="st">"8080:80"</span>
+    <span class="kw">depends_on:</span>
+      - app                  <span class="cm"># nginx attend que app soit démarré</span>
+    <span class="kw">networks:</span>
+      - app-network
+
+<span class="fl">networks:</span>
+  app-network:
+    <span class="kw">driver:</span> bridge           <span class="cm"># réseau privé entre conteneurs</span></pre>
+
+<div class="card">
+  <p style="font-size:13px;font-weight:500;margin:0 0 8px;color:var(--color-text-primary)">Commandes Docker Compose essentielles</p>
+  <div style="display:grid;grid-template-columns:auto 1fr;gap:6px 16px;font-size:12px;align-items:center">
+    <code style="font-family:var(--font-mono);color:#534AB7">docker-compose up</code><span style="color:var(--color-text-secondary)">Démarre tous les services (build si image absente)</span>
+    <code style="font-family:var(--font-mono);color:#534AB7">docker-compose up --build</code><span style="color:var(--color-text-secondary)">Force la reconstruction des images</span>
+    <code style="font-family:var(--font-mono);color:#534AB7">docker-compose down</code><span style="color:var(--color-text-secondary)">Arrête ET supprime les conteneurs + réseau</span>
+    <code style="font-family:var(--font-mono);color:#534AB7">docker ps -a</code><span style="color:var(--color-text-secondary)">Liste tous les conteneurs (actifs ou non)</span>
+  </div>
+</div>
+</div>`
+};
+
+/* ─── EXPLICATIONS CONCEPTS ─── */
+const EXP = {
+  user: { title:'🌐 L\'utilisateur (browser)', color:'#185FA5', bg:'#E6F1FB', text:'Tu ouvres Chrome et tu tapes <code>http://localhost:8080</code>. Tu envoies une requête HTTP. Tu ne sais pas du tout qui répond — c\'est NGINX qui reçoit ta demande en premier.' },
+  nginx: { title:'⚡ NGINX', color:'#534AB7', bg:'#EEEDFE', text:'C\'est le chef d\'orchestre. Il reçoit ta requête, lit la route (<code>/he2b</code>, <code>/demo-no-db</code>...) et décide vers quel serveur la transmettre. Il peut aussi répartir la charge entre plusieurs serveurs (load balancer).' },
+  app: { title:'🍃 Spring Boot (ton appli)', color:'#0F6E56', bg:'#E1F5EE', text:'C\'est ton application Java. Elle tourne dans un conteneur Docker. Elle ne parle jamais directement à l\'utilisateur — seulement à NGINX via le réseau Docker interne.' },
+};
+
+/* ─── COMMANDES ─── */
+const CMDS = [
+  {
+    label: 'mkdir -p nginx-site/html',
+    badge: 'pb', badgeLabel: 'shell',
+    desc: 'Crée les dossiers pour ton site statique.',
+    parts: [
+      { code:'mkdir', desc:'Créer un dossier (make directory)' },
+      { code:'-p', desc:'Crée aussi les dossiers parents si ils n\'existent pas. Sans -p, si nginx-site n\'existe pas → erreur.' },
+      { code:'nginx-site/html', desc:'Le chemin à créer : dossier nginx-site contenant html' },
+    ]
+  },
+  {
+    label: 'docker run -d --name nginx-site -p 8080:80 -v "/${PWD}/html":/usr/share/nginx/html:ro nginx',
+    badge: 'pp', badgeLabel: 'docker',
+    desc: 'Lance un conteneur NGINX qui sert ta page HTML.',
+    parts: [
+      { code:'docker run', desc:'Lance un nouveau conteneur à partir d\'une image' },
+      { code:'-d', desc:'Mode détaché (detached) : le conteneur tourne en arrière-plan, tu récupères ton terminal' },
+      { code:'--name nginx-site', desc:'Donne un nom lisible au conteneur pour pouvoir le retrouver facilement' },
+      { code:'-p 8080:80', desc:'Port mapping. Format hôte:conteneur. Le port 8080 de ta machine → port 80 du conteneur (port par défaut de NGINX)' },
+      { code:'-v "/${PWD}/html":/usr/share/nginx/html:ro', desc:'Volume : lie ton dossier local html/ au dossier de NGINX dans le conteneur. :ro = read-only (le conteneur ne peut pas modifier tes fichiers)' },
+      { code:'${PWD}', desc:'Print Working Directory — retourne le chemin absolu du dossier courant' },
+      { code:'nginx', desc:'Nom de l\'image Docker à utiliser (téléchargée depuis Docker Hub si absente)' },
+    ]
+  },
+  {
+    label: 'docker network create my-network-test',
+    badge: 'pg', badgeLabel: 'network',
+    desc: 'Crée un réseau privé Docker pour que les conteneurs se parlent.',
+    parts: [
+      { code:'docker network create', desc:'Crée un réseau Docker virtuel' },
+      { code:'my-network-test', desc:'Le nom du réseau. Les conteneurs connectés à ce réseau peuvent s\'appeler par leur nom (ex: no-db:8080)' },
+    ]
+  },
+  {
+    label: 'docker run --rm --name no-db --network my-network-test -p 8082:8080 g12345/spring-demo-no-db',
+    badge: 'pp', badgeLabel: 'docker',
+    desc: 'Lance le conteneur Spring Boot connecté au réseau.',
+    parts: [
+      { code:'docker run', desc:'Lance un conteneur' },
+      { code:'--rm', desc:'Remove : supprime automatiquement le conteneur quand il s\'arrête. Pratique pour les tests.' },
+      { code:'--name no-db', desc:'Nom du conteneur. NGINX pourra l\'appeler via "no-db:8080" sur le réseau interne' },
+      { code:'--network my-network-test', desc:'Connecte le conteneur au réseau Docker créé juste avant' },
+      { code:'-p 8082:8080', desc:'Port 8082 de ta machine → port 8080 du conteneur (port de Spring Boot)' },
+      { code:'g12345/spring-demo-no-db', desc:'Image Docker à utiliser (ici celle de l\'étudiant g12345)' },
+    ]
+  },
+  {
+    label: 'docker-compose up --build',
+    badge: 'pa', badgeLabel: 'compose',
+    desc: 'Lance tous les services du fichier docker-compose.yml en forçant la reconstruction.',
+    parts: [
+      { code:'docker-compose', desc:'Outil qui lit docker-compose.yml et orchestre plusieurs conteneurs' },
+      { code:'up', desc:'Démarre tous les services définis. Crée le réseau et les conteneurs.' },
+      { code:'--build', desc:'Force la reconstruction des images même si elles existent déjà. Utile quand tu modifies ton code.' },
+    ]
+  },
+  {
+    label: 'docker-compose down',
+    badge: 'pc', badgeLabel: 'compose',
+    desc: 'Arrête et supprime tous les conteneurs + le réseau créé par compose.',
+    parts: [
+      { code:'docker-compose down', desc:'Arrête les conteneurs, les supprime, et supprime le réseau. Contrairement à "stop", il fait le ménage complet.' },
+    ]
+  },
+  {
+    label: 'curl http://localhost:8080/demo-no-db',
+    badge: 'pb', badgeLabel: 'test',
+    desc: 'Envoie une requête HTTP depuis le terminal pour tester le service.',
+    parts: [
+      { code:'curl', desc:'Client HTTP en ligne de commande. Comme ouvrir un browser, mais dans le terminal.' },
+      { code:'http://localhost:8080', desc:'Port 8080 = port de NGINX sur ta machine' },
+      { code:'/demo-no-db', desc:'Route configurée dans nginx.conf → redirigée vers /config de Spring Boot' },
+    ]
+  },
+];
+
+/* ══════════════════════ LB ANIMATION ══════════════════════ */
+let lbTimer = null, lbRunning = false, lbSpeed = 1200;
+let counts = [0,0,0], reqTotal = 0, lbCur = 0;
+const COLORS = ['#378ADD','#1D9E75','#D85A30'];
+
+function setSpd(v){ lbSpeed = parseInt(v); if(lbRunning){ stopLB(); startLB(); } }
+function toggleLB(){
+  lbRunning ? stopLB() : startLB();
+  document.getElementById('lb-btn').textContent = lbRunning ? '⏹ Arrêter' : '▶ Lancer des requêtes';
+}
+function stopLB(){ clearInterval(lbTimer); lbRunning=false; if(document.getElementById('lb-btn')) document.getElementById('lb-btn').textContent='▶ Lancer des requêtes'; }
+function startLB(){
+  lbRunning=true;
+  lbTimer = setInterval(()=>{
+    if(!document.getElementById('lb-canvas')){ stopLB(); return; }
+    const t = lbCur % 3;
+    counts[t]++;
+    reqTotal++;
+    lbCur++;
+    ['c1','c2','c3'].forEach((id,i)=>{ const el=document.getElementById(id); if(el) el.textContent=`app${i+1} : ${counts[i]}`; });
+    const el=document.getElementById('req-count'); if(el) el.textContent=reqTotal+' requêtes';
+    drawLB(t);
+  }, lbSpeed);
+}
+
+function drawLB(active){
+  const c = document.getElementById('lb-canvas');
+  if(!c) return;
+  const ctx = c.getContext('2d');
+  const W=660,H=270;
+  ctx.clearRect(0,0,W,H);
+  const isDark = window.matchMedia('(prefers-color-scheme:dark)').matches;
+  const tc = isDark?'#9c9a92':'#73726c';
+  const bc = isDark?'rgba(255,255,255,0.08)':'rgba(0,0,0,0.06)';
+
+  // User
+  ctx.fillStyle=isDark?'#0C447C':'#E6F1FB'; ctx.strokeStyle='#185FA5'; ctx.lineWidth=0.5;
+  roundRect(ctx,20,110,90,44,8); ctx.fill(); ctx.stroke();
+  ctx.fillStyle='#0C447C'; ctx.font='12px sans-serif'; ctx.textAlign='center';
+  ctx.fillText('User',65,137);
+
+  // NGINX box
+  ctx.fillStyle=isDark?'#3C3489':'#EEEDFE'; ctx.strokeStyle='#534AB7'; ctx.lineWidth=1;
+  roundRect(ctx,160,90,120,84,10); ctx.fill(); ctx.stroke();
+  ctx.fillStyle='#3C3489'; ctx.font='bold 13px sans-serif';
+  ctx.fillText('NGINX',220,120);
+  ctx.font='10px sans-serif'; ctx.fillStyle='#534AB7';
+  ctx.fillText('load balancer',220,138);
+
+  // Arrow user → nginx
+  ctx.strokeStyle='#378ADD'; ctx.lineWidth=2;
+  arrow(ctx,112,132,158,132);
+
+  // 3 app boxes
+  const apps=[{y:60},{y:133},{y:206}];
+  apps.forEach((ap,i)=>{
+    const isAct = i===active;
+    ctx.fillStyle=isAct?(isDark?'#085041':'#9FE1CB'):(isDark?'#04342C':'#E1F5EE');
+    ctx.strokeStyle=isAct?'#1D9E75':'#0F6E56'; ctx.lineWidth=isAct?1.5:0.5;
+    roundRect(ctx,400,ap.y,170,50,8); ctx.fill(); ctx.stroke();
+    ctx.fillStyle=isAct?'#085041':'#0F6E56';
+    ctx.font=(isAct?'bold ':'')+'12px sans-serif';
+    ctx.fillText(`Spring Boot app${i+1}`,485,ap.y+20);
+    ctx.font='10px sans-serif'; ctx.fillStyle='#888780';
+    ctx.fillText(`requêtes : ${counts[i]}`,485,ap.y+36);
+
+    // Arrow nginx → app
+    const col = i===active?COLORS[i]:'rgba(136,135,128,0.3)';
+    ctx.strokeStyle=col; ctx.lineWidth=i===active?2:1;
+    arrow(ctx,282,132,398,ap.y+25);
+  });
+
+  // Label active
+  if(active>=0){
+    ctx.fillStyle='#1D9E75'; ctx.font='11px sans-serif'; ctx.textAlign='left';
+    ctx.fillText(`→ redirige vers app${active+1}`,162,87);
+  }
+
+  // upstream label
+  ctx.strokeStyle='#D85A30'; ctx.lineWidth=0.8; ctx.setLineDash([5,4]);
+  roundRect(ctx,390,44,200,230,10); ctx.stroke(); ctx.setLineDash([]);
+  ctx.fillStyle='#D85A30'; ctx.font='10px sans-serif'; ctx.textAlign='center';
+  ctx.fillText('upstream spring-backend',490,42);
+}
+
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+  ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);
+  ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();
+}
+function arrow(ctx,x1,y1,x2,y2){
+  ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
+  const a=Math.atan2(y2-y1,x2-x1),h=8;
+  ctx.fillStyle=ctx.strokeStyle;ctx.beginPath();
+  ctx.moveTo(x2,y2);ctx.lineTo(x2-h*Math.cos(a-.4),y2-h*Math.sin(a-.4));
+  ctx.lineTo(x2-h*Math.cos(a+.4),y2-h*Math.sin(a+.4));ctx.closePath();ctx.fill();
+}
+
+/* ══════════════════════ ONGLETS ══════════════════════ */
+function tab(key, btn){
+  stopLB();
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
+  if(btn) btn.classList.add('on');
+  document.getElementById('zone').innerHTML = TABS[key];
+  if(key==='commandes') buildCmds();
+  if(key==='lb'){ counts=[0,0,0];reqTotal=0;lbCur=0; drawLB(-1); }
+}
+
+function explain(k){
+  const e=EXP[k];
+  document.getElementById('explain-box').innerHTML=`
+    <div class="fade">
+      <p style="font-size:14px;font-weight:500;color:${e.color};margin:0 0 6px">${e.title}</p>
+      <p style="font-size:13px;color:var(--color-text-primary);margin:0;line-height:1.7">${e.text}</p>
+    </div>`;
+}
+
+/* ══════════════════════ COMMANDES ══════════════════════ */
+let openCmd = -1;
+function buildCmds(){
+  const div=document.getElementById('cmd-list');
+  div.innerHTML = CMDS.map((c,i)=>`
+    <div class="card" style="cursor:pointer;margin-bottom:8px" onclick="toggleCmd(${i})">
+      <div style="display:flex;align-items:flex-start;gap:8px;flex-wrap:wrap">
+        <span class="pill ${c.badge}">${c.badgeLabel}</span>
+        <code style="font-family:var(--font-mono);font-size:11px;color:var(--color-text-primary);flex:1;word-break:break-all">${c.label}</code>
+        <span style="font-size:12px;color:var(--color-text-secondary)">${openCmd===i?'▲':'▼'}</span>
+      </div>
+      <p style="font-size:12px;color:var(--color-text-secondary);margin:6px 0 0">${c.desc}</p>
+      <div id="cmd-detail-${i}" style="display:${openCmd===i?'block':'none'}">
+        <div style="margin-top:10px;display:grid;grid-template-columns:auto 1fr;gap:6px 12px;align-items:start">
+          ${c.parts.map(p=>`
+            <code style="font-family:var(--font-mono);font-size:11px;background:var(--color-background-secondary);padding:2px 6px;border-radius:4px;color:#534AB7;white-space:nowrap">${p.code}</code>
+            <span style="font-size:12px;color:var(--color-text-primary);line-height:1.6">${p.desc}</span>
+          `).join('')}
+        </div>
+      </div>
+    </div>`).join('');
+}
+function toggleCmd(i){
+  openCmd = openCmd===i ? -1 : i;
+  buildCmds();
+}
+
+/* ══════════════════════ INIT ══════════════════════ */
+tab('concepts', document.querySelector('.nb'));
+</script>

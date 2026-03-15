@@ -1,0 +1,614 @@
+
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap");
+:root{
+  --color-background-primary:#2a2723;
+  --color-background-secondary:#332f2b;
+  --color-background-info:#183448;
+  --color-border-secondary:#57514b;
+  --color-border-tertiary:#48423d;
+  --color-border-info:#2a5f83;
+  --color-text-primary:#f3ede3;
+  --color-text-secondary:#b8aea0;
+  --color-text-info:#8fd3ff;
+  --font-mono:"JetBrains Mono", monospace;
+}
+html,body{
+  margin:0;
+  padding:0;
+  background:#1f1d1a;
+  color:var(--color-text-primary);
+  font-family:"Lexend", sans-serif;
+}
+body{
+  padding:22px;
+}
+body > div:first-of-type{
+  max-width:1120px;
+  margin:0 auto;
+  padding:22px 24px !important;
+  background:linear-gradient(180deg, #2a2723 0%, #26231f 100%);
+  border:1px solid #413b35;
+  border-radius:28px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.35);
+}
+svg{
+  max-width:100%;
+  height:auto;
+}
+a{
+  color:#8fd3ff;
+}
+</style>
+<style>
+*{box-sizing:border-box}
+.nb{font-size:13px;padding:6px 14px;border-radius:8px;border:0.5px solid var(--color-border-secondary);background:transparent;color:var(--color-text-primary);cursor:pointer;transition:background .15s}
+.nb:hover{background:var(--color-background-secondary)}
+.nb.on{background:var(--color-background-info);color:var(--color-text-info);border-color:var(--color-border-info)}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:12px;padding:14px 16px;margin:10px 0}
+.code{font-family:var(--font-mono);font-size:12px;background:var(--color-background-secondary);border-radius:8px;padding:12px 14px;line-height:1.9;white-space:pre;overflow-x:auto;color:var(--color-text-primary);margin:8px 0}
+.kw{color:#534AB7;font-weight:500}.fl{color:#185FA5;font-weight:500}.cm{color:#888780}.st{color:#0F6E56}.nm{color:#993C1D}
+@media(prefers-color-scheme:dark){.kw{color:#AFA9EC}.fl{color:#85B7EB}.st{color:#5DCAA5}.nm{color:#F0997B}}
+.pill{display:inline-block;font-size:11px;padding:2px 9px;border-radius:12px;font-weight:500;margin-right:4px}
+.pb{background:#E6F1FB;color:#0C447C}.pg{background:#E1F5EE;color:#085041}.pp{background:#EEEDFE;color:#3C3489}.pa{background:#FAEEDA;color:#633806}.pc{background:#FAECE7;color:#712B13}.pr{background:#FCEBEB;color:#791F1F}
+@media(prefers-color-scheme:dark){.pb{background:#0C447C;color:#B5D4F4}.pg{background:#085041;color:#9FE1CB}.pp{background:#3C3489;color:#CECBF6}.pa{background:#633806;color:#FAC775}.pc{background:#712B13;color:#F5C4B3}.pr{background:#791F1F;color:#F7C1C1}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.fade{animation:fadeIn .22s ease}
+@keyframes flow{from{stroke-dashoffset:20}to{stroke-dashoffset:0}}
+.fl-anim{stroke-dasharray:6 4;animation:flow 1.2s linear infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+</style>
+
+<div style="padding:1rem 0">
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.5rem">
+  <button class="nb on" onclick="tab('intro',this)">C'est quoi ?</button>
+  <button class="nb" onclick="tab('entrypoint',this)">ENTRYPOINT vs CMD</button>
+  <button class="nb" onclick="tab('dockerignore',this)">.dockerignore</button>
+  <button class="nb" onclick="tab('yaml',this)">YAML</button>
+  <button class="nb" onclick="tab('network',this)">Réseau Docker</button>
+  <button class="nb" onclick="tab('compose',this)">Docker Compose</button>
+  <button class="nb" onclick="tab('commandes',this)">Toutes les commandes</button>
+</div>
+<div id="zone"></div>
+</div>
+
+<script>
+/* ══════════ CONTENU ONGLETS ══════════ */
+const TABS={
+
+intro:`<div class="fade">
+<p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 12px;line-height:1.7">
+  Ce TD t'apprend à gérer plusieurs conteneurs ensemble. Imagine que ton appli a besoin d'une base de données — tu dois démarrer <strong>deux boîtes Docker</strong> et les faire communiquer. Clique sur chaque brique pour comprendre son rôle 👇
+</p>
+<svg width="100%" viewBox="0 0 680 280">
+  <defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+
+  <!-- Ton PC -->
+  <g onclick="xpl('pc')" style="cursor:pointer">
+    <rect x="10" y="110" width="110" height="50" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+    <text font-size="12" font-weight="500" x="65" y="131" text-anchor="middle" fill="#0C447C">💻 Ton PC</text>
+    <text font-size="10" x="65" y="149" text-anchor="middle" fill="#185FA5">localhost:8080</text>
+  </g>
+
+  <!-- flèche PC → Spring -->
+  <line class="fl-anim" x1="122" y1="135" x2="188" y2="135" stroke="#378ADD" stroke-width="1.8" marker-end="url(#ar)"/>
+  <text font-size="10" x="155" y="128" text-anchor="middle" fill="#888780">HTTP</text>
+
+  <!-- Spring Boot -->
+  <g onclick="xpl('spring')" style="cursor:pointer">
+    <rect x="190" y="90" width="150" height="90" rx="10" fill="#EEEDFE" stroke="#534AB7" stroke-width="1"/>
+    <text font-size="13" font-weight="500" x="265" y="120" text-anchor="middle" fill="#3C3489">Spring Boot</text>
+    <text font-size="10" x="265" y="138" text-anchor="middle" fill="#534AB7">conteneur app</text>
+    <text font-size="10" x="265" y="155" text-anchor="middle" fill="#7F77DD">port 8080:8080</text>
+    <text font-size="10" x="265" y="170" text-anchor="middle" fill="#7F77DD">img: g12345/spring-demo</text>
+  </g>
+
+  <!-- flèche Spring → MySQL -->
+  <line class="fl-anim" x1="342" y1="135" x2="408" y2="135" stroke="#1D9E75" stroke-width="1.8" marker-end="url(#ar)"/>
+  <text font-size="10" x="375" y="128" text-anchor="middle" fill="#888780">SQL</text>
+
+  <!-- MySQL -->
+  <g onclick="xpl('mysql')" style="cursor:pointer">
+    <rect x="410" y="90" width="150" height="90" rx="10" fill="#E1F5EE" stroke="#1D9E75" stroke-width="1"/>
+    <text font-size="13" font-weight="500" x="485" y="120" text-anchor="middle" fill="#085041">MySQL</text>
+    <text font-size="10" x="485" y="138" text-anchor="middle" fill="#0F6E56">conteneur db</text>
+    <text font-size="10" x="485" y="155" text-anchor="middle" fill="#1D9E75">port 3306:3306</text>
+    <text font-size="10" x="485" y="170" text-anchor="middle" fill="#1D9E75">img: mysql:9.2.0</text>
+  </g>
+
+  <!-- Volume -->
+  <g onclick="xpl('volume')" style="cursor:pointer">
+    <rect x="420" y="210" width="130" height="44" rx="8" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.5"/>
+    <text font-size="12" font-weight="500" x="485" y="229" text-anchor="middle" fill="#633806">📦 Volume</text>
+    <text font-size="10" x="485" y="247" text-anchor="middle" fill="#854F0B">db-data (données)</text>
+  </g>
+  <line x1="485" y1="182" x2="485" y2="208" stroke="#BA7517" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#ar)"/>
+
+  <!-- Réseau box -->
+  <rect x="175" y="68" width="402" height="150" rx="14" fill="none" stroke="#D85A30" stroke-width="0.8" stroke-dasharray="6 4"/>
+  <text font-size="11" x="376" y="64" text-anchor="middle" fill="#D85A30">app-network (réseau Docker privé)</text>
+
+  <!-- Docker Compose label -->
+  <rect x="10" y="220" width="150" height="44" rx="8" fill="#FAECE7" stroke="#D85A30" stroke-width="0.5"/>
+  <text font-size="12" font-weight="500" x="85" y="239" text-anchor="middle" fill="#712B13">docker-compose.yml</text>
+  <text font-size="10" x="85" y="257" text-anchor="middle" fill="#993C1D">orchestre tout ça</text>
+  <line x1="85" y1="218" x2="200" y2="180" stroke="#D85A30" stroke-width="0.8" stroke-dasharray="4 3"/>
+</svg>
+<div id="xpl-box" class="card" style="min-height:72px;margin-top:4px">
+  <p style="font-size:13px;color:var(--color-text-secondary);margin:0">👆 Clique sur une brique ci-dessus pour voir l'explication.</p>
+</div>
+</div>`,
+
+entrypoint:`<div class="fade">
+<p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 10px;line-height:1.7">
+  Dans un Dockerfile, deux instructions disent quoi faire au démarrage du conteneur. Clique sur chaque étape pour voir la différence.
+</p>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+  <button class="nb on" id="ep0" onclick="showEp(0,this)">Étape 1 — Sans rien</button>
+  <button class="nb"    id="ep1" onclick="showEp(1,this)">Étape 2 — CMD seul</button>
+  <button class="nb"    id="ep2" onclick="showEp(2,this)">Étape 3 — ENTRYPOINT+CMD</button>
+  <button class="nb"    id="ep3" onclick="showEp(3,this)">Résumé</button>
+</div>
+<div id="ep-box"></div>
+</div>`,
+
+dockerignore:`<div class="fade">
+<p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 10px;line-height:1.7">
+  Quand tu construis une image Docker, tu risques d'y embarquer des fichiers inutiles ou dangereux (mots de passe, logs…). Le fichier <strong>.dockerignore</strong> dit à Docker quoi ignorer — exactement comme <code style="font-family:var(--font-mono);font-size:12px">.gitignore</code>.
+</p>
+<svg width="100%" viewBox="0 0 680 200">
+  <defs><marker id="ar2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+  <!-- Projet local -->
+  <rect x="20" y="30" width="180" height="150" rx="10" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.5"/>
+  <text font-size="12" font-weight="500" x="110" y="52" text-anchor="middle" fill="#633806">Projet local</text>
+  <text font-size="11" x="36" y="74" fill="#854F0B">📄 Dockerfile</text>
+  <text font-size="11" x="36" y="92" fill="#854F0B">📁 src/</text>
+  <text font-size="11" x="36" y="110" fill="#D85A30">🔑 .env (mots de passe)</text>
+  <text font-size="11" x="36" y="128" fill="#D85A30">📜 *.log (logs inutiles)</text>
+  <text font-size="11" x="36" y="146" fill="#D85A30">📁 .git/ (historique git)</text>
+  <text font-size="11" x="36" y="164" fill="#D85A30">📁 venv/ (env python)</text>
+
+  <!-- .dockerignore filter -->
+  <rect x="230" y="70" width="130" height="60" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+  <text font-size="12" font-weight="500" x="295" y="96" text-anchor="middle" fill="#3C3489">.dockerignore</text>
+  <text font-size="10" x="295" y="114" text-anchor="middle" fill="#534AB7">filtre les fichiers</text>
+
+  <line x1="202" y1="105" x2="228" y2="105" stroke="#BA7517" stroke-width="1.5" marker-end="url(#ar2)"/>
+  <line x1="362" y1="105" x2="408" y2="105" stroke="#1D9E75" stroke-width="1.5" marker-end="url(#ar2)"/>
+
+  <!-- Image Docker -->
+  <rect x="410" y="55" width="160" height="100" rx="10" fill="#E1F5EE" stroke="#1D9E75" stroke-width="1"/>
+  <text font-size="12" font-weight="500" x="490" y="80" text-anchor="middle" fill="#085041">Image Docker</text>
+  <text font-size="11" x="426" y="102" fill="#0F6E56">✅ Dockerfile</text>
+  <text font-size="11" x="426" y="120" fill="#0F6E56">✅ src/</text>
+  <text font-size="11" x="426" y="138" fill="#888780">🚫 .env, logs, git…</text>
+</svg>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px">
+  <div class="card">
+    <p style="font-size:12px;font-weight:500;color:var(--color-text-primary);margin:0 0 6px">Exemple .dockerignore</p>
+    <pre class="code" style="font-size:11px"><span class="cm"># Mots de passe, clés API</span>
+.env
+
+<span class="cm"># Logs inutiles</span>
+*.log
+
+<span class="cm"># Environnement virtuel Python</span>
+venv/
+
+<span class="cm"># Historique Git</span>
+.git/
+.gitignore
+
+<span class="cm"># Fichier macOS caché</span>
+.DS_Store</pre>
+  </div>
+  <div class="card">
+    <p style="font-size:12px;font-weight:500;color:var(--color-text-primary);margin:0 0 6px">Bons réflexes pour optimiser</p>
+    <p style="font-size:12px;color:var(--color-text-secondary);line-height:1.9;margin:0">
+      ✅ Image de base légère (<code style="font-family:var(--font-mono);font-size:11px">alpine</code>)<br>
+      ✅ Un seul <code style="font-family:var(--font-mono);font-size:11px">RUN</code> au lieu de plusieurs<br>
+      ✅ <code style="font-family:var(--font-mono);font-size:11px">.dockerignore</code> bien rempli<br>
+      ✅ Multi-stage builds<br>
+      ✅ Pas d'outils inutiles installés
+    </p>
+  </div>
+</div>
+</div>`,
+
+yaml:`<div class="fade">
+<p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 10px;line-height:1.7">
+  YAML c'est le format du fichier <code style="font-family:var(--font-mono);font-size:12px">docker-compose.yml</code>. C'est simplement des <strong>clé: valeur</strong> avec de l'indentation. Règle d'or : <strong>espaces seulement</strong>, jamais de tabulations !
+</p>
+<div style="display:flex;gap:8px;margin-bottom:10px">
+  <button class="nb on" id="y0" onclick="showYaml(0,this)">Bases</button>
+  <button class="nb" id="y1" onclick="showYaml(1,this)">Erreur 1</button>
+  <button class="nb" id="y2" onclick="showYaml(2,this)">Erreur 2</button>
+  <button class="nb" id="y3" onclick="showYaml(3,this)">Erreur 3</button>
+  <button class="nb" id="y4" onclick="showYaml(4,this)">Erreur 4</button>
+</div>
+<div id="yaml-box"></div>
+</div>`,
+
+network:`<div class="fade">
+<p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 10px;line-height:1.7">
+  Par défaut, deux conteneurs Docker ne peuvent pas se parler. Il faut créer un <strong>réseau Docker</strong> — une sorte de Wi-Fi privé que tu crées toi-même. Clique sur "Simuler" pour voir les messages circuler.
+</p>
+<div style="display:flex;gap:8px;margin-bottom:10px;align-items:center">
+  <button class="nb" id="net-btn" onclick="toggleNet()">▶ Simuler la communication</button>
+  <span id="net-status" style="font-size:12px;color:var(--color-text-secondary)">En attente…</span>
+</div>
+<canvas id="net-canvas" width="660" height="240" style="width:100%;border-radius:10px;border:0.5px solid var(--color-border-tertiary);background:var(--color-background-secondary)"></canvas>
+<div class="card" style="margin-top:10px">
+  <p style="font-size:13px;font-weight:500;color:var(--color-text-primary);margin:0 0 6px">3 étapes pour faire communiquer deux conteneurs</p>
+  <div style="display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:12px;align-items:start">
+    <span class="pill pg">1</span><span style="color:var(--color-text-primary)">Créer le réseau : <code style="font-family:var(--font-mono)">docker network create my-network-db</code></span>
+    <span class="pill pp">2</span><span style="color:var(--color-text-primary)">Lancer MySQL avec <code style="font-family:var(--font-mono)">--network my-network-db</code></span>
+    <span class="pill pb">3</span><span style="color:var(--color-text-primary)">Lancer Spring Boot avec <code style="font-family:var(--font-mono)">--network my-network-db</code> et l'URL <code style="font-family:var(--font-mono)">jdbc:mysql://mysql-container:3306/...</code></span>
+  </div>
+</div>
+</div>`,
+
+compose:`<div class="fade">
+<p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 10px;line-height:1.7">
+  Docker Compose remplace <em>toutes</em> ces commandes par un seul fichier et une seule commande. Clique sur chaque section du fichier pour comprendre ce qu'elle fait.
+</p>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+  <div>
+    <p style="font-size:12px;font-weight:500;color:var(--color-text-primary);margin:0 0 6px">docker-compose.yml annoté</p>
+    <pre class="code" style="font-size:11px"><span class="kw">services:</span>
+
+  <span class="fl" style="cursor:pointer" onclick="showSection('app')">app:  ← clique ici</span>
+    <span class="kw">build:</span> ./demo
+    <span class="kw">container_name:</span> spring-app
+    <span class="kw">depends_on:</span>
+      - db
+    <span class="kw">environment:</span>
+      - SPRING_DATASOURCE_URL=<span class="st">jdbc:mysql://db:3306/mydatabase</span>
+      - SPRING_DATASOURCE_USERNAME=<span class="st">myuser</span>
+      - SPRING_DATASOURCE_PASSWORD=<span class="st">mypassword</span>
+    <span class="kw">ports:</span>
+      - <span class="st">"8080:8080"</span>
+    <span class="kw">networks:</span>
+      - app-network
+
+  <span class="fl" style="cursor:pointer" onclick="showSection('db')">db:  ← clique ici</span>
+    <span class="kw">image:</span> mysql:9.2.0
+    <span class="kw">container_name:</span> mysql-db
+    <span class="kw">restart:</span> always
+    <span class="kw">environment:</span>
+      - MYSQL_DATABASE=<span class="st">mydatabase</span>
+      - MYSQL_USER=<span class="st">myuser</span>
+      - MYSQL_PASSWORD=<span class="st">mypassword</span>
+    <span class="kw">ports:</span>
+      - <span class="st">"3306:3306"</span>
+    <span class="kw">volumes:</span>
+      - db-data:/var/lib/mysql
+    <span class="kw">healthcheck:</span>
+      test: [<span class="st">"CMD"</span>,<span class="st">"mysqladmin"</span>,<span class="st">"ping"</span>]
+      retries: <span class="nm">10</span>
+      interval: <span class="nm">3s</span>
+    <span class="kw">networks:</span>
+      - app-network
+
+<span class="fl" style="cursor:pointer" onclick="showSection('net')">networks:  ← clique ici</span>
+  app-network:
+    <span class="kw">driver:</span> bridge
+
+<span class="fl" style="cursor:pointer" onclick="showSection('vol')">volumes:  ← clique ici</span>
+  db-data:</pre>
+  </div>
+  <div>
+    <p style="font-size:12px;font-weight:500;color:var(--color-text-primary);margin:0 0 6px">Explication</p>
+    <div id="section-box" class="card" style="min-height:200px">
+      <p style="font-size:13px;color:var(--color-text-secondary);margin:0">👈 Clique sur une section du fichier pour lire son explication.</p>
+    </div>
+    <div class="card" style="margin-top:10px">
+      <p style="font-size:12px;font-weight:500;color:var(--color-text-primary);margin:0 0 6px">Commandes Docker Compose</p>
+      <div style="display:grid;grid-template-columns:auto 1fr;gap:5px 12px;font-size:11px">
+        <code style="font-family:var(--font-mono);color:#534AB7">docker-compose up</code><span style="color:var(--color-text-secondary)">Démarre tout</span>
+        <code style="font-family:var(--font-mono);color:#534AB7">docker-compose up --build</code><span style="color:var(--color-text-secondary)">Démarre + reconstruit les images</span>
+        <code style="font-family:var(--font-mono);color:#534AB7">docker-compose down</code><span style="color:var(--color-text-secondary)">Arrête et supprime tout</span>
+        <code style="font-family:var(--font-mono);color:#534AB7">docker-compose logs</code><span style="color:var(--color-text-secondary)">Voir les logs des services</span>
+      </div>
+    </div>
+  </div>
+</div>
+</div>`,
+
+commandes:`<div class="fade">
+<p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 12px;line-height:1.7">Toutes les commandes du TD, décortiquées mot par mot. Clique pour déplier.</p>
+<div id="cmd-list"></div>
+</div>`
+};
+
+/* ══ EXPLICATIONS BRIQUES ══ */
+const XPL={
+  pc:{title:'💻 Ton PC (hôte)',color:'#185FA5',txt:'Quand tu fais <code>localhost:8080</code> dans ton navigateur, tu tapes sur le port de ta machine. Docker fait passer cette requête au bon conteneur.'},
+  spring:{title:'🍃 Conteneur Spring Boot',color:'#534AB7',txt:'C\'est ton application Java. Elle tourne dans une boîte isolée. Elle reçoit les requêtes HTTP et parle à MySQL via le réseau Docker interne.'},
+  mysql:{title:'🗄️ Conteneur MySQL',color:'#0F6E56',txt:'La base de données. Elle tourne dans une autre boîte. Spring Boot lui envoie des requêtes SQL via l\'URL <code>jdbc:mysql://db:3306/mydatabase</code> — "db" est le nom du service dans docker-compose.yml.'},
+  volume:{title:'📦 Volume Docker (db-data)',color:'#854F0B',txt:'Sans volume, si tu arrêtes MySQL, toutes tes données disparaissent ! Le volume est un espace de stockage persistant sur ton PC. Même si le conteneur est supprimé, les données restent.'},
+};
+
+/* ══ ENTRYPOINT ══ */
+const EP=[
+  {title:'Étape 1 — Sans ENTRYPOINT ni CMD',
+   svg:`<svg width="100%" viewBox="0 0 680 130">
+   <rect x="20" y="20" width="200" height="90" rx="8" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.5"/>
+   <text font-size="12" font-weight="500" x="120" y="44" text-anchor="middle" fill="#633806">Dockerfile</text>
+   <text font-size="11" x="36" y="68" fill="#854F0B">FROM alpine:latest</text>
+   <text font-size="10" x="36" y="88" fill="#888780">(rien d'autre)</text>
+   <text font-size="11" x="120" y="108" text-anchor="middle" fill="#888780">hérité de l'image alpine</text>
+   <defs><marker id="ar3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+   <line x1="222" y1="65" x2="278" y2="65" stroke="#888780" stroke-width="1.5" marker-end="url(#ar3)"/>
+   <rect x="280" y="30" width="200" height="70" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+   <text font-size="12" font-weight="500" x="380" y="54" text-anchor="middle" fill="#0C447C">Conteneur démarre</text>
+   <text font-size="11" x="380" y="72" text-anchor="middle" fill="#185FA5">exécute : /bin/sh</text>
+   <text font-size="10" x="380" y="90" text-anchor="middle" fill="#888780">(hérité d'alpine, s'arrête aussitôt)</text>
+   </svg>`,
+   txt:'Alpine (la mini image Linux) a une valeur par défaut : <code>/bin/sh</code>. Comme tu ne passes pas de terminal interactif, le shell démarre et s\'arrête immédiatement. Le conteneur se ferme tout seul.'},
+
+  {title:'Étape 2 — CMD personnalisé',
+   svg:`<svg width="100%" viewBox="0 0 680 150">
+   <defs><marker id="ar4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+   <rect x="20" y="20" width="200" height="90" rx="8" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.5"/>
+   <text font-size="12" font-weight="500" x="120" y="42" text-anchor="middle" fill="#633806">Dockerfile</text>
+   <text font-size="11" x="36" y="62" fill="#854F0B">FROM alpine:latest</text>
+   <text font-size="11" x="36" y="80" fill="#0F6E56">CMD ["echo","Hello!"]</text>
+   <line x1="222" y1="65" x2="278" y2="65" stroke="#888780" stroke-width="1.5" marker-end="url(#ar4)"/>
+   <rect x="280" y="20" width="180" height="52" rx="8" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/>
+   <text font-size="11" font-weight="500" x="370" y="42" text-anchor="middle" fill="#085041">docker run image</text>
+   <text font-size="11" x="370" y="60" text-anchor="middle" fill="#0F6E56">→ affiche "Hello !"</text>
+   <rect x="280" y="88" width="180" height="52" rx="8" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.5"/>
+   <text font-size="11" font-weight="500" x="370" y="110" text-anchor="middle" fill="#791F1F">docker run image "Salut"</text>
+   <text font-size="11" x="370" y="128" text-anchor="middle" fill="#A32D2D">→ ERREUR !</text>
+   <text font-size="10" x="120" y="120" text-anchor="middle" fill="#888780">CMD est remplacé entièrement</text>
+   </svg>`,
+   txt:'<code>CMD</code> définit la commande par défaut. Mais si tu passes un argument à <code>docker run</code>, il <strong>remplace tout</strong> le CMD. Résultat : Docker essaie de lancer "Salut" comme programme → erreur.'},
+
+  {title:'Étape 3 — ENTRYPOINT + CMD ensemble',
+   svg:`<svg width="100%" viewBox="0 0 680 150">
+   <defs><marker id="ar5" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+   <rect x="20" y="10" width="200" height="110" rx="8" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.5"/>
+   <text font-size="12" font-weight="500" x="120" y="32" text-anchor="middle" fill="#633806">Dockerfile</text>
+   <text font-size="11" x="36" y="52" fill="#854F0B">FROM alpine:latest</text>
+   <text font-size="11" x="36" y="70" fill="#534AB7">ENTRYPOINT ["echo"]</text>
+   <text font-size="11" x="36" y="88" fill="#0F6E56">CMD ["Hello, World!"]</text>
+   <line x1="222" y1="65" x2="278" y2="65" stroke="#888780" stroke-width="1.5" marker-end="url(#ar5)"/>
+   <rect x="280" y="10" width="190" height="52" rx="8" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/>
+   <text font-size="11" font-weight="500" x="375" y="32" text-anchor="middle" fill="#085041">docker run image</text>
+   <text font-size="11" x="375" y="50" text-anchor="middle" fill="#0F6E56">→ echo "Hello, World!"</text>
+   <rect x="280" y="78" width="190" height="52" rx="8" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/>
+   <text font-size="11" font-weight="500" x="375" y="100" text-anchor="middle" fill="#085041">docker run image "Bonjour"</text>
+   <text font-size="11" x="375" y="118" text-anchor="middle" fill="#0F6E56">→ echo "Bonjour" ✅</text>
+   </svg>`,
+   txt:'<code>ENTRYPOINT</code> = le programme qui tourne <strong>toujours</strong> (ici: echo). <code>CMD</code> = les <strong>arguments par défaut</strong>. Si tu passes un argument à <code>docker run</code>, il remplace juste le CMD, pas l\'ENTRYPOINT.'},
+
+  {title:'Résumé ENTRYPOINT vs CMD',
+   svg:`<svg width="100%" viewBox="0 0 680 160">
+   <rect x="20"  y="20" width="300" height="120" rx="10" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+   <text font-size="13" font-weight="500" x="170" y="44" text-anchor="middle" fill="#3C3489">ENTRYPOINT</text>
+   <text font-size="11" x="36" y="66" fill="#534AB7">• Programme principal</text>
+   <text font-size="11" x="36" y="84" fill="#534AB7">• Toujours exécuté</text>
+   <text font-size="11" x="36" y="102" fill="#534AB7">• Ne peut pas être remplacé</text>
+   <text font-size="11" x="36" y="120" fill="#534AB7">  par docker run args</text>
+   <text font-size="10" x="170" y="138" text-anchor="middle" fill="#888780">Ex: ENTRYPOINT ["java","-jar"]</text>
+   <rect x="360" y="20" width="300" height="120" rx="10" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/>
+   <text font-size="13" font-weight="500" x="510" y="44" text-anchor="middle" fill="#085041">CMD</text>
+   <text font-size="11" x="376" y="66" fill="#0F6E56">• Arguments par défaut</text>
+   <text font-size="11" x="376" y="84" fill="#0F6E56">• Peut être remplacé</text>
+   <text font-size="11" x="376" y="102" fill="#0F6E56">• Si ENTRYPOINT existe :</text>
+   <text font-size="11" x="376" y="120" fill="#0F6E56">  CMD = ses arguments</text>
+   <text font-size="10" x="510" y="138" text-anchor="middle" fill="#888780">Ex: CMD ["app.jar"]</text>
+   </svg>`,
+   txt:'Ensemble : <code>ENTRYPOINT ["java","-jar"] + CMD ["app.jar"]</code> → exécute <code>java -jar app.jar</code>. Si tu passes un autre .jar à docker run, seul l\'argument change, pas la commande java.'},
+];
+
+/* ══ YAML ══ */
+const YAML_EX=[
+  {title:'Bases du YAML',ok:true,code:`<span class="cm"># clé: valeur simple</span>
+<span class="kw">application:</span>
+  <span class="fl">name:</span> <span class="st">"Mon app"</span>
+  <span class="fl">version:</span> <span class="st">"1.0.0"</span>
+  <span class="fl">debug:</span> <span class="nm">true</span>
+
+<span class="cm"># liste (chaque item commence par -)</span>
+<span class="kw">users:</span>
+  - <span class="fl">name:</span> <span class="st">"Alice"</span>
+    <span class="fl">role:</span> <span class="st">"admin"</span>
+  - <span class="fl">name:</span> <span class="st">"Bob"</span>
+    <span class="fl">role:</span> <span class="st">"user"</span>`,
+   expl:'✅ Règles : <strong>espaces seulement</strong> pour indenter, <strong>jamais de tabs</strong>. Les listes commencent par <code>-</code>. Les valeurs avec des caractères spéciaux vont entre guillemets.'},
+  {title:'Erreur 1 — Indentation incohérente',ok:false,code:`database:
+    host: localhost
+  port: 5432   <span style="color:#D85A30">← ERREUR ici !</span>`,
+   expl:'❌ <code>host</code> est indenté de 4 espaces, <code>port</code> de 2 espaces. Ils doivent être <strong>au même niveau</strong> (même indentation) puisqu\'ils appartiennent tous les deux à <code>database</code>.'},
+  {title:'Erreur 2 — Indentation de liste',ok:false,code:`users:
+  - name: Alice
+    role: admin
+  - name: Bob
+     role: user  <span style="color:#D85A30">← ERREUR ici !</span>`,
+   expl:'❌ Le deuxième <code>role</code> a 5 espaces d\'indentation, le premier en a 4. Ils doivent être <strong>identiques</strong> pour que YAML comprenne que ce sont les mêmes champs.'},
+  {title:'Erreur 3 — Deux-points dans une valeur',ok:false,code:`description: This is a test: with a colon  <span style="color:#D85A30">← ERREUR !</span>`,
+   expl:'❌ Le <code>:</code> dans la valeur confond le parseur YAML. Il croit que <code>This is a test</code> est une clé et <code>with a colon</code> est une autre. <strong>Solution :</strong> mettre la valeur entre guillemets : <code>description: "This is a test: with a colon"</code>'},
+  {title:'Erreur 4 — # dans une valeur',ok:false,code:`message: This is a test # with a comment  <span style="color:#D85A30">← AMBIGU !</span>`,
+   expl:'⚠️ Le <code>#</code> est interprété comme un <strong>début de commentaire</strong>. YAML ne lira que <code>This is a test</code> et ignorera le reste. <strong>Solution :</strong> <code>message: "This is a test # with a comment"</code>'},
+];
+
+/* ══ SECTIONS COMPOSE ══ */
+const SECTIONS={
+  app:{title:'Service app — Spring Boot',color:'#534AB7',txt:`
+    <p style="font-size:13px;line-height:1.8;color:var(--color-text-primary)">
+    <strong>build: ./demo</strong> → construit l'image depuis le Dockerfile dans le dossier <code>./demo</code><br>
+    <strong>container_name: spring-app</strong> → donne un nom fixe au conteneur<br>
+    <strong>depends_on: [db]</strong> → attend que MySQL démarre avant de se lancer (mais pas qu'il soit prêt !)<br>
+    <strong>environment:</strong> → variables d'environnement passées à Spring Boot. <code>db</code> dans l'URL = nom du service MySQL dans ce fichier<br>
+    <strong>ports: "8080:8080"</strong> → port de ta machine → port du conteneur
+    </p>`},
+  db:{title:'Service db — MySQL',color:'#0F6E56',txt:`
+    <p style="font-size:13px;line-height:1.8;color:var(--color-text-primary)">
+    <strong>image: mysql:9.2.0</strong> → télécharge directement l'image MySQL depuis Docker Hub<br>
+    <strong>restart: always</strong> → redémarre automatiquement si MySQL plante<br>
+    <strong>volumes: db-data:/var/lib/mysql</strong> → stocke les données MySQL dans le volume <code>db-data</code> pour qu'elles survivent aux redémarrages<br>
+    <strong>healthcheck:</strong> → vérifie que MySQL est vraiment prêt (mysqladmin ping) avant que Spring démarre
+    </p>`},
+  net:{title:'networks — Réseau bridge',color:'#D85A30',txt:`
+    <p style="font-size:13px;line-height:1.8;color:var(--color-text-primary)">
+    <strong>driver: bridge</strong> → crée un réseau privé. Les conteneurs connectés peuvent se parler par leur nom de service (<code>db</code>, <code>app</code>).<br>
+    Depuis l'extérieur, rien n'est accessible sauf les ports explicitement exposés avec <code>ports:</code>.<br>
+    C'est l'équivalent d'un réseau local entre tes conteneurs.
+    </p>`},
+  vol:{title:'volumes — Persistance des données',color:'#854F0B',txt:`
+    <p style="font-size:13px;line-height:1.8;color:var(--color-text-primary)">
+    <strong>db-data:</strong> → déclare un volume nommé géré par Docker.<br>
+    Ce volume est monté dans <code>/var/lib/mysql</code> du conteneur MySQL.<br>
+    <strong>Sans volume :</strong> si tu fais <code>docker-compose down</code>, toutes tes données MySQL disparaissent. Avec le volume, elles restent sur ton PC.
+    </p>`},
+};
+
+/* ══ COMMANDES ══ */
+const CMDS=[
+  {label:'docker build -t test-no-entrypoint-no-cmd .',badge:'pp',bl:'docker',desc:'Construit une image Docker depuis le Dockerfile du dossier courant.',
+   parts:[{c:'docker build',d:'Construit une image à partir d\'un Dockerfile'},{c:'-t test-no-entrypoint-no-cmd',d:'-t = tag (nom) donné à l\'image. Le nom que tu veux.'},{c:'.',d:'Le point = utilise le dossier courant comme contexte de build (cherche le Dockerfile ici)'}]},
+  {label:'docker build -f MonDockerfile -t mon-image .',badge:'pp',bl:'docker',desc:'Utilise un Dockerfile avec un nom personnalisé.',
+   parts:[{c:'-f MonDockerfile',d:'Spécifie le nom du Dockerfile à utiliser (par défaut c\'est "Dockerfile")'}]},
+  {label:'docker run test-no-entrypoint-no-cmd',badge:'pp',bl:'docker',desc:'Lance un conteneur depuis une image.',
+   parts:[{c:'docker run',d:'Crée et démarre un conteneur'},{c:'test-no-entrypoint-no-cmd',d:'Nom de l\'image à utiliser'}]},
+  {label:'docker run --rm test-no-entrypoint-no-cmd',badge:'pp',bl:'docker',desc:'Lance un conteneur temporaire, supprimé automatiquement après.',
+   parts:[{c:'--rm',d:'Remove : supprime le conteneur dès qu\'il s\'arrête. Pratique pour les tests, évite les conteneurs morts qui s\'accumulent.'}]},
+  {label:'docker inspect test-no-entrypoint-no-cmd',badge:'pb',bl:'inspect',desc:'Affiche tous les détails de configuration d\'une image ou d\'un conteneur.',
+   parts:[{c:'docker inspect',d:'Retourne un JSON complet avec toute la configuration (CMD, ENTRYPOINT, ports, volumes, réseau...)'},{c:'test-no-entrypoint-no-cmd',d:'Nom de l\'image ou du conteneur à inspecter'}]},
+  {label:'docker network create my-network-db',badge:'pg',bl:'network',desc:'Crée un réseau Docker privé pour faire communiquer des conteneurs.',
+   parts:[{c:'docker network create',d:'Crée un nouveau réseau virtuel Docker'},{c:'my-network-db',d:'Nom du réseau. Les conteneurs connectés pourront se parler par leur nom.'}]},
+  {label:'docker network ls',badge:'pg',bl:'network',desc:'Liste tous les réseaux Docker existants.',
+   parts:[{c:'docker network ls',d:'Affiche tous les réseaux : nom, driver (bridge/host/none), scope'}]},
+  {label:'docker network rm my-network-db',badge:'pc',bl:'network',desc:'Supprime un réseau Docker.',
+   parts:[{c:'docker network rm',d:'Supprime le réseau spécifié (doit être vide — tous les conteneurs déconnectés)'},{c:'my-network-db',d:'Nom du réseau à supprimer'}]},
+  {label:'docker run -d --name mysql-container --network my-network-db -e MYSQL_USER=g12345 -e MYSQL_PASSWORD=secret -e MYSQL_ROOT_PASSWORD=secret -e MYSQL_DATABASE=mydatabase -p 3306:3306 mysql:9.2.0',badge:'pp',bl:'docker',desc:'Lance le conteneur MySQL connecté au réseau.',
+   parts:[{c:'-d',d:'Mode détaché : tourne en arrière-plan'},{c:'--name mysql-container',d:'Nom du conteneur. Spring Boot utilisera ce nom comme hostname dans l\'URL JDBC'},{c:'--network my-network-db',d:'Connecte au réseau Docker créé avant'},{c:'-e MYSQL_USER=g12345',d:'-e = variable d\'environnement. Configure l\'utilisateur MySQL'},{c:'-e MYSQL_ROOT_PASSWORD=secret',d:'Mot de passe root MySQL (obligatoire)'},{c:'-e MYSQL_DATABASE=mydatabase',d:'Crée automatiquement cette base de données au démarrage'},{c:'-p 3306:3306',d:'Port MySQL de ta machine → port du conteneur'},{c:'mysql:9.2.0',d:'Image MySQL version 9.2.0 depuis Docker Hub'}]},
+  {label:'docker run --rm --name spring-demo-app --network my-network-db -p 8080:8080 -e SPRING_DATASOURCE_URL=jdbc:mysql://mysql-container:3306/mydatabase ... g12345/spring-demo',badge:'pp',bl:'docker',desc:'Lance Spring Boot connecté à MySQL via le réseau.',
+   parts:[{c:'--network my-network-db',d:'Même réseau que MySQL → ils peuvent se parler'},{c:'-e SPRING_DATASOURCE_URL=jdbc:mysql://mysql-container:3306/mydatabase',d:'L\'URL JDBC utilise le NOM du conteneur MySQL ("mysql-container") comme hostname. Docker résout ce nom en IP automatiquement.'},{c:'-e SPRING_JPA_HIBERNATE_DDL_AUTO=create',d:'Spring crée automatiquement les tables au démarrage'}]},
+  {label:'docker-compose up',badge:'pa',bl:'compose',desc:'Démarre tous les services définis dans docker-compose.yml.',
+   parts:[{c:'docker-compose',d:'Outil de gestion multi-conteneurs'},{c:'up',d:'Démarre tous les services. Crée le réseau et les volumes si nécessaire. Build les images si absentes.'}]},
+  {label:'docker-compose up --build',badge:'pa',bl:'compose',desc:'Démarre en forçant la reconstruction des images.',
+   parts:[{c:'--build',d:'Force la reconstruction des images même si elles existent déjà. Indispensable quand tu modifies ton code.'}]},
+  {label:'docker-compose down',badge:'pc',bl:'compose',desc:'Arrête et supprime conteneurs + réseau.',
+   parts:[{c:'docker-compose down',d:'Arrête tous les conteneurs, les supprime, supprime le réseau. Les volumes sont conservés (sauf si tu ajoutes -v).'}]},
+  {label:'docker ps -a',badge:'pb',bl:'info',desc:'Liste tous les conteneurs (actifs et arrêtés).',
+   parts:[{c:'docker ps',d:'Affiche les conteneurs en cours d\'exécution'},{c:'-a',d:'All : affiche aussi les conteneurs arrêtés'}]},
+];
+
+/* ══ NETWORK ANIMATION ══ */
+let netTimer=null,netRunning=false,netStep=0;
+function toggleNet(){
+  netRunning?stopNet():startNet();
+  const b=document.getElementById('net-btn'); if(b) b.textContent=netRunning?'⏹ Arrêter':'▶ Simuler la communication';
+}
+function stopNet(){clearInterval(netTimer);netRunning=false;const b=document.getElementById('net-btn');if(b)b.textContent='▶ Simuler la communication';}
+function startNet(){
+  netRunning=true;netStep=0;
+  drawNet(-1,'');
+  netTimer=setInterval(()=>{
+    if(!document.getElementById('net-canvas')){stopNet();return;}
+    const msgs=['Spring → MySQL : SELECT * FROM config','MySQL → Spring : {id:1, value:"prod"}','Spring → Toi : HTTP 200 OK'];
+    const st=document.getElementById('net-status');
+    if(st) st.textContent=msgs[netStep%3];
+    drawNet(netStep%3,msgs[netStep%3]);
+    netStep++;
+  },1400);
+}
+function drawNet(step,msg){
+  const cv=document.getElementById('net-canvas');if(!cv)return;
+  const ctx=cv.getContext('2d'),W=660,H=240;
+  ctx.clearRect(0,0,W,H);
+  const isDark=window.matchMedia('(prefers-color-scheme:dark)').matches;
+  // Network box
+  ctx.strokeStyle='#D85A30';ctx.lineWidth=0.8;ctx.setLineDash([6,4]);
+  rr(ctx,150,20,360,200,14);ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle='#D85A30';ctx.font='11px sans-serif';ctx.textAlign='center';
+  ctx.fillText('app-network (réseau privé)',330,18);
+  // Spring
+  ctx.fillStyle=isDark?'#3C3489':'#EEEDFE';ctx.strokeStyle='#534AB7';ctx.lineWidth=step===0||step===2?1.5:0.5;
+  rr(ctx,170,60,160,80,10);ctx.fill();ctx.stroke();
+  ctx.fillStyle='#3C3489';ctx.font='bold 12px sans-serif';ctx.textAlign='center';ctx.fillText('Spring Boot',250,96);
+  ctx.font='10px sans-serif';ctx.fillStyle='#534AB7';ctx.fillText('conteneur: spring-app',250,112);
+  // MySQL
+  ctx.fillStyle=isDark?'#085041':'#E1F5EE';ctx.strokeStyle='#1D9E75';ctx.lineWidth=step===0||step===1?1.5:0.5;
+  rr(ctx,330,60,160,80,10);ctx.fill();ctx.stroke();
+  ctx.fillStyle='#085041';ctx.font='bold 12px sans-serif';ctx.textAlign='center';ctx.fillText('MySQL',410,96);
+  ctx.font='10px sans-serif';ctx.fillStyle='#0F6E56';ctx.fillText('conteneur: mysql-db',410,112);
+  // Arrow
+  if(step===0){arw(ctx,332,100,328,100,'#534AB7');}
+  if(step===1){arw(ctx,328,104,332,104,'#1D9E75');}
+  // PC
+  ctx.fillStyle=isDark?'#0C447C':'#E6F1FB';ctx.strokeStyle='#185FA5';ctx.lineWidth=step===2?1.5:0.5;
+  rr(ctx,10,80,120,50,8);ctx.fill();ctx.stroke();
+  ctx.fillStyle='#0C447C';ctx.font='bold 11px sans-serif';ctx.textAlign='center';ctx.fillText('Ton PC',70,101);
+  ctx.font='10px sans-serif';ctx.fillStyle='#185FA5';ctx.fillText('localhost:8080',70,116);
+  if(step===2){arw(ctx,168,110,132,110,'#185FA5');}
+  // msg bubble
+  if(msg&&step>=0){
+    const bw=Math.min(380,msg.length*6.5+20);
+    ctx.fillStyle=isDark?'#3C3489':'#EEEDFE';ctx.strokeStyle='#534AB7';ctx.lineWidth=0.8;
+    rr(ctx,(W-bw)/2,195,bw,30,8);ctx.fill();ctx.stroke();
+    ctx.fillStyle='#3C3489';ctx.font='11px sans-serif';ctx.textAlign='center';
+    ctx.fillText(msg,W/2,215);
+  }
+}
+function rr(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();}
+function arw(ctx,x1,y1,x2,y2,col){ctx.strokeStyle=col;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();const a=Math.atan2(y2-y1,x2-x1),h=8;ctx.fillStyle=col;ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-h*Math.cos(a-.4),y2-h*Math.sin(a-.4));ctx.lineTo(x2-h*Math.cos(a+.4),y2-h*Math.sin(a+.4));ctx.closePath();ctx.fill();}
+
+/* ══ FONCTIONS ══ */
+function xpl(k){const e=XPL[k];document.getElementById('xpl-box').innerHTML=`<div class="fade"><p style="font-size:14px;font-weight:500;color:${e.color};margin:0 0 6px">${e.title}</p><p style="font-size:13px;margin:0;line-height:1.7;color:var(--color-text-primary)">${e.txt}</p></div>`;}
+
+let curEp=0;
+function showEp(i,btn){
+  curEp=i;
+  document.querySelectorAll('[id^=ep]').forEach(b=>b.classList.remove('on'));
+  if(btn)btn.classList.add('on');
+  const e=EP[i];
+  document.getElementById('ep-box').innerHTML=`<div class="fade"><p style="font-size:14px;font-weight:500;color:var(--color-text-primary);margin:0 0 8px">${e.title}</p>${e.svg}<div class="card"><p style="font-size:13px;margin:0;line-height:1.7;color:var(--color-text-primary)">${e.txt}</p></div></div>`;
+}
+
+let curY=0;
+function showYaml(i,btn){
+  curY=i;
+  document.querySelectorAll('[id^=y]').forEach(b=>b.classList.remove('on'));
+  if(btn)btn.classList.add('on');
+  const y=YAML_EX[i];
+  document.getElementById('yaml-box').innerHTML=`<div class="fade"><p style="font-size:14px;font-weight:500;color:var(--color-text-primary);margin:0 0 6px">${y.title}</p><pre class="code">${y.code}</pre><div class="card"><p style="font-size:13px;margin:0;line-height:1.7;color:var(--color-text-primary)">${y.expl}</p></div></div>`;
+}
+
+function showSection(k){
+  const s=SECTIONS[k];
+  document.getElementById('section-box').innerHTML=`<div class="fade"><p style="font-size:14px;font-weight:500;color:${s.color};margin:0 0 8px">${s.title}</p>${s.txt}</div>`;
+}
+
+let openCmd=-1;
+function buildCmds(){
+  const div=document.getElementById('cmd-list');if(!div)return;
+  div.innerHTML=CMDS.map((c,i)=>`
+    <div class="card" style="cursor:pointer;margin-bottom:8px" onclick="toggleCmd(${i})">
+      <div style="display:flex;align-items:flex-start;gap:8px;flex-wrap:wrap">
+        <span class="pill ${c.badge}">${c.bl}</span>
+        <code style="font-family:var(--font-mono);font-size:11px;flex:1;word-break:break-all;color:var(--color-text-primary)">${c.label}</code>
+        <span style="font-size:12px;color:var(--color-text-secondary)">${openCmd===i?'▲':'▼'}</span>
+      </div>
+      <p style="font-size:12px;color:var(--color-text-secondary);margin:5px 0 0">${c.desc}</p>
+      ${openCmd===i?`<div style="margin-top:10px;display:grid;grid-template-columns:auto 1fr;gap:6px 12px;align-items:start">${c.parts.map(p=>`<code style="font-family:var(--font-mono);font-size:11px;background:var(--color-background-secondary);padding:2px 6px;border-radius:4px;color:#534AB7;white-space:nowrap">${p.c}</code><span style="font-size:12px;color:var(--color-text-primary);line-height:1.6">${p.d}</span>`).join('')}</div>`:''}
+    </div>`).join('');
+}
+function toggleCmd(i){openCmd=openCmd===i?-1:i;buildCmds();}
+
+function tab(key,btn){
+  stopNet();
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
+  if(btn)btn.classList.add('on');
+  document.getElementById('zone').innerHTML=TABS[key];
+  if(key==='entrypoint')showEp(0,document.getElementById('ep0'));
+  if(key==='yaml')showYaml(0,document.getElementById('y0'));
+  if(key==='network'){drawNet(-1,'');}
+  if(key==='commandes')buildCmds();
+}
+
+tab('intro',document.querySelector('.nb'));
+</script>
