@@ -3,20 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DevOps</title>
+    <title>DEV4 | C++</title>
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;700;900&display=swap");
 
       :root {
-        --bg: #07111f;
-        --bg-soft: #0d1727;
-        --card: rgba(16, 27, 44, 0.9);
-        --border: rgba(125, 157, 210, 0.2);
-        --text: #eef4ff;
-        --muted: #9db0d0;
-        --green: #34e0a1;
+        --bg: #0c0718;
+        --bg-soft: #130e22;
+        --card: rgba(22, 14, 44, 0.9);
+        --border: rgba(167, 139, 250, 0.2);
+        --text: #f0eaff;
+        --muted: #9b8ec4;
+        --purple: #a78bfa;
+        --pink: #e879f9;
         --cyan: #63d2ff;
-        --orange: #ffb86b;
         --shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
       }
 
@@ -31,9 +31,17 @@
         font-family: "Lexend", sans-serif;
         color: var(--text);
         background:
-          radial-gradient(circle at top, rgba(99, 210, 255, 0.18), transparent 30%),
-          radial-gradient(circle at bottom left, rgba(52, 224, 161, 0.15), transparent 28%),
-          linear-gradient(180deg, #050b14 0%, #081120 100%);
+          radial-gradient(
+            circle at top,
+            rgba(167, 139, 250, 0.18),
+            transparent 30%
+          ),
+          radial-gradient(
+            circle at bottom left,
+            rgba(232, 121, 249, 0.12),
+            transparent 28%
+          ),
+          linear-gradient(180deg, #080510 0%, #0c0718 100%);
         padding: 28px 18px 48px;
       }
 
@@ -62,8 +70,12 @@
         border: 1px solid var(--border);
         border-radius: 28px;
         background:
-          linear-gradient(135deg, rgba(52, 224, 161, 0.12), rgba(99, 210, 255, 0.08)),
-          rgba(10, 18, 32, 0.92);
+          linear-gradient(
+            135deg,
+            rgba(167, 139, 250, 0.12),
+            rgba(232, 121, 249, 0.08)
+          ),
+          rgba(12, 7, 24, 0.92);
         box-shadow: var(--shadow);
         overflow: hidden;
         position: relative;
@@ -76,7 +88,11 @@
         width: 220px;
         height: 220px;
         border-radius: 50%;
-        background: radial-gradient(circle, rgba(99, 210, 255, 0.2), transparent 65%);
+        background: radial-gradient(
+          circle,
+          rgba(167, 139, 250, 0.2),
+          transparent 65%
+        );
         pointer-events: none;
       }
 
@@ -88,7 +104,7 @@
         padding: 8px 12px;
         border-radius: 999px;
         background: rgba(255, 255, 255, 0.06);
-        color: var(--cyan);
+        color: var(--purple);
         font-size: 0.8rem;
         font-weight: 700;
         letter-spacing: 1px;
@@ -139,7 +155,7 @@
         padding: 20px;
         border-radius: 28px;
         border: 1px solid var(--border);
-        background: rgba(8, 16, 30, 0.94);
+        background: rgba(12, 7, 24, 0.94);
         box-shadow: var(--shadow);
       }
 
@@ -169,12 +185,12 @@
       .tab-btn:hover {
         transform: translateY(-1px);
         color: var(--text);
-        border-color: rgba(99, 210, 255, 0.45);
+        border-color: rgba(167, 139, 250, 0.45);
       }
 
       .tab-btn.active {
-        color: #07111f;
-        background: linear-gradient(135deg, var(--green), var(--cyan));
+        color: #0c0718;
+        background: linear-gradient(135deg, var(--purple), var(--pink));
         border-color: transparent;
       }
 
@@ -211,8 +227,8 @@
         min-width: 180px;
         padding: 12px 16px;
         border-radius: 14px;
-        border: 1px solid rgba(99, 210, 255, 0.28);
-        background: rgba(99, 210, 255, 0.08);
+        border: 1px solid rgba(167, 139, 250, 0.28);
+        background: rgba(167, 139, 250, 0.08);
         color: var(--text);
         text-decoration: none;
         font-weight: 700;
@@ -249,7 +265,7 @@
       }
 
       .dot.green {
-        background: #34e0a1;
+        background: #a78bfa;
       }
 
       .frame-label {
@@ -283,80 +299,57 @@
   </head>
   <body>
     <div class="shell">
-      <a class="back-btn" href="../index.html">← Retour a l'accueil</a>
+      <a class="back-btn" href="../index.html">&larr; Retour a l'accueil</a>
 
       <section class="hero">
-        <div class="hero-kicker">DevOps • Haute ecole</div>
-        <h1>Module DevOps</h1>
+        <div class="hero-kicker">DEV4 &bull; C++ &bull; Haute ecole</div>
+        <h1>Module C++</h1>
         <p>
-          Cette page regroupe les notions essentielles du cours de DevOps en
-          haute ecole. Tu y trouveras un parcours simple et visuel pour revoir
-          les bases de Docker, Docker Compose et Nginx.
+          Cette page regroupe les notions essentielles du cours de C++ en haute
+          ecole. Tu y trouveras des parcours interactifs sur les classes, les
+          pointeurs, les r&eacute;f&eacute;rences, la gestion m&eacute;moire
+          (Stack &amp; Heap), les fuites m&eacute;moire et l'AudioPlayer.
         </p>
 
         <div class="stat-grid">
           <div class="stat-card">
-            <strong>3</strong>
-            <span>chapitres principaux</span>
+            <strong>13</strong>
+            <span>chapitres interactifs</span>
           </div>
           <div class="stat-card">
-            <strong>3</strong>
+            <strong>2</strong>
             <span>supports interactifs</span>
           </div>
           <div class="stat-card">
             <strong>1</strong>
-            <span>espace de revision centralise</span>
+            <span>espace de r&eacute;vision centralis&eacute;</span>
           </div>
         </div>
       </section>
 
       <section class="workspace">
         <div class="tabs">
-          <button class="tab-btn active" data-tab="bases">
-            DevOps - les bases
+          <button class="tab-btn active" data-tab="labo3">
+            Labo3 - Classes
           </button>
-          <button class="tab-btn" data-tab="compose">DevOps compose</button>
-          <button class="tab-btn" data-tab="nginx">Nginx</button>
+          <button class="tab-btn" data-tab="labo4">
+            Labo4 - Pointeurs et r&eacute;f&eacute;rences
+          </button>
         </div>
 
-        <article class="panel active" id="panel-bases">
+        <article class="panel active" id="panel-labo3">
           <div class="panel-head">
             <div>
-              <h2>DevOps - les bases</h2>
+              <h2>Labo3 &mdash; Classes</h2>
               <p>
-                Cette partie reprend ton support Docker de base avec les notions
-                importantes : images, conteneurs, Dockerfile, ports, volumes et
-                commandes essentielles.
-              </p>
-            </div>
-            <a class="open-link" href="td03_docker_complet.html" target="_blank"
-              >Ouvrir en grand</a
-            >
-          </div>
-          <div class="frame-shell">
-            <div class="frame-top">
-              <span class="dot red"></span>
-              <span class="dot yellow"></span>
-              <span class="dot green"></span>
-              <span class="frame-label">Module Docker - bases</span>
-            </div>
-            <iframe src="td03_docker_complet.html" title="DevOps - les bases"></iframe>
-          </div>
-        </article>
-
-        <article class="panel" id="panel-compose">
-          <div class="panel-head">
-            <div>
-              <h2>DevOps compose</h2>
-              <p>
-                Ici tu retrouves la partie Docker Compose pour apprendre a faire
-                tourner plusieurs services ensemble, organiser le YAML et
-                comprendre les reseaux entre conteneurs.
+                Cours interactif complet : classes, attributs, constructeurs,
+                m&eacute;thodes (shoot, pass), constructeur de copie et struct
+                Ball avec simulation de match.
               </p>
             </div>
             <a
               class="open-link"
-              href="td04_docker_compose_complet.html"
+              href="labo3_classes_interactif.html"
               target="_blank"
               >Ouvrir en grand</a
             >
@@ -366,27 +359,28 @@
               <span class="dot red"></span>
               <span class="dot yellow"></span>
               <span class="dot green"></span>
-              <span class="frame-label">Module Docker Compose</span>
+              <span class="frame-label">Labo3 &mdash; Classes C++</span>
             </div>
             <iframe
-              src="td04_docker_compose_complet.html"
-              title="DevOps compose"
+              src="labo3_classes_interactif.html"
+              title="Labo3 Classes"
             ></iframe>
           </div>
         </article>
 
-        <article class="panel" id="panel-nginx">
+        <article class="panel" id="panel-labo4">
           <div class="panel-head">
             <div>
-              <h2>Nginx</h2>
+              <h2>Labo4 &mdash; Pointeurs et r&eacute;f&eacute;rences</h2>
               <p>
-                Cette partie rassemble ton support Nginx avec les notions de
-                reverse proxy, load balancer et integration avec Docker Compose.
+                Cours interactif complet : pointeurs, r&eacute;f&eacute;rences,
+                Stack vs Heap, copie vs r&eacute;f&eacute;rence, memory leak et
+                AudioPlayer avec visualisation du signal audio.
               </p>
             </div>
             <a
               class="open-link"
-              href="td05_nginx_devops_complet.html"
+              href="cpp_memory_cours_interactif.html"
               target="_blank"
               >Ouvrir en grand</a
             >
@@ -396,9 +390,14 @@
               <span class="dot red"></span>
               <span class="dot yellow"></span>
               <span class="dot green"></span>
-              <span class="frame-label">Module Nginx</span>
+              <span class="frame-label"
+                >Labo4 &mdash; Pointeurs &amp; R&eacute;f&eacute;rences</span
+              >
             </div>
-            <iframe src="td05_nginx_devops_complet.html" title="Nginx"></iframe>
+            <iframe
+              src="cpp_memory_cours_interactif.html"
+              title="Labo4 Pointeurs et r&eacute;f&eacute;rences"
+            ></iframe>
           </div>
         </article>
       </section>

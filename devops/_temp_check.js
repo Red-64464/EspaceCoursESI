@@ -1,73 +1,4 @@
-<!doctype html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-</head>
-<body>
-<style>
-@import url("https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap");
-:root {
-  --font-sans: "Lexend", sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
-  --color-background-primary: #2a2723;
-  --color-background-secondary: #332f2b;
-  --color-background-info: #183448;
-  --color-border-secondary: #57514b;
-  --color-border-tertiary: #48423d;
-  --color-border-info: #2a5f83;
-  --color-text-primary: #f3ede3;
-  --color-text-secondary: #b8aea0;
-  --color-text-tertiary: #888780;
-  --color-text-info: #8fd3ff;
-}
-html, body {
-  margin: 0;
-  padding: 0;
-  background: #1f1d1a;
-  color: var(--color-text-primary);
-  font-family: var(--font-sans);
-}
-body { padding: 22px; }
-body, div { font-family: var(--font-sans, sans-serif); }
-svg { max-width: 100%; height: auto; }
-a { color: #8fd3ff; }
-</style>
-<style>
-*{box-sizing:border-box}
-.nb{font-size:13px;padding:6px 14px;border-radius:8px;border:0.5px solid var(--color-border-secondary);background:transparent;color:var(--color-text-primary);cursor:pointer;transition:background .15s}
-.nb:hover{background:var(--color-background-secondary)}
-.nb.on{background:var(--color-background-info);color:var(--color-text-info);border-color:var(--color-border-info)}
-.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:12px;padding:14px 16px;margin:10px 0}
-.code{font-family:var(--font-mono);font-size:12px;background:var(--color-background-secondary);border-radius:8px;padding:12px 14px;line-height:1.9;white-space:pre;overflow-x:auto;color:var(--color-text-primary);margin:8px 0}
-.kw{color:#AFA9EC;font-weight:500}.fl{color:#85B7EB;font-weight:500}.cm{color:#888780}.st{color:#5DCAA5}.nm{color:#F0997B}
-.fl{color:#85B7EB}.st{color:#5DCAA5}.nm{color:#F0997B}}
-.pill{display:inline-block;font-size:11px;padding:2px 9px;border-radius:12px;font-weight:500;margin-right:4px}
-.pb{background:#0C447C;color:#B5D4F4}.pg{background:#085041;color:#9FE1CB}.pp{background:#3C3489;color:#CECBF6}.pa{background:#633806;color:#FAC775}.pc{background:#712B13;color:#F5C4B3}.pr{background:#791F1F;color:#F7C1C1}
-.pg{background:#085041;color:#9FE1CB}.pp{background:#3C3489;color:#CECBF6}.pa{background:#633806;color:#FAC775}.pc{background:#712B13;color:#F5C4B3}.pr{background:#791F1F;color:#F7C1C1}}
-@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
-.fade{animation:fadeIn .22s ease}
-@keyframes flow{from{stroke-dashoffset:20}to{stroke-dashoffset:0}}
-.fan{stroke-dasharray:6 4;animation:flow 1.2s linear infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
-.blink{animation:blink 1s step-end infinite}
-</style>
 
-<div style="max-width:1120px;margin:0 auto;padding:22px 24px;background:linear-gradient(180deg,#2a2723 0%,#26231f 100%);border:1px solid #413b35;border-radius:28px;box-shadow:0 20px 60px rgba(0,0,0,0.35)">
-<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.5rem">
-  <button class="nb on" onclick="tab('intro',this)">C'est quoi Docker ?</button>
-  <button class="nb" onclick="tab('images',this)">Images</button>
-  <button class="nb" onclick="tab('conteneurs',this)">Conteneurs</button>
-  <button class="nb" onclick="tab('dockerfile',this)">Dockerfile</button>
-  <button class="nb" onclick="tab('ports',this)">Ports</button>
-  <button class="nb" onclick="tab('volumes',this)">Volumes</button>
-  <button class="nb" onclick="tab('multistage',this)">Multi-stage</button>
-  <button class="nb" onclick="tab('commandes',this)">Toutes les commandes</button>
-</div>
-<div id="zone"></div>
-</div>
-
-<script>
 /* ═══════════════════════════ TABS ═══════════════════════════ */
 const TABS={
 
@@ -595,6 +526,4 @@ function tab(key,btn){
 }
 
 tab('intro',document.querySelector('.nb'));
-</script>
-</body>
-</html>
+

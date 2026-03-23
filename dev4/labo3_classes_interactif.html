@@ -1,0 +1,2495 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap");
+      :root {
+        --font-sans: "Lexend", sans-serif;
+        --font-mono: "JetBrains Mono", monospace;
+        --border-radius-md: 8px;
+        --border-radius-lg: 12px;
+        --color-background-primary: #2a2723;
+        --color-background-secondary: #332f2b;
+        --color-background-info: #183448;
+        --color-border-secondary: #57514b;
+        --color-border-tertiary: #48423d;
+        --color-border-info: #2a5f83;
+        --color-text-primary: #f3ede3;
+        --color-text-secondary: #b8aea0;
+        --color-text-tertiary: #888780;
+        --color-text-info: #8fd3ff;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: #1f1d1a;
+        color: var(--color-text-primary);
+        font-family: var(--font-sans);
+      }
+      body {
+        padding: 22px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body,
+      div {
+        font-family: var(--font-sans, sans-serif);
+      }
+      .cours {
+        padding: 1rem 0;
+      }
+      .nav {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 1.5rem;
+      }
+      .nav-btn {
+        padding: 6px 14px;
+        border-radius: var(--border-radius-md);
+        border: 0.5px solid var(--color-border-secondary);
+        background: var(--color-background-primary);
+        cursor: pointer;
+        font-size: 13px;
+        color: var(--color-text-secondary);
+        transition: all 0.15s;
+      }
+      .nav-btn.active {
+        background: var(--color-background-info);
+        color: var(--color-text-info);
+        border-color: var(--color-border-info);
+      }
+      .nav-btn:hover:not(.active) {
+        background: var(--color-background-secondary);
+      }
+      .section {
+        display: none;
+      }
+      .section.active {
+        display: block;
+      }
+      .card {
+        background: var(--color-background-primary);
+        border: 0.5px solid var(--color-border-tertiary);
+        border-radius: var(--border-radius-lg);
+        padding: 1rem 1.25rem;
+        margin-bottom: 1rem;
+      }
+      h2 {
+        font-size: 16px;
+        font-weight: 500;
+        margin: 0 0 8px;
+        color: var(--color-text-primary);
+      }
+      p {
+        font-size: 14px;
+        color: var(--color-text-primary);
+        margin: 6px 0;
+        line-height: 1.6;
+      }
+      code {
+        font-family: var(--font-mono, monospace);
+        font-size: 13px;
+        background: var(--color-background-secondary);
+        padding: 2px 6px;
+        border-radius: 4px;
+      }
+      .code-block {
+        background: var(--color-background-secondary);
+        border-radius: var(--border-radius-md);
+        padding: 12px 16px;
+        font-family: var(--font-mono, monospace);
+        font-size: 13px;
+        color: var(--color-text-primary);
+        margin: 8px 0;
+        line-height: 1.6;
+        border: 0.5px solid var(--color-border-tertiary);
+        overflow-x: auto;
+      }
+      .kw {
+        color: #afa9ec;
+        font-weight: 500;
+      }
+      .cm {
+        color: var(--color-text-secondary);
+      }
+      .str {
+        color: #5dcaa5;
+      }
+      .fn {
+        color: #85b7eb;
+      }
+      .anim-box {
+        border-radius: var(--border-radius-md);
+        padding: 10px;
+        font-size: 13px;
+        border: 0.5px solid var(--color-border-tertiary);
+        transition: all 0.4s;
+        text-align: center;
+        font-family: var(--font-mono, monospace);
+        background: var(--color-background-primary);
+      }
+      .anim-box.highlight {
+        background: #633806;
+        border-color: #ba7517;
+        color: #fac775;
+        transform: scale(1.04);
+      }
+      .anim-box.deleted {
+        background: var(--color-background-secondary);
+        opacity: 0.4;
+        text-decoration: line-through;
+      }
+      .step-btn {
+        padding: 8px 20px;
+        border-radius: var(--border-radius-md);
+        border: 0.5px solid var(--color-border-secondary);
+        background: var(--color-background-secondary);
+        cursor: pointer;
+        font-size: 13px;
+        color: var(--color-text-primary);
+        transition: all 0.15s;
+        margin-top: 8px;
+      }
+      .step-btn:hover {
+        background: var(--color-background-info);
+        color: var(--color-text-info);
+        border-color: var(--color-border-info);
+      }
+      .result-box {
+        border-radius: var(--border-radius-md);
+        padding: 10px 14px;
+        font-size: 13px;
+        font-family: var(--font-mono, monospace);
+        margin-top: 8px;
+        border: 0.5px solid var(--color-border-tertiary);
+        background: var(--color-background-secondary);
+      }
+      .pill {
+        display: inline-block;
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        background: #0c447c;
+        color: #b5d4f4;
+        margin: 2px;
+      }
+      .pill.green {
+        background: #085041;
+        color: #9fe1cb;
+      }
+      .pill.red {
+        background: #791f1f;
+        color: #f7c1c1;
+      }
+      .pill.amber {
+        background: #633806;
+        color: #fac775;
+      }
+      .badge {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 500;
+        margin-left: 6px;
+      }
+      .badge.ok {
+        background: #085041;
+        color: #9fe1cb;
+      }
+      .badge.err {
+        background: #791f1f;
+        color: #f7c1c1;
+      }
+      .mem-box {
+        border-radius: var(--border-radius-md);
+        padding: 12px;
+        text-align: center;
+        border: 0.5px solid var(--color-border-tertiary);
+        position: relative;
+        overflow: hidden;
+      }
+      .mem-box.blue {
+        background: #0c447c;
+        border-color: #378add;
+        color: #b5d4f4;
+      }
+      .mem-box.green {
+        background: #085041;
+        border-color: #639922;
+        color: #9fe1cb;
+      }
+      .mem-box.amber {
+        background: #633806;
+        border-color: #ba7517;
+        color: #fac775;
+      }
+      .mem-box.red {
+        background: #791f1f;
+        border-color: #e24b4a;
+        color: #f7c1c1;
+      }
+      .label {
+        font-size: 11px;
+        color: var(--color-text-secondary);
+        margin-bottom: 4px;
+        font-weight: 500;
+      }
+      .value {
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--color-text-primary);
+        font-family: var(--font-mono, monospace);
+      }
+      .slider-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 8px 0;
+        font-size: 13px;
+      }
+      .two-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      .uml-class {
+        border: 1.5px solid #378add;
+        border-radius: var(--border-radius-md);
+        overflow: hidden;
+        font-family: var(--font-mono);
+        font-size: 12px;
+        background: var(--color-background-primary);
+      }
+      .uml-header {
+        background: #0c447c;
+        color: #b5d4f4;
+        text-align: center;
+        padding: 8px;
+        font-weight: 700;
+        font-size: 14px;
+        border-bottom: 1.5px solid #378add;
+      }
+      .uml-section {
+        padding: 8px 12px;
+        border-bottom: 1px solid var(--color-border-tertiary);
+        min-height: 32px;
+      }
+      .uml-section:last-child {
+        border-bottom: none;
+      }
+      .uml-section .item {
+        padding: 2px 0;
+        color: var(--color-text-primary);
+      }
+      .uml-section .item .acc {
+        color: #e24b4a;
+        font-weight: 700;
+      }
+      .uml-section .item .acc.pub {
+        color: #5dcaa5;
+      }
+      .console-box {
+        background: #1a1816;
+        border: 1px solid var(--color-border-tertiary);
+        border-radius: var(--border-radius-md);
+        padding: 10px 14px;
+        font-family: var(--font-mono);
+        font-size: 12px;
+        color: #9fe1cb;
+        margin-top: 8px;
+        min-height: 40px;
+        white-space: pre-line;
+      }
+      .field-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 8px;
+        margin-top: 10px;
+      }
+      .info-box {
+        background: var(--color-background-info);
+        border: 0.5px solid var(--color-border-info);
+        border-radius: var(--border-radius-md);
+        padding: 10px 14px;
+        margin: 8px 0;
+        font-size: 13px;
+        color: var(--color-text-info);
+        line-height: 1.6;
+      }
+      @media (max-width: 500px) {
+        .two-col {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+
+    <div class="cours">
+      <div class="nav">
+        <button class="nav-btn active" onclick="show('classe', event)">
+          1. Classe & Attributs
+        </button>
+        <button class="nav-btn" onclick="show('constructeur', event)">
+          2. Constructeur
+        </button>
+        <button class="nav-btn" onclick="show('methodes', event)">
+          3. Méthodes
+        </button>
+        <button class="nav-btn" onclick="show('shoot', event)">
+          4. shoot()
+        </button>
+        <button class="nav-btn" onclick="show('pass', event)">5. pass()</button>
+        <button class="nav-btn" onclick="show('copie', event)">6. Copie</button>
+        <button class="nav-btn" onclick="show('struct', event)">
+          7. Struct & Ball
+        </button>
+      </div>
+
+      <!-- ==================== SECTION 1: CLASSE & ATTRIBUTS ==================== -->
+      <div class="section active" id="s-classe">
+        <div class="card">
+          <h2>La classe en C++ — un type défini par l'utilisateur</h2>
+          <p>
+            En C++, une <strong>classe</strong> définit un
+            <strong>nouveau type de données</strong>. Tout comme
+            <code>int</code> ou <code>double</code> sont des types du langage,
+            <code>FootballPlayer</code> est un type que <em>tu</em> crées
+            toi-même. La définition
+            <code>class FootballPlayer { ... };</code> n'occupe
+            <strong>aucune mémoire</strong> — c'est la création d'un
+            <strong>objet</strong> (une <em>instance</em>) qui alloue de la
+            mémoire.
+          </p>
+          <div class="code-block">
+            <span class="cm"
+              >// Définition du TYPE — aucune mémoire allouée</span
+            ><br />
+            <span class="kw">class</span> FootballPlayer { ... };<br /><br />
+            <span class="cm"
+              >// Instanciation — deux objets indépendants en mémoire</span
+            ><br />
+            <span class="kw">FootballPlayer</span> player1(<span class="str"
+              >"Kylian"</span
+            >, 0); <span class="cm">// sizeof(FootballPlayer) octets</span
+            ><br />
+            <span class="kw">FootballPlayer</span> player2(<span class="str"
+              >"Kevin"</span
+            >, 5); <span class="cm">// autre bloc mémoire distinct</span>
+          </div>
+          <div class="info-box">
+            💡 <strong>sizeof :</strong>
+            <code>sizeof(FootballPlayer)</code> retourne la taille en octets
+            d'un objet. Chaque instance possède ses
+            <strong>propres copies</strong> des attributs non-statiques.
+            Modifier <code>player1.goalsScored</code> ne touche jamais
+            <code>player2.goalsScored</code> — ce sont deux zones mémoire
+            totalement indépendantes.
+          </div>
+          <p>
+            La <strong>programmation orientée objet (POO)</strong> repose sur
+            quatre piliers :
+          </p>
+          <div class="two-col" style="gap: 8px; margin-top: 8px">
+            <div class="anim-box" style="font-size: 12px; padding: 10px">
+              <strong style="color: #b5d4f4">🔒 Encapsulation</strong><br />
+              Regrouper données + comportements dans un type. Cacher l'état
+              interne aux utilisateurs.
+            </div>
+            <div class="anim-box" style="font-size: 12px; padding: 10px">
+              <strong style="color: #9fe1cb">🎭 Abstraction</strong><br />
+              Exposer une interface simple (<code>shoot()</code>) sans révéler
+              l'implémentation interne.
+            </div>
+            <div class="anim-box" style="font-size: 12px; padding: 10px">
+              <strong style="color: #fac775">🧬 Héritage</strong><br />
+              Une classe peut dériver d'une autre (<code
+                >Goalkeeper : FootballPlayer</code
+              >) et réutiliser son code.
+            </div>
+            <div class="anim-box" style="font-size: 12px; padding: 10px">
+              <strong style="color: #f7c1c1">🔄 Polymorphisme</strong><br />
+              Un même appel de méthode peut produire des comportements
+              différents selon le type réel.
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Spécificateurs d'accès — private, public, protected</h2>
+          <p>
+            C++ dispose de trois spécificateurs d'accès qui contrôlent qui peut
+            lire ou modifier chaque membre. Cette vérification est faite
+            <strong>à la compilation</strong>
+            (zéro overhead à l'exécution — c'est purement syntaxique).
+          </p>
+          <div class="code-block">
+            <span class="kw">class</span> FootballPlayer {<br />
+            <span style="color: #e24b4a">private</span>:
+            <span class="cm">// par défaut dans class</span><br />
+            &nbsp;&nbsp;<span class="kw">std::string</span> name;
+            <span class="cm">// ❌ inaccessible de l'extérieur</span><br />
+            &nbsp;&nbsp;<span class="kw">int</span> goalsScored;<br /><br />
+            <span style="color: #5dcaa5">public</span>:<br />
+            &nbsp;&nbsp;<span class="fn">FootballPlayer</span>(<span class="kw"
+              >std::string</span
+            >, <span class="kw">int</span>);
+            <span class="cm">// ✅ accessible partout</span><br />
+            &nbsp;&nbsp;<span class="kw">bool</span>
+            <span class="fn">shoot</span>();<br />
+            &nbsp;&nbsp;<span class="kw">std::string</span>
+            <span class="fn">getName</span>() <span class="kw">const</span>;
+            <span class="cm">// getter public</span><br /><br />
+            <span style="color: #fac775">protected</span>:
+            <span class="cm">// accessible ici + sous-classes (héritage)</span
+            ><br />
+            };
+          </div>
+          <div class="info-box">
+            💡 <strong>Pourquoi private ?</strong> Pour maintenir les
+            <strong>invariants</strong> de la classe — des conditions qui
+            doivent toujours rester vraies. Exemple :
+            <code>distanceFromGoal</code> ne doit pas être négatif. En le
+            rendant <code>private</code>, tu forces tout accès à passer par une
+            méthode qui peut valider la valeur. Si c'était <code>public</code>,
+            n'importe quel code pourrait écrire
+            <code>player1.distanceFromGoal = -99;</code> sans aucune erreur ni
+            avertissement.
+          </div>
+          <p>
+            La convention standard pour accéder aux données privées est
+            d'utiliser des
+            <strong>accesseurs</strong> (getters) et
+            <strong>mutateurs</strong> (setters) :
+          </p>
+          <div class="two-col" style="margin-top: 8px">
+            <div class="code-block" style="font-size: 11px">
+              <span class="cm">// Getter — lecture seule (const)</span><br />
+              <span class="kw">std::string</span>
+              <span class="fn">getName</span>()
+              <span class="kw">const</span> {<br />
+              &nbsp;&nbsp;<span class="kw">return</span> name;<br />
+              }<br /><br />
+              <span class="kw">int</span> <span class="fn">getGoals</span>()
+              <span class="kw">const</span> {<br />
+              &nbsp;&nbsp;<span class="kw">return</span> goalsScored;<br />
+              }
+            </div>
+            <div class="code-block" style="font-size: 11px">
+              <span class="cm">// Setter — écriture contrôlée</span><br />
+              <span class="kw">void</span>
+              <span class="fn">setDistance</span>(<span class="kw">double</span>
+              d) {<br />
+              &nbsp;&nbsp;<span class="kw">if</span> (d &gt;= 0)
+              <span class="cm">// validation</span><br />
+              &nbsp;&nbsp;&nbsp;&nbsp;distanceFromGoal = d;<br />
+              }<br /><br />
+              <span class="cm">// player1.setDistance(10.0); ✅</span><br />
+              <span class="cm">// player1.distanceFromGoal=-5; ❌</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Construis ta classe FootballPlayer</h2>
+          <p>Clique étape par étape pour ajouter chaque élément à la classe.</p>
+          <div class="two-col" style="margin-top: 12px">
+            <div>
+              <div class="uml-class" id="uml-box">
+                <div class="uml-header">FootballPlayer</div>
+                <div class="uml-section" id="uml-attrs">
+                  <div
+                    style="font-size: 11px; color: var(--color-text-tertiary)"
+                  >
+                    — attributs —
+                  </div>
+                </div>
+                <div class="uml-section" id="uml-methods">
+                  <div
+                    style="font-size: 11px; color: var(--color-text-tertiary)"
+                  >
+                    — méthodes —
+                  </div>
+                </div>
+              </div>
+              <button class="step-btn" onclick="buildClass()">
+                ▶ Étape suivante
+              </button>
+              <button
+                class="step-btn"
+                onclick="resetBuildClass()"
+                style="margin-left: 6px"
+              >
+                ↺ Reset
+              </button>
+            </div>
+            <div>
+              <div class="code-block" id="class-code" style="min-height: 200px">
+                <span class="cm">// Clique pour construire la classe...</span>
+              </div>
+            </div>
+          </div>
+          <div id="class-expl" class="result-box">
+            Clique sur "Étape suivante" pour commencer.
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== SECTION 2: CONSTRUCTEUR ==================== -->
+      <div class="section" id="s-constructeur">
+        <div class="card">
+          <h2>Le constructeur — cycle de vie et initialisation</h2>
+          <p>
+            Un <strong>constructeur</strong> est une méthode spéciale appelée
+            automatiquement à la création d'un objet. Il porte le
+            <strong>même nom que la classe</strong> et n'a
+            <strong>aucun type de retour</strong> (même pas <code>void</code>).
+            Son rôle est de garantir qu'un objet soit dans un
+            <strong>état valide dès sa naissance</strong>.
+          </p>
+          <p>
+            Tout objet C++ suit un <strong>cycle de vie</strong> :
+            <strong>construction</strong> → <strong>utilisation</strong> →
+            <strong>destruction</strong>. À la sortie de portée (ou lors d'un
+            <code>delete</code>), le
+            <strong>destructeur</strong> (<code>~FootballPlayer()</code>) est
+            appelé automatiquement.
+          </p>
+          <div class="code-block">
+            {<br />
+            &nbsp;&nbsp;<span class="kw">FootballPlayer</span> p(<span
+              class="str"
+              >"Kylian"</span
+            >, 0); <span class="cm">// ← constructeur appelé</span><br />
+            &nbsp;&nbsp;p.<span class="fn">shoot</span>();<br />
+            }
+            <span class="cm"
+              >// ← destructeur appelé automatiquement (fin de portée)</span
+            >
+          </div>
+          <div class="info-box">
+            💡 <strong>Constructeur par défaut :</strong> Si tu ne définis aucun
+            constructeur, le compilateur en génère un automatiquement (sans
+            paramètre, corps vide). Mais si tu définis
+            <strong>un</strong> constructeur paramétré, le compilateur
+            <strong>ne génère plus</strong> le constructeur par défaut — tu dois
+            l'ajouter explicitement si besoin :
+            <code>FootballPlayer() = default;</code>
+          </div>
+          <p>
+            Une classe peut avoir
+            <strong>plusieurs constructeurs</strong> (surcharge) du moment que
+            leurs signatures (types ou nombre de paramètres) diffèrent :
+          </p>
+          <div class="code-block">
+            <span class="cm">// Constructeur principal (nom + buts)</span><br />
+            <span class="fn">FootballPlayer</span>(<span class="kw"
+              >std::string</span
+            >
+            n, <span class="kw">int</span> goals) : name{n}, goalsScored{goals}
+            {}<br /><br />
+            <span class="cm">// Surcharge : goals vaut 0 par défaut</span><br />
+            <span class="fn">FootballPlayer</span>(<span class="kw"
+              >std::string</span
+            >
+            n) : name{n}, goalsScored{0} {}
+          </div>
+          <h3
+            style="
+              margin-top: 14px;
+              font-size: 14px;
+              color: var(--color-text-primary);
+            "
+          >
+            Liste d'initialisation vs corps du constructeur
+          </h3>
+          <p>
+            Les attributs peuvent être initialisés de deux façons — la liste
+            d'initialisation est toujours préférable car elle construit
+            l'attribut directement avec la bonne valeur :
+          </p>
+          <div class="two-col" style="margin-top: 8px">
+            <div class="code-block" style="font-size: 11px">
+              <span class="cm">// ✅ Liste d'init (préférable)</span><br />
+              <span class="fn">FootballPlayer</span>(<span class="kw"
+                >std::string</span
+              >
+              n)<br />
+              &nbsp;&nbsp;: name{n}, goalsScored{0}<br />
+              { } <span class="cm">// name construit directement</span>
+            </div>
+            <div class="code-block" style="font-size: 11px">
+              <span class="cm">// ⚠️ Corps (moins efficace)</span><br />
+              <span class="fn">FootballPlayer</span>(<span class="kw"
+                >std::string</span
+              >
+              n) {<br />
+              &nbsp;&nbsp;name = n;
+              <span class="cm">// construit vide, puis assigné</span><br />
+              }
+            </div>
+          </div>
+          <div class="info-box">
+            💡 <strong>Membres obligatoirement dans la liste :</strong> Les
+            membres <code>const</code> et les <strong>références</strong> ne
+            <em>peuvent pas</em> être assignés dans le corps — ils doivent
+            figurer dans la <strong>liste d'initialisation</strong> car ils ne
+            peuvent être initialisés qu'une seule fois. <br /><code
+              >const int id;</code
+            >
+            → <strong>doit</strong> être dans la liste.
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Visualisation — Création d'un joueur en mémoire</h2>
+          <p>
+            Clique pour voir comment
+            <code>FootballPlayer player1("Kylian", 0);</code> remplit la
+            mémoire.
+          </p>
+          <div class="field-grid" id="ctor-fields">
+            <div class="mem-box" id="cf-name">
+              <div class="label">name</div>
+              <div
+                class="value"
+                id="cf-name-v"
+                style="color: var(--color-text-tertiary)"
+              >
+                ???
+              </div>
+            </div>
+            <div class="mem-box" id="cf-goals">
+              <div class="label">goalsScored</div>
+              <div
+                class="value"
+                id="cf-goals-v"
+                style="color: var(--color-text-tertiary)"
+              >
+                ???
+              </div>
+            </div>
+            <div class="mem-box" id="cf-dist">
+              <div class="label">distanceFromGoal</div>
+              <div
+                class="value"
+                id="cf-dist-v"
+                style="color: var(--color-text-tertiary)"
+              >
+                ???
+              </div>
+            </div>
+            <div class="mem-box" id="cf-ball">
+              <div class="label">possessBall</div>
+              <div
+                class="value"
+                id="cf-ball-v"
+                style="color: var(--color-text-tertiary)"
+              >
+                ???
+              </div>
+            </div>
+          </div>
+          <div style="margin-top: 10px">
+            <button class="step-btn" onclick="stepCtor()">
+              ▶ Étape suivante
+            </button>
+            <button
+              class="step-btn"
+              onclick="resetCtor()"
+              style="margin-left: 6px"
+            >
+              ↺ Reset
+            </button>
+          </div>
+          <div class="code-block" style="margin-top: 10px">
+            <span class="kw">FootballPlayer</span>::<span class="fn"
+              >FootballPlayer</span
+            >(<span class="kw">std::string</span> name,
+            <span class="kw">int</span> goals)<br />
+            &nbsp;&nbsp;: name{name}, goalsScored{goals},<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;distanceFromGoal{<span class="str"
+              >15.0</span
+            >}, possessBall{<span class="str">false</span>}<br />
+            { }
+          </div>
+          <div id="ctor-expl" class="result-box">
+            Clique pour voir chaque attribut s'initialiser.
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Valeurs par défaut des attributs</h2>
+          <p>
+            Les exercices 1-3 du labo demandent que
+            <code>distanceFromGoal</code> soit initialisé à <code>15.0</code> et
+            <code>possessBall</code> à <code>false</code>
+            <strong>par défaut</strong>.
+          </p>
+          <p>
+            Cela signifie que même si l'utilisateur ne fournit pas ces valeurs
+            au constructeur, elles ont une valeur prédéfinie. En C++, on peut le
+            faire de deux manières :
+          </p>
+          <div class="two-col" style="margin-top: 8px">
+            <div class="code-block">
+              <span class="cm">// 1. Dans la déclaration (C++11)</span><br />
+              <span class="kw">class</span> FootballPlayer {<br />
+              &nbsp;&nbsp;<span class="kw">double</span> distanceFromGoal =
+              <span class="str">15.0</span>;<br />
+              &nbsp;&nbsp;<span class="kw">bool</span> possessBall =
+              <span class="str">false</span>;<br />
+              };
+            </div>
+            <div class="code-block">
+              <span class="cm">// 2. Dans la liste d'init</span><br />
+              <span class="kw">FootballPlayer</span>::<span class="fn"
+                >FootballPlayer</span
+              >(...)<br />
+              &nbsp;&nbsp;: distanceFromGoal{<span class="str">15.0</span
+              >},<br />
+              &nbsp;&nbsp;&nbsp;&nbsp;possessBall{<span class="str">false</span
+              >}<br />
+              { }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== SECTION 3: MÉTHODES ==================== -->
+      <div class="section" id="s-methodes">
+        <div class="card">
+          <h2>Les méthodes — anatomie, this et const</h2>
+          <p>
+            Une <strong>méthode</strong> est une fonction appartenant à une
+            classe. Elle accède à tous les attributs (même <code>private</code>)
+            via le pointeur implicite <code>this</code>. Elle se
+            <em>déclare</em> dans la classe et se <em>définit</em> (souvent hors
+            de la classe) avec l'opérateur de portée <code>::</code>.
+          </p>
+          <div class="code-block">
+            <span class="cm">// Déclarations dans la classe</span><br />
+            <span class="kw">class</span> FootballPlayer {<br />
+            <span class="kw">public</span>:<br />
+            &nbsp;&nbsp;<span class="kw">void</span>
+            <span class="fn">takePossession</span>();
+            <span class="cm">// déclaration</span><br />
+            &nbsp;&nbsp;<span class="kw">void</span>
+            <span class="fn">move</span>(<span class="kw">double</span>
+            d);<br />
+            &nbsp;&nbsp;<span class="kw">bool</span>
+            <span class="fn">shoot</span>();<br />
+            };<br /><br />
+            <span class="cm"
+              >// Définition hors de la classe (opérateur ::)</span
+            ><br />
+            <span class="kw">void</span> FootballPlayer::<span class="fn"
+              >takePossession</span
+            >() {<br />
+            &nbsp;&nbsp;possessBall = <span class="str">true</span>;
+            <span class="cm">// équivalent : this-&gt;possessBall = true</span
+            ><br />
+            }
+          </div>
+          <div class="info-box">
+            💡 <strong>Le pointeur this :</strong> Chaque méthode non-statique
+            reçoit un paramètre caché — le pointeur <code>this</code> de type
+            <code>FootballPlayer* const</code>. Il pointe vers l'objet sur
+            lequel la méthode est appelée. <code>player1.shoot()</code> est
+            traduit par le compilateur en
+            <code>FootballPlayer::shoot(&amp;player1)</code>. C'est ce qui
+            explique pourquoi <code>player1.shoot()</code> et
+            <code>player2.shoot()</code> opèrent sur des zones mémoire
+            distinctes.
+          </div>
+          <h3
+            style="
+              margin-top: 14px;
+              font-size: 14px;
+              color: var(--color-text-primary);
+            "
+          >
+            Méthodes const — garantie de non-modification
+          </h3>
+          <p>
+            Une méthode marquée <code>const</code> s'engage à ne
+            <strong>jamais modifier</strong> les attributs de l'objet. Le type
+            de <code>this</code> devient alors
+            <code>const FootballPlayer* const</code> — pointeur constant vers
+            objet constant.
+          </p>
+          <div class="two-col" style="margin-top: 8px">
+            <div class="code-block" style="font-size: 11px">
+              <span class="cm">// ✅ Méthode const (lecture seule)</span><br />
+              <span class="kw">std::string</span>
+              <span class="fn">getName</span>()
+              <span class="kw">const</span> {<br />
+              &nbsp;&nbsp;<span class="kw">return</span> name;
+              <span class="cm">// OK</span><br />
+              }<br /><br />
+              <span class="kw">int</span> <span class="fn">getGoals</span>()
+              <span class="kw">const</span> {<br />
+              &nbsp;&nbsp;<span class="kw">return</span> goalsScored;<br />
+              }
+            </div>
+            <div class="code-block" style="font-size: 11px">
+              <span class="cm">// const interdit la modification</span><br />
+              <span class="kw">void</span>
+              <span class="fn">takePossession</span>()
+              <span class="kw">const</span> {<br />
+              &nbsp;&nbsp;possessBall = <span class="str">true</span>;
+              <span class="cm">// ❌ erreur compil</span><br />
+              }<br /><br />
+              <span class="cm">// Sans const : modification OK</span><br />
+              <span class="kw">void</span>
+              <span class="fn">takePossession</span>() {<br />
+              &nbsp;&nbsp;possessBall = <span class="str">true</span>;
+              <span class="cm">// ✅</span><br />
+              }
+            </div>
+          </div>
+          <div class="info-box">
+            💡 <strong>Règle pratique :</strong> Marque
+            <code>const</code> toutes les méthodes qui ne modifient pas l'état
+            de l'objet (getters, calculs, affichages). Cela permet d'appeler ces
+            méthodes sur des références constantes (<code
+              >const FootballPlayer&amp;</code
+            >) et documente clairement l'intention.
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Terrain interactif — takePossession() & move()</h2>
+          <p>
+            Utilise les boutons pour simuler les actions du joueur sur le
+            terrain.
+          </p>
+          <svg viewBox="0 0 640 200" width="100%" style="margin: 8px 0">
+            <!-- terrain -->
+            <rect
+              x="10"
+              y="10"
+              width="620"
+              height="180"
+              rx="8"
+              fill="#1a3a1a"
+              stroke="#3a6b3a"
+              stroke-width="1"
+            />
+            <line
+              x1="320"
+              y1="10"
+              x2="320"
+              y2="190"
+              stroke="#3a6b3a"
+              stroke-width="0.5"
+              stroke-dasharray="4 4"
+            />
+            <circle
+              cx="320"
+              cy="100"
+              r="40"
+              fill="none"
+              stroke="#3a6b3a"
+              stroke-width="0.5"
+            />
+            <!-- but -->
+            <rect
+              x="10"
+              y="60"
+              width="6"
+              height="80"
+              rx="2"
+              fill="none"
+              stroke="#f7c1c1"
+              stroke-width="1.5"
+            />
+            <text x="22" y="105" font-size="10" fill="#f7c1c1">But</text>
+            <!-- joueur -->
+            <circle
+              id="field-player"
+              cx="450"
+              cy="100"
+              r="14"
+              fill="#0c447c"
+              stroke="#378add"
+              stroke-width="1.5"
+            />
+            <text
+              id="field-player-name"
+              x="450"
+              y="104"
+              text-anchor="middle"
+              font-size="9"
+              fill="#b5d4f4"
+              font-weight="500"
+            >
+              Kylian
+            </text>
+            <!-- ballon -->
+            <circle
+              id="field-ball"
+              cx="450"
+              cy="78"
+              r="6"
+              fill="none"
+              stroke="var(--color-border-tertiary)"
+              stroke-width="0.5"
+              stroke-dasharray="2 2"
+            />
+            <!-- distance label -->
+            <text
+              id="field-dist-label"
+              x="450"
+              y="140"
+              text-anchor="middle"
+              font-size="10"
+              fill="var(--color-text-secondary)"
+            >
+              dist: 15.0
+            </text>
+          </svg>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap">
+            <button class="step-btn" onclick="simTakePossession()">
+              ⚽ takePossession()
+            </button>
+            <button class="step-btn" onclick="simMove(5)">🏃 move(5.0)</button>
+            <button class="step-btn" onclick="simMove(15)">
+              🏃 move(15.0)
+            </button>
+            <button class="step-btn" onclick="simMove(30)">
+              🏃 move(30.0)
+            </button>
+            <button class="step-btn" onclick="resetField()">↺ Reset</button>
+          </div>
+          <div class="two-col" style="margin-top: 10px">
+            <div>
+              <div class="label">État du joueur</div>
+              <div class="field-grid" style="grid-template-columns: 1fr 1fr">
+                <div class="anim-box" id="state-ball" style="font-size: 12px">
+                  possessBall: false
+                </div>
+                <div class="anim-box" id="state-dist" style="font-size: 12px">
+                  distance: 15.0
+                </div>
+              </div>
+            </div>
+            <div>
+              <div
+                class="code-block"
+                id="method-code"
+                style="font-size: 12px; min-height: 60px"
+              >
+                <span class="cm">// Appelle une méthode...</span>
+              </div>
+            </div>
+          </div>
+          <div id="method-expl" class="result-box">
+            Utilise les boutons pour interagir avec le joueur.
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== SECTION 4: SHOOT ==================== -->
+      <div class="section" id="s-shoot">
+        <div class="card">
+          <h2>Types de retour, bool et retour anticipé</h2>
+          <p>
+            <code>shoot()</code> retourne un <code>bool</code> —
+            <code>true</code> si but, <code>false</code> sinon. Chaque méthode
+            déclare son <strong>type de retour</strong> dans sa signature. Si la
+            méthode ne retourne rien, on utilise <code>void</code>.
+          </p>
+          <div class="code-block">
+            <span class="kw">bool</span>&nbsp;&nbsp;&nbsp;<span class="fn"
+              >shoot</span
+            >();
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+              class="cm"
+              >// retourne vrai ou faux</span
+            ><br />
+            <span class="kw">void</span>&nbsp;&nbsp;&nbsp;<span class="fn"
+              >move</span
+            >(<span class="kw">double</span> d);
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+              class="cm"
+              >// void = ne retourne rien</span
+            ><br />
+            <span class="kw">int</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn"
+              >getGoals</span
+            >() <span class="kw">const</span>;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm"
+              >// retourne un entier</span
+            ><br />
+            <span class="kw">std::string</span>
+            <span class="fn">getName</span>() <span class="kw">const</span>;
+            &nbsp;&nbsp;<span class="cm">// retourne une string</span>
+          </div>
+          <p>
+            Le <strong>retour anticipé</strong> (<em>early return</em>) est un
+            pattern courant : si une précondition n'est pas remplie, on retourne
+            immédiatement sans exécuter le reste de la fonction. Cela évite les
+            <code>if</code> imbriqués profonds qui rendent le code difficile à
+            lire.
+          </p>
+          <div class="code-block">
+            <span class="kw">bool</span> FootballPlayer::<span class="fn"
+              >shoot</span
+            >() {<br />
+            &nbsp;&nbsp;<span class="cm"
+              >// Précondition : le joueur doit avoir le ballon</span
+            ><br />
+            &nbsp;&nbsp;<span class="kw">if</span> (!possessBall) {<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;std::cout &lt;&lt; name &lt;&lt;
+            <span class="str"
+              >" tried to shoot but he doesn't have the ball"</span
+            >;<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return false</span>;
+            <span class="cm">// sortie immédiate</span><br />
+            &nbsp;&nbsp;}<br />
+            &nbsp;&nbsp;<span class="cm"
+              >// Ce code ne s'exécute QUE si possessBall == true</span
+            ><br />
+            &nbsp;&nbsp;<span class="kw">bool</span> goal = (randomFrom0to99() *
+            <span class="str">15</span> / distanceFromGoal) &gt;
+            <span class="str">50</span>;<br />
+            &nbsp;&nbsp;<span class="kw">return</span> goal;<br />
+            }
+          </div>
+          <h3
+            style="
+              margin-top: 14px;
+              font-size: 14px;
+              color: var(--color-text-primary);
+            "
+          >
+            Variables static locales et génération aléatoire
+          </h3>
+          <p>
+            Le mot-clé <code>static</code> devant une variable
+            <em>locale</em> lui donne une
+            <strong>durée de vie statique</strong> : elle est créée lors du
+            <strong>premier appel</strong> et persiste jusqu'à la fin du
+            programme, contrairement aux variables locales ordinaires qui sont
+            détruites à chaque sortie de fonction.
+          </p>
+          <div class="code-block">
+            <span class="kw">int</span> FootballPlayer::<span class="fn"
+              >randomFrom0to99</span
+            >() {<br />
+            &nbsp;&nbsp;<span class="cm"
+              >// Ces deux objets sont créés UNE seule fois et persistent</span
+            ><br />
+            &nbsp;&nbsp;<span class="kw">static</span> std::mt19937 gen{
+            std::random_device{}() };<br />
+            &nbsp;&nbsp;<span class="kw">static</span>
+            std::uniform_int_distribution&lt;<span class="kw">int</span>&gt;
+            dist(0, 99);<br />
+            &nbsp;&nbsp;<span class="kw">return</span> dist(gen);
+            <span class="cm">// entier aléatoire dans [0, 99]</span><br />
+            }
+          </div>
+          <div class="info-box">
+            💡 <strong>Pourquoi pas rand() ?</strong> L'ancien
+            <code>rand()</code> souffre de plusieurs défauts : distribution non
+            uniforme (biais modulo), séquences prévisibles, qualité médiocre.
+            <code>std::mt19937</code> (Mersenne Twister) est un générateur de
+            haute qualité standardisé en C++11.
+            <code>std::random_device</code> fournit une graine basée sur
+            l'entropie matérielle (OS).
+            <code>std::uniform_int_distribution</code> garantit une distribution
+            <strong>parfaitement uniforme</strong> sur l'intervalle donné.
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Simulateur de tir</h2>
+          <p>
+            Ajuste la distance, puis clique sur "Tirer !" pour voir le calcul en
+            détail.
+          </p>
+          <div class="slider-row">
+            <span style="font-size: 13px; color: var(--color-text-secondary)"
+              >Distance du but</span
+            >
+            <input
+              type="range"
+              min="1"
+              max="50"
+              value="15"
+              id="shoot-dist"
+              style="flex: 1"
+              oninput="updateShootDist()"
+            />
+            <span
+              id="shoot-dist-label"
+              style="min-width: 40px; font-size: 13px; font-weight: 500"
+              >15.0</span
+            >
+          </div>
+          <div
+            style="display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap"
+          >
+            <button class="step-btn" onclick="simShootWithBall()">
+              ⚽ Prendre le ballon + Tirer !
+            </button>
+            <button class="step-btn" onclick="simShootNoBall()">
+              ❌ Tirer sans ballon
+            </button>
+          </div>
+
+          <div style="margin-top: 12px">
+            <div class="label">Décomposition du calcul</div>
+            <div
+              class="field-grid"
+              style="grid-template-columns: repeat(4, 1fr)"
+            >
+              <div class="anim-box" id="sh-random" style="font-size: 11px">
+                random<br /><span
+                  style="font-size: 16px; font-weight: 700"
+                  id="sh-random-v"
+                  >?</span
+                >
+              </div>
+              <div class="anim-box" id="sh-mult" style="font-size: 11px">
+                × 15<br /><span
+                  style="font-size: 16px; font-weight: 700"
+                  id="sh-mult-v"
+                  >?</span
+                >
+              </div>
+              <div class="anim-box" id="sh-div" style="font-size: 11px">
+                ÷ dist<br /><span
+                  style="font-size: 16px; font-weight: 700"
+                  id="sh-div-v"
+                  >?</span
+                >
+              </div>
+              <div class="anim-box" id="sh-result" style="font-size: 11px">
+                &gt; 50 ?<br /><span
+                  style="font-size: 16px; font-weight: 700"
+                  id="sh-result-v"
+                  >?</span
+                >
+              </div>
+            </div>
+          </div>
+          <div id="shoot-console" class="console-box" style="margin-top: 10px">
+            En attente d'un tir...
+          </div>
+          <div id="shoot-expl" class="result-box">
+            Ajuste la distance et tente un tir !
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== SECTION 5: PASS ==================== -->
+      <div class="section" id="s-pass">
+        <div class="card">
+          <h2>Modes de passage — valeur, référence, const-référence</h2>
+          <p>
+            En C++, il y a trois façons principales de passer un paramètre à une
+            fonction. Le choix impacte à la fois la
+            <strong>performance</strong> (copie ou pas) et la
+            <strong>sémantique</strong> (ce qui peut être modifié).
+          </p>
+          <div class="code-block">
+            <span class="cm">// 1. Par valeur — une COPIE est créée</span><br />
+            <span class="kw">void</span> <span class="fn">f</span>(<span
+              class="kw"
+              >FootballPlayer</span
+            >
+            p);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm"
+              >// copie complète de l'objet</span
+            ><br /><br />
+            <span class="cm"
+              >// 2. Par référence — un ALIAS vers l'original</span
+            ><br />
+            <span class="kw">void</span> <span class="fn">f</span>(<span
+              class="kw"
+              >FootballPlayer&amp;</span
+            >
+            p);&nbsp;&nbsp;&nbsp;<span class="cm"
+              >// pas de copie, modifications visibles</span
+            ><br /><br />
+            <span class="cm"
+              >// 3. Par const-référence — alias en lecture seule</span
+            ><br />
+            <span class="kw">void</span> <span class="fn">f</span>(<span
+              class="kw"
+              >const FootballPlayer&amp;</span
+            >
+            p); <span class="cm">// pas de copie, pas de modification</span>
+          </div>
+          <div class="info-box">
+            💡 <strong>Référence vs pointeur :</strong>
+            Une référence (<code>&amp;</code>) diffère d'un pointeur : elle
+            <strong>ne peut pas être null</strong>, ne peut pas être réassignée
+            vers un autre objet, et ne requiert pas <code>*</code> ou
+            <code>-&gt;</code> pour l'accès. Le compilateur la traduit en
+            pointeur en interne, mais la syntaxe est plus sûre. Préfère toujours
+            la référence quand le paramètre ne peut pas être absent.
+          </div>
+          <p><strong>Quand utiliser chaque mode ?</strong></p>
+          <div class="two-col" style="gap: 8px; margin-top: 8px">
+            <div class="anim-box" style="font-size: 12px; padding: 10px">
+              <strong style="color: #b5d4f4">Par valeur (T)</strong><br />
+              Petits types (<code>int</code>, <code>double</code>,
+              <code>bool</code>). Copie = coût négligeable.
+            </div>
+            <div class="anim-box" style="font-size: 12px; padding: 10px">
+              <strong style="color: #9fe1cb">Par référence (T&amp;)</strong
+              ><br />
+              Quand la fonction doit <strong>modifier</strong> l'original. Ex :
+              <code>pass(FootballPlayer&amp;)</code>.
+            </div>
+            <div class="anim-box" style="font-size: 12px; padding: 10px">
+              <strong style="color: #fac775"
+                >Par const-ref (const T&amp;)</strong
+              ><br />
+              Gros objets en <strong>lecture seule</strong>. Évite la copie sans
+              permettre la modification.
+            </div>
+            <div class="anim-box" style="font-size: 12px; padding: 10px">
+              <strong style="color: #f7c1c1">Par pointeur (T*)</strong><br />
+              Paramètre <strong>optionnel</strong> (peut être
+              <code>nullptr</code>). Moins sûr — à éviter si la référence
+              convient.
+            </div>
+          </div>
+          <div class="two-col" style="margin-top: 10px">
+            <div class="code-block" style="font-size: 12px">
+              <span class="cm">// ❌ Par valeur : copie inutile</span><br />
+              <span class="kw">void</span> <span class="fn">pass</span>(<span
+                class="kw"
+                >FootballPlayer</span
+              >
+              other) {<br />
+              &nbsp;&nbsp;other.possessBall =
+              <span class="str">true</span>;<br />
+              &nbsp;&nbsp;<span class="cm"
+                >// modifie la COPIE, pas l'original !</span
+              ><br />
+              }
+            </div>
+            <div class="code-block" style="font-size: 12px">
+              <span class="cm">// ✅ Par référence (ALIAS)</span><br />
+              <span class="kw">void</span> <span class="fn">pass</span>(<span
+                class="kw"
+                >FootballPlayer&amp;</span
+              >
+              other) {<br />
+              &nbsp;&nbsp;other.possessBall =
+              <span class="str">true</span>;<br />
+              &nbsp;&nbsp;<span class="cm">// modifie l'ORIGINAL !</span><br />
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Simulation de passe</h2>
+          <p>
+            Deux joueurs sont sur le terrain. Utilise les boutons pour faire des
+            passes.
+          </p>
+          <svg viewBox="0 0 640 160" width="100%" style="margin: 8px 0">
+            <rect
+              x="10"
+              y="10"
+              width="620"
+              height="140"
+              rx="8"
+              fill="#1a3a1a"
+              stroke="#3a6b3a"
+              stroke-width="1"
+            />
+            <line
+              x1="320"
+              y1="10"
+              x2="320"
+              y2="150"
+              stroke="#3a6b3a"
+              stroke-width="0.5"
+              stroke-dasharray="4 4"
+            />
+            <!-- Joueur 1 -->
+            <circle
+              id="pass-p1"
+              cx="200"
+              cy="80"
+              r="16"
+              fill="#0c447c"
+              stroke="#378add"
+              stroke-width="1.5"
+            />
+            <text
+              x="200"
+              y="84"
+              text-anchor="middle"
+              font-size="9"
+              fill="#b5d4f4"
+              font-weight="500"
+            >
+              Kylian
+            </text>
+            <text
+              id="pass-p1-ball"
+              x="200"
+              y="58"
+              text-anchor="middle"
+              font-size="14"
+              style="display: none"
+            >
+              ⚽
+            </text>
+            <!-- Joueur 2 -->
+            <circle
+              id="pass-p2"
+              cx="440"
+              cy="80"
+              r="16"
+              fill="#633806"
+              stroke="#ba7517"
+              stroke-width="1.5"
+            />
+            <text
+              x="440"
+              y="84"
+              text-anchor="middle"
+              font-size="9"
+              fill="#fac775"
+              font-weight="500"
+            >
+              Kevin
+            </text>
+            <text
+              id="pass-p2-ball"
+              x="440"
+              y="58"
+              text-anchor="middle"
+              font-size="14"
+              style="display: none"
+            >
+              ⚽
+            </text>
+            <!-- Flèche passe -->
+            <line
+              id="pass-arrow"
+              x1="220"
+              y1="80"
+              x2="420"
+              y2="80"
+              stroke="none"
+              stroke-width="2"
+              marker-end="url(#arrowhead)"
+            />
+            <defs>
+              <marker
+                id="arrowhead"
+                markerWidth="8"
+                markerHeight="6"
+                refX="8"
+                refY="3"
+                orient="auto"
+              >
+                <polygon points="0 0, 8 3, 0 6" fill="#5dcaa5" />
+              </marker>
+            </defs>
+          </svg>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap">
+            <button class="step-btn" onclick="simPass('p1', 'p2')">
+              Kylian → passe → Kevin
+            </button>
+            <button class="step-btn" onclick="simPass('p2', 'p1')">
+              Kevin → passe → Kylian
+            </button>
+            <button class="step-btn" onclick="simPassTake('p1')">
+              ⚽ Kylian takePossession
+            </button>
+            <button class="step-btn" onclick="simPassTake('p2')">
+              ⚽ Kevin takePossession
+            </button>
+            <button class="step-btn" onclick="resetPass()">↺ Reset</button>
+          </div>
+          <div class="two-col" style="margin-top: 10px">
+            <div class="anim-box" id="pass-state-p1" style="font-size: 12px">
+              Kylian — possessBall: false
+            </div>
+            <div class="anim-box" id="pass-state-p2" style="font-size: 12px">
+              Kevin — possessBall: false
+            </div>
+          </div>
+          <div id="pass-console" class="console-box">En attente...</div>
+          <div id="pass-expl" class="result-box">
+            Fais une passe entre les joueurs !
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== SECTION 6: CONSTRUCTEUR DE COPIE ==================== -->
+      <div class="section" id="s-copie">
+        <div class="card">
+          <h2>Constructeur de copie et Règle des Trois</h2>
+          <p>
+            Le <strong>constructeur de copie</strong> crée un nouvel objet à
+            partir d'un objet existant. Sa signature canonique prend une
+            <strong>const-référence</strong> vers l'objet source (jamais par
+            valeur, sinon appel récursif infini !).
+          </p>
+          <div class="code-block">
+            <span class="cm">// Signature canonique</span><br />
+            <span class="fn">FootballPlayer</span>(<span class="kw"
+              >const FootballPlayer&amp;</span
+            >
+            other);<br /><br />
+            <span class="cm">// Trois cas d'appel automatique :</span><br />
+            <span class="kw">FootballPlayer</span> evilPlayer1(player1);
+            <span class="cm">// initialisation par copie</span><br />
+            <span class="kw">FootballPlayer</span> evilPlayer1 = player1;
+            <span class="cm">// idem (= trompeur ici)</span><br />
+            <span class="kw">void</span> <span class="fn">f</span>(<span
+              class="kw"
+              >FootballPlayer</span
+            >
+            p); <span class="cm">// passage par valeur → copie</span>
+          </div>
+          <h3
+            style="
+              margin-top: 14px;
+              font-size: 14px;
+              color: var(--color-text-primary);
+            "
+          >
+            La Règle des Trois (Rule of Three)
+          </h3>
+          <p>
+            Si tu as besoin de définir l'un de ces trois membres spéciaux, tu as
+            probablement besoin des trois — ils gagnent ou perdent ensemble.
+          </p>
+          <div class="two-col" style="gap: 8px; margin-top: 8px">
+            <div class="anim-box" style="font-size: 12px; padding: 10px">
+              <strong style="color: #b5d4f4">1. Destructeur</strong><br />
+              <code>~FootballPlayer()</code><br />
+              Libère les ressources allouées dynamiquement (<code>new</code>,
+              fichiers, sockets...).
+            </div>
+            <div class="anim-box" style="font-size: 12px; padding: 10px">
+              <strong style="color: #9fe1cb">2. Constructeur de copie</strong
+              ><br />
+              <code>FootballPlayer(const T&amp;)</code><br />
+              Crée une copie <em>profonde</em> si nécessaire (deep copy).
+            </div>
+          </div>
+          <div
+            class="anim-box"
+            style="font-size: 12px; padding: 10px; margin-top: 8px"
+          >
+            <strong style="color: #fac775"
+              >3. Opérateur d'affectation par copie</strong
+            ><br />
+            <code>FootballPlayer&amp; operator=(const FootballPlayer&amp;)</code
+            ><br />
+            Appelé lors d'une affectation <code>player2 = player1;</code> (pas
+            une initialisation).
+          </div>
+          <div class="info-box">
+            💡 <strong>Copie superficielle vs profonde :</strong> La copie
+            générée par le compilateur (<em>shallow copy</em>) copie chaque
+            attribut bit-à-bit. C'est suffisant si la classe ne contient pas de
+            pointeurs vers de la mémoire allouée dynamiquement. Si un attribut
+            est un <code>int*</code> ou <code>char*</code> alloué par
+            <code>new</code>, la shallow copy copie l'adresse — les deux objets
+            partagent alors la même mémoire ! Il faut alors une
+            <em>deep copy</em> : allouer un nouveau bloc et copier le contenu.
+          </div>
+          <div class="two-col" style="margin-top: 8px">
+            <div class="code-block" style="font-size: 11px">
+              <span class="cm">// Interdire la copie</span><br />
+              <span class="fn">FootballPlayer</span>(<span class="kw"
+                >const</span
+              >
+              FootballPlayer&amp;) = <span class="kw">delete</span>;<br />
+              <span class="cm">// Toute tentative = erreur compil</span>
+            </div>
+            <div class="code-block" style="font-size: 11px">
+              <span class="cm">// Copie par défaut du compilateur</span><br />
+              <span class="fn">FootballPlayer</span>(<span class="kw"
+                >const</span
+              >
+              FootballPlayer&amp;) = <span class="kw">default</span>;<br />
+              <span class="cm">// Copie membre-à-membre</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Simulation — Cloner les joueurs</h2>
+          <p>
+            Clique pour créer des copies et voir comment les attributs sont
+            copiés.
+          </p>
+          <div class="two-col" id="copy-players">
+            <div>
+              <div class="label">Originaux</div>
+              <div class="mem-box blue" style="margin-bottom: 6px">
+                <div class="label">player1</div>
+                <div class="value">Kylian</div>
+                <div style="font-size: 11px; color: #b5d4f4; margin-top: 4px">
+                  goals: 0 | dist: 15.0 | ball: false
+                </div>
+              </div>
+              <div class="mem-box blue">
+                <div class="label">player2</div>
+                <div class="value">Kevin</div>
+                <div style="font-size: 11px; color: #b5d4f4; margin-top: 4px">
+                  goals: 0 | dist: 15.0 | ball: false
+                </div>
+              </div>
+            </div>
+            <div id="copy-clones-col">
+              <div class="label">Copies (evil twins)</div>
+              <div
+                id="copy-clone1"
+                class="mem-box"
+                style="
+                  margin-bottom: 6px;
+                  border-style: dashed;
+                  min-height: 62px;
+                "
+              >
+                <div
+                  class="value"
+                  style="color: var(--color-text-tertiary); font-size: 12px"
+                >
+                  ??? — clique pour copier
+                </div>
+              </div>
+              <div
+                id="copy-clone2"
+                class="mem-box"
+                style="border-style: dashed; min-height: 62px"
+              >
+                <div
+                  class="value"
+                  style="color: var(--color-text-tertiary); font-size: 12px"
+                >
+                  ??? — clique pour copier
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            style="display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap"
+          >
+            <button class="step-btn" onclick="clonePlayer(1)">
+              📋 Copier player1
+            </button>
+            <button class="step-btn" onclick="clonePlayer(2)">
+              📋 Copier player2
+            </button>
+            <button class="step-btn" onclick="resetClone()">↺ Reset</button>
+          </div>
+          <div class="code-block" style="margin-top: 10px">
+            <span class="kw">FootballPlayer</span>::<span class="fn"
+              >FootballPlayer</span
+            >(<span class="kw">const</span>
+            <span class="kw">FootballPlayer&amp;</span> other)<br />
+            &nbsp;&nbsp;: name{other.name +
+            <span class="str">" copy"</span>},<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;goalsScored{other.goalsScored},<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;distanceFromGoal{other.distanceFromGoal},<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;possessBall{other.possessBall}<br />
+            { }
+          </div>
+          <div id="copy-expl" class="result-box">
+            Clique pour cloner un joueur et voir le résultat.
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Match 2v2 — Originaux vs Evil Twins</h2>
+          <p>
+            Rejoue la séquence du labo étape par étape. Chaque clic exécute
+            l'action suivante.
+          </p>
+          <div
+            class="field-grid"
+            style="grid-template-columns: repeat(4, 1fr); margin-bottom: 8px"
+          >
+            <div class="anim-box" id="match-ep1" style="font-size: 11px">
+              <strong>Kylian copy</strong><br />ball:
+              <span id="m-ep1-b">false</span>
+            </div>
+            <div class="anim-box" id="match-ep2" style="font-size: 11px">
+              <strong>Kevin copy</strong><br />ball:
+              <span id="m-ep2-b">false</span>
+            </div>
+            <div class="anim-box" id="match-p1" style="font-size: 11px">
+              <strong>Kylian</strong><br />ball: <span id="m-p1-b">false</span>
+            </div>
+            <div class="anim-box" id="match-p2" style="font-size: 11px">
+              <strong>Kevin</strong><br />ball: <span id="m-p2-b">false</span>
+            </div>
+          </div>
+          <button class="step-btn" onclick="matchStep()">
+            ▶ Action suivante
+          </button>
+          <button
+            class="step-btn"
+            onclick="resetMatch()"
+            style="margin-left: 6px"
+          >
+            ↺ Reset
+          </button>
+          <div id="match-console" class="console-box" style="margin-top: 8px">
+            Prêt pour le match...
+          </div>
+          <div id="match-expl" class="result-box">
+            Clique pour jouer le match action par action.
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== SECTION 7: STRUCT & BALL ==================== -->
+      <div class="section" id="s-struct">
+        <div class="card">
+          <h2>struct vs class — la seule différence et quand les utiliser</h2>
+          <p>
+            En C++, <code>struct</code> et <code>class</code> sont
+            <strong>quasiment identiques</strong>. La
+            <strong>seule différence formelle</strong> (définie par la norme)
+            est la <strong>visibilité par défaut des membres</strong> :
+            <code>public</code> dans une <code>struct</code>,
+            <code>private</code> dans une <code>class</code>.
+          </p>
+          <div class="code-block">
+            <span class="kw">struct</span> Ball {<br />
+            &nbsp;&nbsp;<span class="kw">double</span> distanceFromTheGoal;
+            <span class="cm">// public par défaut</span><br />
+            };<br /><br />
+            Ball b1;<br />
+            b1.distanceFromTheGoal = <span class="str">15.0</span>;
+            <span class="cm">// ✅ accès direct autorisé</span><br /><br />
+            <span class="cm"
+              >// Initialisation agrégée (aggregate init) — possible car public
+              + POD</span
+            ><br />
+            Ball b2{ <span class="str">15.0</span> };
+            <span class="cm"
+              >// remplit les membres dans l'ordre de déclaration</span
+            >
+          </div>
+          <div class="info-box">
+            💡 <strong>Types POD (Plain Old Data) :</strong> Un type POD est
+            compatible C, peut être copié avec <code>memcpy()</code>, et n'a pas
+            de constructeur/destructeur non-trivial.
+            <code>struct Ball</code> avec un seul <code>double</code> est un POD
+            pur. L'<strong>initialisation agrégée</strong>
+            <code>Ball b{ 15.0 };</code>
+            est possible car tous les membres sont publics et il n'y a pas de
+            constructeur déclaré. L'ordre des valeurs suit l'ordre de
+            déclaration.
+          </div>
+          <p>
+            <strong>Convention :</strong> utilise <code>struct</code> pour les
+            types <em>sans invariants</em> (simples conteneurs de données), et
+            <code>class</code> pour les types qui ont une
+            <em>interface publique contrôlée</em> et des invariants à maintenir.
+          </p>
+          <div class="two-col" style="margin-top: 10px">
+            <div>
+              <div class="uml-class" style="border-color: #5dcaa5">
+                <div
+                  class="uml-header"
+                  style="
+                    background: #085041;
+                    color: #9fe1cb;
+                    border-color: #5dcaa5;
+                  "
+                >
+                  struct Ball
+                </div>
+                <div class="uml-section">
+                  <div class="item">
+                    <span class="acc pub">+</span> distanceFromTheGoal : double
+                  </div>
+                </div>
+              </div>
+              <div
+                style="
+                  font-size: 12px;
+                  color: var(--color-text-secondary);
+                  margin-top: 6px;
+                  text-align: center;
+                "
+              >
+                Public par défaut — pas besoin de spécifier
+              </div>
+            </div>
+            <div>
+              <div class="uml-class">
+                <div class="uml-header">class FootballPlayer</div>
+                <div class="uml-section">
+                  <div class="item">
+                    <span class="acc">−</span> name, goalsScored, ...
+                  </div>
+                </div>
+                <div class="uml-section">
+                  <div class="item">
+                    <span class="acc pub">+</span>
+                    shoot(<strong>Ball&amp;</strong>)
+                  </div>
+                  <div class="item">
+                    <span class="acc pub">+</span>
+                    pass(<strong>Ball&amp;</strong>, FootballPlayer&amp;)
+                  </div>
+                  <div class="item">
+                    <span class="acc pub">+</span>
+                    takePossession(<strong>Ball&amp;</strong>)
+                  </div>
+                </div>
+              </div>
+              <div
+                style="
+                  font-size: 12px;
+                  color: var(--color-text-secondary);
+                  margin-top: 6px;
+                  text-align: center;
+                "
+              >
+                Ball passée par <strong>référence</strong> à chaque méthode
+              </div>
+            </div>
+          </div>
+          <div class="info-box" style="margin-top: 10px">
+            💡 <strong>Pourquoi Ball&amp; et pas Ball ?</strong> La balle est
+            <strong>unique</strong> dans le jeu. Si on passait par valeur,
+            chaque méthode recevrait une copie de la balle et les modifications
+            (comme mettre <code>distanceFromTheGoal = 0</code> après un tir) ne
+            se refléteraient pas dans l'original. La référence garantit que tout
+            le monde modifie <strong>la même balle</strong>.
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Simulation du match complet avec Ball</h2>
+          <p>
+            Rejoue la séquence de l'exercice 9. La distance de la balle se met à
+            jour en temps réel.
+          </p>
+          <svg viewBox="0 0 640 120" width="100%" style="margin: 8px 0">
+            <rect
+              x="10"
+              y="10"
+              width="620"
+              height="100"
+              rx="8"
+              fill="#1a3a1a"
+              stroke="#3a6b3a"
+              stroke-width="1"
+            />
+            <!-- But -->
+            <rect
+              x="10"
+              y="35"
+              width="6"
+              height="50"
+              rx="2"
+              fill="none"
+              stroke="#f7c1c1"
+              stroke-width="1.5"
+            />
+            <text x="22" y="65" font-size="9" fill="#f7c1c1">But</text>
+            <!-- Balle indicateur -->
+            <circle
+              id="struct-ball-pos"
+              cx="200"
+              cy="60"
+              r="5"
+              fill="#fac775"
+              stroke="#ba7517"
+              stroke-width="1"
+            />
+            <text
+              id="struct-ball-label"
+              x="200"
+              y="90"
+              text-anchor="middle"
+              font-size="10"
+              fill="#fac775"
+            >
+              dist: ?
+            </text>
+            <!-- Joueurs -->
+            <circle
+              cx="200"
+              cy="40"
+              r="8"
+              fill="#791f1f"
+              stroke="#e24b4a"
+              stroke-width="1"
+            />
+            <text
+              x="200"
+              y="28"
+              text-anchor="middle"
+              font-size="8"
+              fill="#f7c1c1"
+            >
+              evil1
+            </text>
+            <circle
+              cx="530"
+              cy="40"
+              r="8"
+              fill="#791f1f"
+              stroke="#e24b4a"
+              stroke-width="1"
+            />
+            <text
+              x="530"
+              y="28"
+              text-anchor="middle"
+              font-size="8"
+              fill="#f7c1c1"
+            >
+              evil2
+            </text>
+            <circle
+              cx="200"
+              cy="80"
+              r="8"
+              fill="#0c447c"
+              stroke="#378add"
+              stroke-width="1"
+            />
+            <text
+              x="200"
+              y="100"
+              text-anchor="middle"
+              font-size="8"
+              fill="#b5d4f4"
+            >
+              Kylian
+            </text>
+            <circle
+              cx="530"
+              cy="80"
+              r="8"
+              fill="#633806"
+              stroke="#ba7517"
+              stroke-width="1"
+            />
+            <text
+              x="530"
+              y="100"
+              text-anchor="middle"
+              font-size="8"
+              fill="#fac775"
+            >
+              Kevin
+            </text>
+          </svg>
+          <div
+            style="display: flex; align-items: center; gap: 12px; margin: 8px 0"
+          >
+            <span style="font-size: 13px; color: var(--color-text-secondary)"
+              >🏐 Ball.distanceFromTheGoal =</span
+            >
+            <span
+              id="struct-ball-dist"
+              style="
+                font-size: 20px;
+                font-weight: 700;
+                font-family: var(--font-mono);
+                color: #fac775;
+              "
+              >?</span
+            >
+          </div>
+          <button class="step-btn" onclick="structStep()">
+            ▶ Action suivante
+          </button>
+          <button
+            class="step-btn"
+            onclick="resetStruct()"
+            style="margin-left: 6px"
+          >
+            ↺ Reset
+          </button>
+          <div id="struct-console" class="console-box" style="margin-top: 8px">
+            Prêt. Clique pour commencer le match...
+          </div>
+          <div id="struct-expl" class="result-box">
+            Observe comment ball.distanceFromTheGoal change à chaque action.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      /* ===== NAV ===== */
+      function show(id, e) {
+        document.querySelectorAll(".section").forEach(function (s) {
+          s.classList.remove("active");
+        });
+        document.querySelectorAll(".nav-btn").forEach(function (b) {
+          b.classList.remove("active");
+        });
+        document.getElementById("s-" + id).classList.add("active");
+        e.target.classList.add("active");
+      }
+
+      /* ===== SECTION 1: BUILD CLASS ===== */
+      var buildStep = 0;
+      var buildSteps = [
+        {
+          attrs:
+            '<div class="item"><span class="acc">−</span> name : string</div>',
+          code: '<span class="kw">class</span> FootballPlayer {\n<span class="kw">private</span>:\n  <span class="kw">std::string</span> name;',
+          expl: "Exercice 1 — On ajoute l'attribut name (privé). Le − signifie private dans un diagramme UML.",
+        },
+        {
+          attrs:
+            '<div class="item"><span class="acc">−</span> name : string</div><div class="item"><span class="acc">−</span> goalsScored : int</div>',
+          code: '<span class="kw">class</span> FootballPlayer {\n<span class="kw">private</span>:\n  <span class="kw">std::string</span> name;\n  <span class="kw">int</span> goalsScored;',
+          expl: "Exercice 1 — goalsScored ajouté. Deux attributs privés : le nom et le nombre de buts.",
+        },
+        {
+          attrs:
+            '<div class="item"><span class="acc">−</span> name : string</div><div class="item"><span class="acc">−</span> goalsScored : int</div><div class="item"><span class="acc">−</span> distanceFromGoal : double = 15.0</div><div class="item"><span class="acc">−</span> possessBall : bool = false</div>',
+          code: '<span class="kw">class</span> FootballPlayer {\n<span class="kw">private</span>:\n  <span class="kw">std::string</span> name;\n  <span class="kw">int</span> goalsScored;\n  <span class="kw">double</span> distanceFromGoal = <span class="str">15.0</span>;\n  <span class="kw">bool</span> possessBall = <span class="str">false</span>;',
+          expl: "Exercice 3 — distanceFromGoal et possessBall ajoutés avec valeurs par défaut. Le joueur commence à 15m du but, sans ballon.",
+        },
+        {
+          attrs:
+            '<div class="item"><span class="acc">−</span> name : string</div><div class="item"><span class="acc">−</span> goalsScored : int</div><div class="item"><span class="acc">−</span> distanceFromGoal : double = 15.0</div><div class="item"><span class="acc">−</span> possessBall : bool = false</div>',
+          methods:
+            '<div class="item"><span class="acc pub">+</span> FootballPlayer(string, int)</div>',
+          code: '<span class="kw">class</span> FootballPlayer {\n<span class="kw">private</span>:\n  <span class="kw">std::string</span> name;\n  <span class="kw">int</span> goalsScored;\n  <span class="kw">double</span> distanceFromGoal = <span class="str">15.0</span>;\n  <span class="kw">bool</span> possessBall = <span class="str">false</span>;\n<span class="kw">public</span>:\n  <span class="fn">FootballPlayer</span>(<span class="kw">std::string</span> name, <span class="kw">int</span> goals);',
+          expl: 'Exercice 2 — Constructeur ajouté (public). Il permet de créer un joueur : FootballPlayer player1("Kylian", 0);',
+        },
+        {
+          attrs:
+            '<div class="item"><span class="acc">−</span> name : string</div><div class="item"><span class="acc">−</span> goalsScored : int</div><div class="item"><span class="acc">−</span> distanceFromGoal : double = 15.0</div><div class="item"><span class="acc">−</span> possessBall : bool = false</div>',
+          methods:
+            '<div class="item"><span class="acc pub">+</span> FootballPlayer(string, int)</div><div class="item"><span class="acc pub">+</span> takePossession() : void</div><div class="item"><span class="acc pub">+</span> move(double) : void</div><div class="item"><span class="acc pub">+</span> shoot() : bool</div><div class="item"><span class="acc pub">+</span> pass(FootballPlayer&amp;) : void</div>',
+          code: '<span class="kw">class</span> FootballPlayer {\n<span class="kw">private</span>:\n  <span class="kw">std::string</span> name;\n  <span class="kw">int</span> goalsScored;\n  <span class="kw">double</span> distanceFromGoal = <span class="str">15.0</span>;\n  <span class="kw">bool</span> possessBall = <span class="str">false</span>;\n<span class="kw">public</span>:\n  <span class="fn">FootballPlayer</span>(<span class="kw">std::string</span>, <span class="kw">int</span>);\n  <span class="kw">void</span> <span class="fn">takePossession</span>();\n  <span class="kw">void</span> <span class="fn">move</span>(<span class="kw">double</span>);\n  <span class="kw">bool</span> <span class="fn">shoot</span>();\n  <span class="kw">void</span> <span class="fn">pass</span>(<span class="kw">FootballPlayer&</span>);\n};',
+          expl: "Exercices 4-7 — Toutes les méthodes publiques ajoutées. La classe est complète ! Le + signifie public en UML.",
+        },
+      ];
+      function buildClass() {
+        if (buildStep >= buildSteps.length) {
+          buildStep = 0;
+        }
+        var s = buildSteps[buildStep];
+        document.getElementById("uml-attrs").innerHTML = s.attrs;
+        if (s.methods)
+          document.getElementById("uml-methods").innerHTML = s.methods;
+        document.getElementById("class-code").innerHTML = s.code;
+        document.getElementById("class-expl").textContent = s.expl;
+        buildStep++;
+      }
+      function resetBuildClass() {
+        buildStep = 0;
+        document.getElementById("uml-attrs").innerHTML =
+          '<div style="font-size:11px;color:var(--color-text-tertiary)">— attributs —</div>';
+        document.getElementById("uml-methods").innerHTML =
+          '<div style="font-size:11px;color:var(--color-text-tertiary)">— méthodes —</div>';
+        document.getElementById("class-code").innerHTML =
+          '<span class="cm">// Clique pour construire la classe...</span>';
+        document.getElementById("class-expl").textContent =
+          'Clique sur "Étape suivante" pour commencer.';
+      }
+
+      /* ===== SECTION 2: CONSTRUCTOR ===== */
+      var ctorStep = 0;
+      function stepCtor() {
+        ctorStep++;
+        if (ctorStep === 1) {
+          document.getElementById("cf-name-v").textContent = '"Kylian"';
+          document.getElementById("cf-name-v").style.color = "#b5d4f4";
+          document.getElementById("cf-name").classList.add("blue");
+          document.getElementById("ctor-expl").textContent =
+            'name{"Kylian"} — Le string "Kylian" est copié dans l\'attribut name via la liste d\'initialisation.';
+        } else if (ctorStep === 2) {
+          document.getElementById("cf-goals-v").textContent = "0";
+          document.getElementById("cf-goals-v").style.color = "#b5d4f4";
+          document.getElementById("cf-goals").classList.add("blue");
+          document.getElementById("ctor-expl").textContent =
+            "goalsScored{0} — Le joueur commence avec 0 buts. Valeur fournie par l'utilisateur.";
+        } else if (ctorStep === 3) {
+          document.getElementById("cf-dist-v").textContent = "15.0";
+          document.getElementById("cf-dist-v").style.color = "#9fe1cb";
+          document.getElementById("cf-dist").classList.add("green");
+          document.getElementById("ctor-expl").textContent =
+            "distanceFromGoal{15.0} — Valeur par défaut ! Le joueur commence à 15m du but.";
+        } else if (ctorStep === 4) {
+          document.getElementById("cf-ball-v").textContent = "false";
+          document.getElementById("cf-ball-v").style.color = "#fac775";
+          document.getElementById("cf-ball").classList.add("amber");
+          document.getElementById("ctor-expl").textContent =
+            "possessBall{false} — Le joueur n'a pas le ballon au départ. Objet entièrement initialisé !";
+        } else {
+          resetCtor();
+        }
+      }
+      function resetCtor() {
+        ctorStep = 0;
+        ["cf-name", "cf-goals", "cf-dist", "cf-ball"].forEach(function (id) {
+          var el = document.getElementById(id);
+          el.className = "mem-box";
+        });
+        ["cf-name-v", "cf-goals-v", "cf-dist-v", "cf-ball-v"].forEach(
+          function (id) {
+            var el = document.getElementById(id);
+            el.textContent = "???";
+            el.style.color = "var(--color-text-tertiary)";
+          },
+        );
+        document.getElementById("ctor-expl").textContent =
+          "Clique pour voir chaque attribut s'initialiser.";
+      }
+
+      /* ===== SECTION 3: METHODS ===== */
+      var fieldState = { ball: false, dist: 15.0 };
+      function updateField() {
+        var px = 10 + 620 * (1 - fieldState.dist / 50);
+        document.getElementById("field-player").setAttribute("cx", px);
+        document.getElementById("field-player-name").setAttribute("x", px);
+        document.getElementById("field-dist-label").setAttribute("x", px);
+        document.getElementById("field-dist-label").textContent =
+          "dist: " + fieldState.dist.toFixed(1);
+        var ballEl = document.getElementById("field-ball");
+        if (fieldState.ball) {
+          ballEl.setAttribute("cx", px);
+          ballEl.setAttribute(
+            "cy",
+            parseFloat(
+              document.getElementById("field-player").getAttribute("cy"),
+            ) - 22,
+          );
+          ballEl.setAttribute("fill", "#fac775");
+          ballEl.setAttribute("stroke", "#ba7517");
+          ballEl.setAttribute("stroke-dasharray", "");
+        } else {
+          ballEl.setAttribute("fill", "none");
+          ballEl.setAttribute("stroke", "var(--color-border-tertiary)");
+          ballEl.setAttribute("stroke-dasharray", "2 2");
+        }
+        document.getElementById("state-ball").textContent =
+          "possessBall: " + fieldState.ball;
+        document.getElementById("state-ball").className =
+          "anim-box" + (fieldState.ball ? " highlight" : "");
+        document.getElementById("state-dist").textContent =
+          "distance: " + fieldState.dist.toFixed(1);
+      }
+      function simTakePossession() {
+        fieldState.ball = true;
+        updateField();
+        document.getElementById("method-code").innerHTML =
+          '<span class="kw">void</span> <span class="fn">takePossession</span>() {\n  possessBall = <span class="str">true</span>;\n}';
+        document.getElementById("method-expl").textContent =
+          "takePossession() — Le joueur prend le ballon. possessBall passe à true.";
+      }
+      function simMove(d) {
+        fieldState.dist = d;
+        updateField();
+        document.getElementById("method-code").innerHTML =
+          '<span class="kw">void</span> <span class="fn">move</span>(<span class="kw">double</span> d) {\n  distanceFromGoal = d;\n}\n<span class="cm">// move(' +
+          d.toFixed(1) +
+          ")</span>";
+        document.getElementById("method-expl").textContent =
+          "move(" +
+          d.toFixed(1) +
+          ") — Le joueur se déplace à " +
+          d.toFixed(1) +
+          "m du but.";
+      }
+      function resetField() {
+        fieldState = { ball: false, dist: 15.0 };
+        updateField();
+        document.getElementById("method-code").innerHTML =
+          '<span class="cm">// Appelle une méthode...</span>';
+        document.getElementById("method-expl").textContent =
+          "Utilise les boutons pour interagir avec le joueur.";
+      }
+      updateField();
+
+      /* ===== SECTION 4: SHOOT ===== */
+      function updateShootDist() {
+        document.getElementById("shoot-dist-label").textContent =
+          document.getElementById("shoot-dist").value + ".0";
+      }
+      function simShootWithBall() {
+        var dist = parseFloat(document.getElementById("shoot-dist").value);
+        var rand = Math.floor(Math.random() * 100);
+        var mult = rand * 15;
+        var divided = mult / dist;
+        var goal = divided > 50;
+        document.getElementById("sh-random-v").textContent = rand;
+        document.getElementById("sh-mult-v").textContent = mult;
+        document.getElementById("sh-div-v").textContent = divided.toFixed(1);
+        document.getElementById("sh-result-v").textContent = goal
+          ? "OUI ✅"
+          : "NON ❌";
+        document.getElementById("sh-result").className =
+          "anim-box" + (goal ? " highlight" : "");
+        document.getElementById("sh-result").style.background = goal
+          ? "#085041"
+          : "#791f1f";
+        document.getElementById("sh-result").style.borderColor = goal
+          ? "#5dcaa5"
+          : "#e24b4a";
+        document.getElementById("sh-result-v").style.color = goal
+          ? "#9fe1cb"
+          : "#f7c1c1";
+        var name = "Kylian";
+        var msg = goal ? name + " scored a goal!" : name + " missed the goal!";
+        document.getElementById("shoot-console").textContent =
+          "> player1.shoot();\n" + msg;
+        document.getElementById("shoot-expl").textContent =
+          "Calcul : " +
+          rand +
+          " × 15 = " +
+          mult +
+          " ÷ " +
+          dist.toFixed(1) +
+          " = " +
+          divided.toFixed(1) +
+          (goal ? " > 50 → BUT !" : " ≤ 50 → Raté.");
+      }
+      function simShootNoBall() {
+        document.getElementById("sh-random-v").textContent = "—";
+        document.getElementById("sh-mult-v").textContent = "—";
+        document.getElementById("sh-div-v").textContent = "—";
+        document.getElementById("sh-result-v").textContent = "❌";
+        ["sh-random", "sh-mult", "sh-div", "sh-result"].forEach(function (id) {
+          document.getElementById(id).className = "anim-box";
+          document.getElementById(id).style.background = "";
+          document.getElementById(id).style.borderColor = "";
+        });
+        document.getElementById("shoot-console").textContent =
+          "> player1.shoot();\nKylian tried to shoot but he doesn't have the ball";
+        document.getElementById("shoot-expl").textContent =
+          "possessBall == false → la méthode retourne false immédiatement, sans calcul. Tu dois d'abord appeler takePossession() !";
+      }
+
+      /* ===== SECTION 5: PASS ===== */
+      var passState = { p1: false, p2: false };
+      function renderPassState() {
+        document.getElementById("pass-state-p1").textContent =
+          "Kylian — possessBall: " + passState.p1;
+        document.getElementById("pass-state-p1").className =
+          "anim-box" + (passState.p1 ? " highlight" : "");
+        document.getElementById("pass-state-p2").textContent =
+          "Kevin — possessBall: " + passState.p2;
+        document.getElementById("pass-state-p2").className =
+          "anim-box" + (passState.p2 ? " highlight" : "");
+        document.getElementById("pass-p1-ball").style.display = passState.p1
+          ? ""
+          : "none";
+        document.getElementById("pass-p2-ball").style.display = passState.p2
+          ? ""
+          : "none";
+      }
+      function simPassTake(who) {
+        if (who === "p1") {
+          passState.p1 = true;
+        } else {
+          passState.p2 = true;
+        }
+        renderPassState();
+        var name = who === "p1" ? "Kylian" : "Kevin";
+        document.getElementById("pass-console").textContent =
+          "> " + name.toLowerCase() + ".takePossession();";
+        document.getElementById("pass-expl").textContent =
+          name + " prend le ballon. possessBall = true.";
+        document.getElementById("pass-arrow").setAttribute("stroke", "none");
+      }
+      function simPass(from, to) {
+        var fromName = from === "p1" ? "Kylian" : "Kevin";
+        var toName = to === "p1" ? "Kylian" : "Kevin";
+        var hasBall = from === "p1" ? passState.p1 : passState.p2;
+        if (!hasBall) {
+          document.getElementById("pass-console").textContent =
+            "> " +
+            fromName.toLowerCase() +
+            ".pass(" +
+            toName.toLowerCase() +
+            ");\n" +
+            fromName +
+            " tried to pass the ball but he doesn't have it";
+          document.getElementById("pass-expl").textContent =
+            fromName +
+            " n'a pas le ballon ! possessBall == false → impossible de passer.";
+          document.getElementById("pass-arrow").setAttribute("stroke", "none");
+          return;
+        }
+        if (from === "p1") {
+          passState.p1 = false;
+          passState.p2 = true;
+        } else {
+          passState.p2 = false;
+          passState.p1 = true;
+        }
+        renderPassState();
+        document.getElementById("pass-console").textContent =
+          "> " +
+          fromName.toLowerCase() +
+          ".pass(" +
+          toName.toLowerCase() +
+          ");\n" +
+          fromName +
+          " passed the ball to " +
+          toName;
+        document.getElementById("pass-expl").textContent =
+          "Passe réussie ! " +
+          fromName +
+          ".possessBall = false, " +
+          toName +
+          ".possessBall = true. La référence (&) permet de modifier l'objet original.";
+        var arrow = document.getElementById("pass-arrow");
+        if (from === "p1") {
+          arrow.setAttribute("x1", "220");
+          arrow.setAttribute("y1", "80");
+          arrow.setAttribute("x2", "420");
+          arrow.setAttribute("y2", "80");
+        } else {
+          arrow.setAttribute("x1", "420");
+          arrow.setAttribute("y1", "80");
+          arrow.setAttribute("x2", "220");
+          arrow.setAttribute("y2", "80");
+        }
+        arrow.setAttribute("stroke", "#5dcaa5");
+      }
+      function resetPass() {
+        passState = { p1: false, p2: false };
+        renderPassState();
+        document.getElementById("pass-console").textContent = "En attente...";
+        document.getElementById("pass-expl").textContent =
+          "Fais une passe entre les joueurs !";
+        document.getElementById("pass-arrow").setAttribute("stroke", "none");
+      }
+      renderPassState();
+
+      /* ===== SECTION 6: COPY CONSTRUCTOR ===== */
+      var cloned = { 1: false, 2: false };
+      function clonePlayer(n) {
+        if (cloned[n]) return;
+        cloned[n] = true;
+        var names = { 1: "Kylian", 2: "Kevin" };
+        var el = document.getElementById("copy-clone" + n);
+        el.className = "mem-box red";
+        el.style.borderStyle = "solid";
+        el.innerHTML =
+          '<div class="label">evilPlayer' +
+          n +
+          '</div><div class="value">' +
+          names[n] +
+          ' copy</div><div style="font-size:11px;color:#f7c1c1;margin-top:4px">goals: 0 | dist: 15.0 | ball: false</div>';
+        document.getElementById("copy-expl").textContent =
+          "FootballPlayer evilPlayer" +
+          n +
+          "(player" +
+          n +
+          ') → Constructeur de copie appelé ! name = "' +
+          names[n] +
+          ' copy". Tous les autres attributs sont copiés tels quels.';
+      }
+      function resetClone() {
+        cloned = { 1: false, 2: false };
+        [1, 2].forEach(function (n) {
+          var el = document.getElementById("copy-clone" + n);
+          el.className = "mem-box";
+          el.style.borderStyle = "dashed";
+          el.innerHTML =
+            '<div class="value" style="color:var(--color-text-tertiary);font-size:12px">??? — clique pour copier</div>';
+        });
+        document.getElementById("copy-expl").textContent =
+          "Clique pour cloner un joueur et voir le résultat.";
+      }
+
+      /* ===== SECTION 6: MATCH 2V2 ===== */
+      var mStep = 0;
+      var mState = { ep1: false, ep2: false, p1: false, p2: false };
+      function renderMatch() {
+        ["ep1", "ep2", "p1", "p2"].forEach(function (k) {
+          document.getElementById("m-" + k + "-b").textContent = mState[k];
+          var el = document.getElementById("match-" + k);
+          el.className = "anim-box" + (mState[k] ? " highlight" : "");
+        });
+      }
+      var matchActions = [
+        {
+          action: function () {
+            mState.ep1 = true;
+          },
+          console:
+            "> evilPlayer1.takePossession();\n(Kylian copy prend le ballon)",
+          expl: "evilPlayer1.takePossession() — Le clone de Kylian prend le ballon.",
+        },
+        {
+          action: function () {
+            mState.ep1 = false;
+            mState.ep2 = true;
+          },
+          console:
+            "> evilPlayer1.pass(evilPlayer2);\nKylian copy passed the ball to Kevin copy",
+          expl: "evilPlayer1.pass(evilPlayer2) — Passe du clone de Kylian au clone de Kevin. La référence (&) modifie les deux objets.",
+        },
+        {
+          action: function () {
+            mState.ep2 = false;
+          },
+          console: "> evilPlayer2.shoot();\nKevin copy missed the goal!",
+          expl: "evilPlayer2.shoot() — Kevin copy tente un tir. Le résultat dépend de la formule aléatoire.",
+        },
+        {
+          action: function () {
+            mState.p1 = true;
+          },
+          console: "> player1.takePossession();\n(Kylian prend le ballon)",
+          expl: "player1.takePossession() — L'original Kylian prend le ballon. Objet indépendant du clone !",
+        },
+        {
+          action: function () {
+            mState.p1 = false;
+            mState.p2 = true;
+          },
+          console: "> player1.pass(player2);\nKylian passed the ball to Kevin",
+          expl: "player1.pass(player2) — Kylian passe à Kevin. Preuve que les originaux sont des objets séparés des copies.",
+        },
+        {
+          action: function () {
+            mState.p2 = false;
+          },
+          console: "> player2.shoot();\nKevin scored a goal!",
+          expl: "player2.shoot() — Kevin tire et marque ! Les clones et originaux vivent indépendamment.",
+        },
+      ];
+      function matchStep() {
+        if (mStep >= matchActions.length) {
+          resetMatch();
+          return;
+        }
+        var a = matchActions[mStep];
+        a.action();
+        renderMatch();
+        document.getElementById("match-console").textContent = a.console;
+        document.getElementById("match-expl").textContent = a.expl;
+        mStep++;
+      }
+      function resetMatch() {
+        mStep = 0;
+        mState = { ep1: false, ep2: false, p1: false, p2: false };
+        renderMatch();
+        document.getElementById("match-console").textContent =
+          "Prêt pour le match...";
+        document.getElementById("match-expl").textContent =
+          "Clique pour jouer le match action par action.";
+      }
+      renderMatch();
+
+      /* ===== SECTION 7: STRUCT BALL ===== */
+      var sStep = 0;
+      var structActions = [
+        {
+          action: function () {
+            return 15;
+          },
+          msg: "player2.move(30); evilPlayer2.move(30);",
+          expl: "Les joueurs se déplacent. player2 et evilPlayer2 vont à 30m du but. La distance de la balle ne change pas encore.",
+          console: "> player2.move(30);\n> evilPlayer2.move(30);",
+        },
+        {
+          action: function () {
+            return 15;
+          },
+          msg: "evilPlayer1.takePossession(ball);",
+          expl: "evilPlayer1 prend le ballon. ball.distanceFromTheGoal = evilPlayer1.distanceFromGoal = 15.0",
+          console: "> evilPlayer1.takePossession(ball);\nball distance : 15",
+        },
+        {
+          action: function () {
+            return 30;
+          },
+          msg: "evilPlayer1.pass(ball, evilPlayer2);",
+          expl: "Passe de evil1 à evil2. La balle suit le receveur : ball.distanceFromTheGoal = evilPlayer2.distanceFromGoal = 30.0",
+          console:
+            "> evilPlayer1.pass(ball, evilPlayer2);\nKylian copy passed the ball to Kevin copy\nball distance : 30",
+        },
+        {
+          action: function () {
+            return 0;
+          },
+          msg: "evilPlayer2.shoot(ball);",
+          expl: "evil2 tire ! Après un tir, ball.distanceFromTheGoal = 0 (la balle est dans la zone du but).",
+          console:
+            "> evilPlayer2.shoot(ball);\nKevin copy missed the goal!\nball distance : 0",
+        },
+        {
+          action: function () {
+            return 15;
+          },
+          msg: "player1.takePossession(ball);",
+          expl: "Kylian reprend le ballon. ball.distanceFromTheGoal = player1.distanceFromGoal = 15.0",
+          console: "> player1.takePossession(ball);\nball distance : 15",
+        },
+        {
+          action: function () {
+            return 30;
+          },
+          msg: "player1.pass(ball, player2);",
+          expl: "Kylian passe à Kevin. ball.distanceFromTheGoal = player2.distanceFromGoal = 30.0",
+          console:
+            "> player1.pass(ball, player2);\nKylian passed the ball to Kevin\nball distance : 30",
+        },
+        {
+          action: function () {
+            return 0;
+          },
+          msg: "player2.shoot(ball);",
+          expl: "Kevin tire ! ball.distanceFromTheGoal = 0. La struct Ball, passée par référence, est modifiée par chaque méthode.",
+          console:
+            "> player2.shoot(ball);\nKevin missed the goal!\nball distance : 0",
+        },
+      ];
+      function structStep() {
+        if (sStep >= structActions.length) {
+          resetStruct();
+          return;
+        }
+        var a = structActions[sStep];
+        var dist = a.action();
+        document.getElementById("struct-ball-dist").textContent = dist;
+        var ballPx = 10 + 620 * (1 - dist / 50);
+        document.getElementById("struct-ball-pos").setAttribute("cx", ballPx);
+        document.getElementById("struct-ball-label").setAttribute("x", ballPx);
+        document.getElementById("struct-ball-label").textContent =
+          "dist: " + dist;
+        document.getElementById("struct-console").textContent = a.console;
+        document.getElementById("struct-expl").textContent = a.expl;
+        sStep++;
+      }
+      function resetStruct() {
+        sStep = 0;
+        document.getElementById("struct-ball-dist").textContent = "?";
+        document.getElementById("struct-ball-pos").setAttribute("cx", "200");
+        document.getElementById("struct-ball-label").setAttribute("x", "200");
+        document.getElementById("struct-ball-label").textContent = "dist: ?";
+        document.getElementById("struct-console").textContent =
+          "Prêt. Clique pour commencer le match...";
+        document.getElementById("struct-expl").textContent =
+          "Observe comment ball.distanceFromTheGoal change à chaque action.";
+      }
+    </script>
+  </body>
+</html>

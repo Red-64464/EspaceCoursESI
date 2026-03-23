@@ -1,44 +1,37 @@
-
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<body>
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap");
-:root{
-  --color-background-primary:#2a2723;
-  --color-background-secondary:#332f2b;
-  --color-background-info:#183448;
-  --color-border-secondary:#57514b;
-  --color-border-tertiary:#48423d;
-  --color-border-info:#2a5f83;
-  --color-text-primary:#f3ede3;
-  --color-text-secondary:#b8aea0;
-  --color-text-info:#8fd3ff;
-  --font-mono:"JetBrains Mono", monospace;
+:root {
+  --font-sans: "Lexend", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+  --color-background-primary: #2a2723;
+  --color-background-secondary: #332f2b;
+  --color-background-info: #183448;
+  --color-border-secondary: #57514b;
+  --color-border-tertiary: #48423d;
+  --color-border-info: #2a5f83;
+  --color-text-primary: #f3ede3;
+  --color-text-secondary: #b8aea0;
+  --color-text-tertiary: #888780;
+  --color-text-info: #8fd3ff;
 }
-html,body{
-  margin:0;
-  padding:0;
-  background:#1f1d1a;
-  color:var(--color-text-primary);
-  font-family:"Lexend", sans-serif;
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #1f1d1a;
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
 }
-body{
-  padding:22px;
-}
-body > div:first-of-type{
-  max-width:1120px;
-  margin:0 auto;
-  padding:22px 24px !important;
-  background:linear-gradient(180deg, #2a2723 0%, #26231f 100%);
-  border:1px solid #413b35;
-  border-radius:28px;
-  box-shadow:0 20px 60px rgba(0,0,0,0.35);
-}
-svg{
-  max-width:100%;
-  height:auto;
-}
-a{
-  color:#8fd3ff;
-}
+body { padding: 22px; }
+body, div { font-family: var(--font-sans, sans-serif); }
+svg { max-width: 100%; height: auto; }
+a { color: #8fd3ff; }
 </style>
 <style>
 *{box-sizing:border-box}
@@ -47,11 +40,11 @@ a{
 .nb.on{background:var(--color-background-info);color:var(--color-text-info);border-color:var(--color-border-info)}
 .card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:12px;padding:14px 16px;margin:10px 0}
 .code{font-family:var(--font-mono);font-size:12px;background:var(--color-background-secondary);border-radius:8px;padding:12px 14px;line-height:1.9;white-space:pre;overflow-x:auto;color:var(--color-text-primary);margin:8px 0}
-.kw{color:#534AB7;font-weight:500}.fl{color:#185FA5;font-weight:500}.cm{color:#888780}.st{color:#0F6E56}.nm{color:#993C1D}
-@media(prefers-color-scheme:dark){.kw{color:#AFA9EC}.fl{color:#85B7EB}.st{color:#5DCAA5}.nm{color:#F0997B}}
+.kw{color:#AFA9EC;font-weight:500}.fl{color:#85B7EB;font-weight:500}.cm{color:#888780}.st{color:#5DCAA5}.nm{color:#F0997B}
+.fl{color:#85B7EB}.st{color:#5DCAA5}.nm{color:#F0997B}}
 .pill{display:inline-block;font-size:11px;padding:2px 9px;border-radius:12px;font-weight:500;margin-right:4px}
-.pb{background:#E6F1FB;color:#0C447C}.pg{background:#E1F5EE;color:#085041}.pp{background:#EEEDFE;color:#3C3489}.pa{background:#FAEEDA;color:#633806}.pc{background:#FAECE7;color:#712B13}.pr{background:#FCEBEB;color:#791F1F}
-@media(prefers-color-scheme:dark){.pb{background:#0C447C;color:#B5D4F4}.pg{background:#085041;color:#9FE1CB}.pp{background:#3C3489;color:#CECBF6}.pa{background:#633806;color:#FAC775}.pc{background:#712B13;color:#F5C4B3}.pr{background:#791F1F;color:#F7C1C1}}
+.pb{background:#0C447C;color:#B5D4F4}.pg{background:#085041;color:#9FE1CB}.pp{background:#3C3489;color:#CECBF6}.pa{background:#633806;color:#FAC775}.pc{background:#712B13;color:#F5C4B3}.pr{background:#791F1F;color:#F7C1C1}
+.pg{background:#085041;color:#9FE1CB}.pp{background:#3C3489;color:#CECBF6}.pa{background:#633806;color:#FAC775}.pc{background:#712B13;color:#F5C4B3}.pr{background:#791F1F;color:#F7C1C1}}
 @keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
 .fade{animation:fadeIn .22s ease}
 @keyframes flow{from{stroke-dashoffset:20}to{stroke-dashoffset:0}}
@@ -59,7 +52,7 @@ a{
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 </style>
 
-<div style="padding:1rem 0">
+<div style="max-width:1120px;margin:0 auto;padding:22px 24px;background:linear-gradient(180deg,#2a2723 0%,#26231f 100%);border:1px solid #413b35;border-radius:28px;box-shadow:0 20px 60px rgba(0,0,0,0.35)">
 <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.5rem">
   <button class="nb on" onclick="tab('intro',this)">C'est quoi ?</button>
   <button class="nb" onclick="tab('entrypoint',this)">ENTRYPOINT vs CMD</button>
@@ -612,3 +605,5 @@ function tab(key,btn){
 
 tab('intro',document.querySelector('.nb'));
 </script>
+</body>
+</html>
