@@ -1,0 +1,1114 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>TD 06 – Vérifier avec SonarQube</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --color-background-primary: #232118;
+        --color-background-secondary: #2c2a20;
+        --color-text-primary: #efede6;
+        --color-text-secondary: #908e86;
+        --color-border-secondary: rgba(255, 255, 255, 0.1);
+        --color-border-tertiary: rgba(255, 255, 255, 0.07);
+        --color-border-info: #4a87e8;
+        --color-background-info: rgba(74, 135, 232, 0.16);
+        --color-text-info: #80aae8;
+        --color-text-success: #4ac48a;
+        --color-text-danger: #e06b6b;
+        --font-mono:
+          ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas,
+          "Courier New", monospace;
+      }
+      body {
+        background: #1c1b18;
+        color: #efede6;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-size: 14px;
+        line-height: 1.6;
+        padding: 18px 20px;
+      }
+      .nb {
+        font-size: 13px;
+        padding: 6px 14px;
+        border-radius: 8px;
+        border: 0.5px solid var(--color-border-secondary);
+        background: transparent;
+        color: var(--color-text-primary);
+        cursor: pointer;
+        transition: background 0.15s;
+      }
+      .nb:hover {
+        background: var(--color-background-secondary);
+      }
+      .nb.on {
+        background: var(--color-background-info);
+        color: var(--color-text-info);
+        border-color: var(--color-border-info);
+      }
+      .card {
+        background: var(--color-background-primary);
+        border: 0.5px solid var(--color-border-tertiary);
+        border-radius: 12px;
+        padding: 14px 16px;
+        margin: 10px 0;
+      }
+      .code {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        background: #101009;
+        border-radius: 8px;
+        padding: 12px 14px;
+        line-height: 1.9;
+        white-space: pre;
+        overflow-x: auto;
+        color: var(--color-text-primary);
+        margin: 8px 0;
+      }
+      .kw {
+        color: #afa9ec;
+        font-weight: 500;
+      }
+      .fl {
+        color: #85b7eb;
+        font-weight: 500;
+      }
+      .cm {
+        color: #6a6860;
+      }
+      .st {
+        color: #5dcaa5;
+      }
+      .nm {
+        color: #f0997b;
+      }
+      .pill {
+        display: inline-block;
+        font-size: 11px;
+        padding: 2px 9px;
+        border-radius: 12px;
+        font-weight: 500;
+        margin-right: 4px;
+      }
+      .pb {
+        background: #0c447c;
+        color: #b5d4f4;
+      }
+      .pg {
+        background: #085041;
+        color: #9fe1cb;
+      }
+      .pp {
+        background: #3c3489;
+        color: #cecbf6;
+      }
+      .pa {
+        background: #633806;
+        color: #fac775;
+      }
+      .pc {
+        background: #712b13;
+        color: #f5c4b3;
+      }
+      .pr {
+        background: #791f1f;
+        color: #f7c1c1;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .fade {
+        animation: fadeIn 0.22s ease;
+      }
+      @keyframes flow {
+        from {
+          stroke-dashoffset: 20;
+        }
+        to {
+          stroke-dashoffset: 0;
+        }
+      }
+      .fan {
+        stroke-dasharray: 6 4;
+        animation: flow 1.2s linear infinite;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.4;
+        }
+      }
+      .pulse {
+        animation: pulse 1.5s ease-in-out infinite;
+      }
+    </style>
+  </head>
+  <body>
+    <div style="padding: 0.5rem 0">
+      <div
+        style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.5rem"
+      >
+        <button class="nb on" onclick="tab('intro', this)">C'est quoi ?</button>
+        <button class="nb" onclick="tab('archi', this)">Architecture</button>
+        <button class="nb" onclick="tab('categories', this)">Catégories</button>
+        <button class="nb" onclick="tab('qualitygate', this)">
+          Quality Gate
+        </button>
+        <button class="nb" onclick="tab('complexite', this)">Complexité</button>
+        <button class="nb" onclick="tab('coverage', this)">
+          Couverture tests
+        </button>
+        <button class="nb" onclick="tab('commandes', this)">
+          Toutes les commandes
+        </button>
+      </div>
+      <div id="zone"></div>
+    </div>
+
+    <script>
+      const TABS = {
+        /* ══════════════ INTRO ══════════════ */
+        intro: `<div class="fade">
+<p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 12px;line-height:1.7">
+Imagine que tu écris un devoir. SonarQube c'est le <strong>correcteur automatique</strong> de ton code 🔍 — il lit tout ton code SANS l'exécuter, trouve les fautes, les zones dangereuses, les répétitions inutiles, et te donne une note. Clique sur chaque brique pour comprendre.
+</p>
+<svg width="100%" viewBox="0 0 680 300">
+<defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<!-- Toi / ton code -->
+<g onclick="xi('dev')" style="cursor:pointer">
+  <rect x="10" y="110" width="110" height="70" rx="10" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+  <text font-size="22" x="65" y="148" text-anchor="middle">👨‍💻</text>
+  <text font-size="11" font-weight="500" x="65" y="168" text-anchor="middle" fill="#0C447C">Ton code Java</text>
+  <text font-size="10" x="65" y="182" text-anchor="middle" fill="#185FA5">ou Python</text>
+</g>
+<!-- flèche code → scanner -->
+<line class="fan" x1="122" y1="145" x2="188" y2="145" stroke="#378ADD" stroke-width="2" marker-end="url(#ar)"/>
+<text font-size="10" x="155" y="138" text-anchor="middle" fill="#888780">analyse</text>
+<!-- Scanner -->
+<g onclick="xi('scanner')" style="cursor:pointer">
+  <rect x="190" y="90" width="140" height="110" rx="10" fill="#EEEDFE" stroke="#534AB7" stroke-width="1"/>
+  <text font-size="22" x="260" y="133" text-anchor="middle">🔬</text>
+  <text font-size="13" font-weight="500" x="260" y="155" text-anchor="middle" fill="#3C3489">Sonar Scanner</text>
+  <text font-size="10" x="260" y="172" text-anchor="middle" fill="#534AB7">lit le code</text>
+  <text font-size="10" x="260" y="186" text-anchor="middle" fill="#534AB7">génère rapport</text>
+</g>
+<!-- flèche scanner → serveur -->
+<line class="fan" x1="332" y1="145" x2="398" y2="145" stroke="#534AB7" stroke-width="2" marker-end="url(#ar)"/>
+<text font-size="10" x="365" y="138" text-anchor="middle" fill="#888780">envoie</text>
+<!-- Serveur SonarQube -->
+<g onclick="xi('server')" style="cursor:pointer">
+  <rect x="400" y="70" width="160" height="150" rx="10" fill="#E1F5EE" stroke="#1D9E75" stroke-width="1"/>
+  <text font-size="22" x="480" y="120" text-anchor="middle">🖥️</text>
+  <text font-size="13" font-weight="500" x="480" y="142" text-anchor="middle" fill="#085041">Serveur SonarQube</text>
+  <text font-size="10" x="480" y="160" text-anchor="middle" fill="#0F6E56">localhost:9000</text>
+  <text font-size="10" x="480" y="176" text-anchor="middle" fill="#0F6E56">stocke résultats</text>
+  <text font-size="10" x="480" y="192" text-anchor="middle" fill="#0F6E56">interface web</text>
+  <text font-size="10" x="480" y="208" text-anchor="middle" fill="#0F6E56">Quality Gate</text>
+</g>
+<!-- Token -->
+<g onclick="xi('token')" style="cursor:pointer">
+  <rect x="220" y="240" width="220" height="44" rx="8" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.5"/>
+  <text font-size="12" font-weight="500" x="330" y="258" text-anchor="middle" fill="#633806">🔑 Token d'auth</text>
+  <text font-size="10" x="330" y="275" text-anchor="middle" fill="#854F0B">mot de passe entre Scanner ↔ Serveur</text>
+</g>
+<line x1="330" y1="238" x2="330" y2="202" stroke="#BA7517" stroke-width="0.8" stroke-dasharray="3 3"/>
+<!-- réseau docker -->
+<rect x="180" y="58" width="400" height="178" rx="14" fill="none" stroke="#D85A30" stroke-width="0.8" stroke-dasharray="6 4"/>
+<text font-size="11" x="380" y="54" text-anchor="middle" fill="#D85A30">sonar-network (réseau Docker)</text>
+</svg>
+<div id="xi-box" class="card" style="min-height:68px;margin-top:4px">
+  <p style="font-size:13px;color:var(--color-text-secondary);margin:0">👆 Clique sur une brique pour voir l'explication.</p>
+</div>
+</div>`,
+
+        /* ══════════════ ARCHI ══════════════ */
+        archi: `<div class="fade">
+<p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 10px;line-height:1.7">
+SonarQube fonctionne en <strong>3 étapes</strong> : tu prépares le projet, le Scanner analyse, le Serveur affiche. Clique sur chaque étape.
+</p>
+<div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+  <button class="nb on" id="ar0" onclick="showAr(0,this)">Étape 1 — Préparer</button>
+  <button class="nb" id="ar1" onclick="showAr(1,this)">Étape 2 — Scanner</button>
+  <button class="nb" id="ar2" onclick="showAr(2,this)">Étape 3 — Consulter</button>
+  <button class="nb" id="ar3" onclick="showAr(3,this)">sonar-project.properties</button>
+</div>
+<div id="ar-box"></div>
+</div>`,
+
+        /* ══════════════ CATEGORIES ══════════════ */
+        categories: `<div class="fade">
+<p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 10px;line-height:1.7">
+SonarQube analyse ton code selon <strong>7 catégories</strong>. Chacune a une note de A (très bien) à E (critique). Clique sur chaque catégorie.
+</p>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px">
+  ${["Bugs", "Vulnérabilités", "Hotspots", "Code Smells", "Coverage", "Duplications", "Lines", "Notes A→E"].map((c, i) => `<button class="nb${i === 0 ? " on" : ""}" id="cat${i}" onclick="showCat(${i},this)">${c}</button>`).join("")}
+</div>
+<div id="cat-box"></div>
+</div>`,
+
+        /* ══════════════ QUALITY GATE ══════════════ */
+        qualitygate: `<div class="fade">
+<p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 10px;line-height:1.7">
+La <strong>Quality Gate</strong> c'est le <strong>barème de l'exam</strong> : si ton code ne respecte pas ces critères → ÉCHEC. Sinon → SUCCÈS. Tu peux simuler ici.
+</p>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+  <div class="card">
+    <p style="font-size:12px;font-weight:500;margin:0 0 10px;color:var(--color-text-primary)">Simule ton projet</p>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div>
+        <label style="font-size:12px;color:var(--color-text-secondary)">Bugs critiques</label>
+        <input type="range" id="bugs-sl" min="0" max="10" value="0" style="width:100%" oninput="updateQG()">
+        <span id="bugs-v" style="font-size:12px;font-weight:500">0</span>
+      </div>
+      <div>
+        <label style="font-size:12px;color:var(--color-text-secondary)">Couverture tests %</label>
+        <input type="range" id="cov-sl" min="0" max="100" value="85" style="width:100%" oninput="updateQG()">
+        <span id="cov-v" style="font-size:12px;font-weight:500">85%</span>
+      </div>
+      <div>
+        <label style="font-size:12px;color:var(--color-text-secondary)">Duplication code %</label>
+        <input type="range" id="dup-sl" min="0" max="30" value="1" style="width:100%" oninput="updateQG()">
+        <span id="dup-v" style="font-size:12px;font-weight:500">1%</span>
+      </div>
+    </div>
+  </div>
+  <div>
+    <canvas id="qg-canvas" width="300" height="200" style="width:100%;border-radius:12px;border:0.5px solid var(--color-border-tertiary);background:var(--color-background-secondary)"></canvas>
+    <div id="qg-result" style="text-align:center;margin-top:8px;font-size:15px;font-weight:500"></div>
+  </div>
+</div>
+<div class="card" style="border-left:3px solid #1D9E75">
+  <p style="font-size:13px;font-weight:500;color:var(--color-text-primary);margin:0 0 6px">Critères Quality Gate par défaut</p>
+  <div style="display:grid;grid-template-columns:auto 1fr;gap:5px 14px;font-size:12px;align-items:center">
+    <span class="pill pg">Requis</span><span style="color:var(--color-text-primary)">0 bugs ou vulnérabilités critiques</span>
+    <span class="pill pg">Requis</span><span style="color:var(--color-text-primary)">Couverture tests ≥ 80%</span>
+    <span class="pill pg">Requis</span><span style="color:var(--color-text-primary)">Duplication code ≤ 3%</span>
+  </div>
+</div>
+</div>`,
+
+        /* ══════════════ COMPLEXITE ══════════════ */
+        complexite: `<div class="fade">
+<p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 10px;line-height:1.7">
+La <strong>complexité cognitive</strong>, c'est mesurer à quel point ton code est difficile à lire. Trop de if imbriqués = code spaghetti 🍝. SonarQube te dit quand c'est trop. Clique pour voir la différence.
+</p>
+<div style="display:flex;gap:8px;margin-bottom:12px">
+  <button class="nb on" id="cx0" onclick="showCx(0,this)">Code TROP complexe ❌</button>
+  <button class="nb" id="cx1" onclick="showCx(1,this)">Code simplifié ✅</button>
+</div>
+<div id="cx-box"></div>
+</div>`,
+
+        /* ══════════════ COVERAGE ══════════════ */
+        coverage: `<div class="fade">
+<p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 10px;line-height:1.7">
+La <strong>couverture de tests</strong> mesure combien de ton code est vérifié par des tests automatiques. SonarQube ne calcule pas ça lui-même — il lit le rapport généré par <strong>JaCoCo</strong> (Java) ou <strong>coverage</strong> (Python).
+</p>
+<div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+  <button class="nb on" id="cv0" onclick="showCv(0,this)">C'est quoi ?</button>
+  <button class="nb" id="cv1" onclick="showCv(1,this)">JaCoCo (Java)</button>
+  <button class="nb" id="cv2" onclick="showCv(2,this)">Coverage (Python)</button>
+  <button class="nb" id="cv3" onclick="showCv(3,this)">Vulnérabilités SQL</button>
+</div>
+<div id="cv-box"></div>
+</div>`,
+
+        /* ══════════════ COMMANDES ══════════════ */
+        commandes: `<div class="fade">
+<p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 12px;line-height:1.7">Toutes les commandes du TD06, décortiquées. Clique pour déplier.</p>
+<div id="cmd-list"></div>
+</div>`,
+      };
+
+      /* ══ XI BRIQUES INTRO ══ */
+      const XI = {
+        dev: {
+          t: "👨‍💻 Ton code",
+          c: "#85B7EB",
+          tx: "Tu écris du code Java ou Python. Tu veux savoir s'il est propre, sécurisé et bien testé avant de le livrer. C'est là que SonarQube entre en jeu — il fait une \"relecture automatique\" de tout ton code.",
+        },
+        scanner: {
+          t: "🔬 Sonar Scanner",
+          c: "#AFA9EC",
+          tx: "C'est le \"lecteur\" de code. Il tourne dans un conteneur Docker, lit chaque ligne de ton code, applique des centaines de règles de qualité, et génère un rapport. Ce rapport est ensuite envoyé au serveur. Il a besoin d'un token pour s'authentifier.",
+        },
+        server: {
+          t: "🖥️ Serveur SonarQube",
+          c: "#5DCAA5",
+          tx: "C'est le \"tableau de bord\". Il reçoit le rapport du Scanner, le traite, et l'affiche sur une interface web sur localhost:9000. Tu vois les bugs, les notes, la couverture de tests... C'est lui qui décide si ton projet passe ou échoue la Quality Gate.",
+        },
+        token: {
+          t: "🔑 Token d'authentification",
+          c: "#FAC775",
+          tx: "C'est un mot de passe unique généré par le serveur. Le Scanner en a besoin pour envoyer ses rapports sans que tu doives saisir un login/password à chaque fois. Important : une fois généré, copie-le immédiatement — il ne sera plus jamais affiché !",
+        },
+      };
+
+      /* ══ ARCHI ══ */
+      const ARS = [
+        {
+          t: "Étape 1 — Préparer ton projet",
+          svg: `<svg width="100%" viewBox="0 0 680 200">
+<defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect x="20" y="20" width="180" height="160" rx="10" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text font-size="12" font-weight="500" x="110" y="44" text-anchor="middle" fill="#0C447C">📁 Ton projet</text>
+<text font-size="11" x="36" y="68" fill="#0C447C">src/main/java/</text>
+<text font-size="11" x="36" y="86" fill="#0C447C">  HelloWorld.java</text>
+<text font-size="11" x="36" y="104" fill="#0C447C">  ComplexMethod.java</text>
+<text font-size="11" x="36" y="122" fill="#0F6E56">sonar-project.properties</text>
+<text font-size="10" x="110" y="148" text-anchor="middle" fill="#888780">fichier config obligatoire</text>
+<text font-size="10" x="110" y="164" text-anchor="middle" fill="#888780">+ mvn clean compile</text>
+<line x1="202" y1="100" x2="258" y2="100" stroke="#888780" stroke-width="1.5" marker-end="url(#ar)"/>
+<rect x="260" y="40" width="380" height="120" rx="10" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/>
+<text font-size="12" font-weight="500" x="450" y="62" text-anchor="middle" fill="#085041">sonar-project.properties</text>
+<text font-size="11" x="276" y="84" fill="#0F6E56">sonar.projectKey=quality-demo-java</text>
+<text font-size="11" x="276" y="100" fill="#0F6E56">sonar.sources=src/main/java</text>
+<text font-size="11" x="276" y="116" fill="#0F6E56">sonar.java.binaries=target/classes</text>
+<text font-size="10" x="276" y="144" fill="#888780">Ce fichier dit au Scanner QUOI analyser et OÙ</text>
+</svg>`,
+          tx: "Avant d'analyser, tu dois créer le fichier <code>sonar-project.properties</code> à la racine de ton projet. C'est la carte d'identité de ton projet pour SonarQube. Pour Java, tu dois aussi compiler d'abord avec <code>mvn clean compile</code> car SonarQube a besoin des fichiers .class compilés.",
+        },
+
+        {
+          t: "Étape 2 — Lancer le Scanner",
+          svg: `<svg width="100%" viewBox="0 0 680 160">
+<rect x="20" y="20" width="640" height="120" rx="10" fill="#1a1915"/>
+<text font-size="11" font-family="monospace" x="36" y="48" fill="#5DCAA5">$ docker run --rm \\</text>
+<text font-size="11" font-family="monospace" x="36" y="66" fill="#efede6">  --network sonar-network \\</text>
+<text font-size="11" font-family="monospace" x="36" y="84" fill="#efede6">  -v "$(pwd):/usr/src" \\</text>
+<text font-size="11" font-family="monospace" x="36" y="102" fill="#FAC775">  -e SONAR_HOST_URL="http://sonarqube:9000" \\</text>
+<text font-size="11" font-family="monospace" x="36" y="120" fill="#FAC775">  -e SONAR_TOKEN="ton_token_ici" \\</text>
+<text font-size="11" font-family="monospace" x="36" y="138" fill="#5DCAA5">  sonarsource/sonar-scanner-cli</text>
+</svg>`,
+          tx: "Une seule commande Docker pour lancer l'analyse. Le Scanner lit ton code (via le volume -v), se connecte au serveur SonarQube (via le réseau Docker et l'URL), s'authentifie avec le token, puis envoie tout le rapport. Après quelques secondes → regarde localhost:9000 !",
+        },
+
+        {
+          t: "Étape 3 — Consulter les résultats",
+          svg: `<svg width="100%" viewBox="0 0 680 200">
+<rect x="20" y="20" width="640" height="160" rx="10" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+<text font-size="13" font-weight="500" x="340" y="44" text-anchor="middle" fill="#3C3489">Interface web → localhost:9000/projects</text>
+<rect x="40" y="58" width="82" height="52" rx="6" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.5"/>
+<text font-size="11" font-weight="500" x="81" y="78" text-anchor="middle" fill="#791F1F">🐛 Bugs</text>
+<text font-size="12" font-weight="500" x="81" y="98" text-anchor="middle" fill="#A32D2D">2</text>
+<rect x="136" y="58" width="82" height="52" rx="6" fill="#FAECE7" stroke="#D85A30" stroke-width="0.5"/>
+<text font-size="11" font-weight="500" x="177" y="78" text-anchor="middle" fill="#712B13">🔓 Vuln.</text>
+<text font-size="12" font-weight="500" x="177" y="98" text-anchor="middle" fill="#993C1D">1</text>
+<rect x="232" y="58" width="82" height="52" rx="6" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.5"/>
+<text font-size="11" font-weight="500" x="273" y="78" text-anchor="middle" fill="#633806">💩 Smells</text>
+<text font-size="12" font-weight="500" x="273" y="98" text-anchor="middle" fill="#854F0B">14</text>
+<rect x="328" y="58" width="82" height="52" rx="6" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/>
+<text font-size="11" font-weight="500" x="369" y="78" text-anchor="middle" fill="#085041">✅ Cover.</text>
+<text font-size="12" font-weight="500" x="369" y="98" text-anchor="middle" fill="#0F6E56">87%</text>
+<rect x="424" y="58" width="82" height="52" rx="6" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text font-size="11" font-weight="500" x="465" y="78" text-anchor="middle" fill="#0C447C">📄 Lines</text>
+<text font-size="12" font-weight="500" x="465" y="98" text-anchor="middle" fill="#185FA5">45</text>
+<rect x="520" y="58" width="120" height="52" rx="6" fill="#E1F5EE" stroke="#1D9E75" stroke-width="1.5"/>
+<text font-size="12" font-weight="500" x="580" y="78" text-anchor="middle" fill="#085041">Quality Gate</text>
+<text font-size="14" font-weight="500" x="580" y="100" text-anchor="middle" fill="#D85A30">⚠️ FAILED</text>
+<text font-size="11" x="40" y="142" fill="#534AB7">New Code | Overall Code — deux onglets pour voir code récent vs tout le code</text>
+<text font-size="11" x="40" y="162" fill="#888780">Dette technique : estimation du temps pour "rembourser" les mauvaises pratiques</text>
+</svg>`,
+          tx: 'Sur localhost:9000 tu vois un tableau de bord avec toutes les métriques. "New Code" = qualité du code que tu viens d\'écrire. "Overall Code" = tout ton code depuis le début. La Quality Gate = PASSED ou FAILED selon tes critères.',
+        },
+
+        {
+          t: "sonar-project.properties — chaque clé expliquée",
+          svg: `<svg width="100%" viewBox="0 0 680 240">
+<rect x="20" y="10" width="640" height="220" rx="10" fill="var(--color-background-secondary)" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>
+<text font-size="11" x="36" y="34" fill="#AFA9EC" font-weight="500">sonar.projectKey</text><text font-size="11" x="230" y="34" fill="#908e86">= nom unique du projet dans SonarQube (obligatoire)</text>
+<text font-size="11" x="36" y="54" fill="#AFA9EC" font-weight="500">sonar.projectName</text><text font-size="11" x="230" y="54" fill="#908e86">= nom affiché dans l'interface web (obligatoire)</text>
+<text font-size="11" x="36" y="74" fill="#AFA9EC" font-weight="500">sonar.projectVersion</text><text font-size="11" x="230" y="74" fill="#908e86">= version du projet pour suivre l'évolution (optionnel)</text>
+<text font-size="11" x="36" y="94" fill="#5DCAA5" font-weight="500">sonar.sources</text><text font-size="11" x="230" y="94" fill="#908e86">= dossier avec les fichiers source à analyser (tous langages)</text>
+<text font-size="11" x="36" y="114" fill="#F0997B" font-weight="500">sonar.java.binaries</text><text font-size="11" x="230" y="114" fill="#908e86">= dossier .class compilés (Java seulement, obligatoire)</text>
+<text font-size="11" x="36" y="134" fill="#5DCAA5" font-weight="500">sonar.tests</text><text font-size="11" x="230" y="134" fill="#908e86">= dossier des tests unitaires</text>
+<text font-size="11" x="36" y="154" fill="#5DCAA5" font-weight="500">sonar.coverage.jacoco.xmlReportPaths</text><text font-size="11" x="400" y="154" fill="#908e86">= rapport JaCoCo (Java)</text>
+<text font-size="11" x="36" y="174" fill="#85B7EB" font-weight="500">sonar.python.version</text><text font-size="11" x="230" y="174" fill="#908e86">= version Python du projet (ex: 3.8)</text>
+<text font-size="11" x="36" y="194" fill="#85B7EB" font-weight="500">sonar.python.coverage.reportPaths</text><text font-size="11" x="380" y="194" fill="#908e86">= rapport coverage.xml (Python)</text>
+<text font-size="11" x="36" y="218" fill="#908e86">sonar.junit.reportPaths</text><text font-size="11" x="230" y="218" fill="#908e86">= rapport surefire pour les tests JUnit</text>
+</svg>`,
+          tx: "Ce fichier est la clé de voûte de toute l'analyse. Sans lui, le Scanner ne sait pas quoi analyser. Il doit être à la racine du projet. Chaque propriété dit au Scanner où chercher les sources, les tests, les binaires compilés, et les rapports de couverture.",
+        },
+      ];
+
+      /* ══ CATEGORIES ══ */
+      const CATS = [
+        {
+          t: "🐛 Bugs — erreurs dans le code",
+          c: "#e06b6b",
+          bg: "#FCEBEB",
+          b: "pr",
+          svg: `<svg width="100%" viewBox="0 0 680 130">
+<rect x="20" y="10" width="640" height="110" rx="10" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.5"/>
+<text font-size="12" font-weight="500" x="340" y="34" text-anchor="middle" fill="#791F1F">Exemples de bugs détectés par SonarQube</text>
+<text font-size="11" x="36" y="58" fill="#A32D2D">❌ NullPointerException possible : objet.methode() sans vérifier si objet==null</text>
+<text font-size="11" x="36" y="78" fill="#A32D2D">❌ Boucle infinie : while(true) sans break accessible</text>
+<text font-size="11" x="36" y="98" fill="#A32D2D">❌ Condition toujours fausse : if(x != null &amp;&amp; x == null) — jamais vrai</text>
+<text font-size="11" x="36" y="116" fill="#888780">→ Peuvent provoquer des plantages à l'exécution</text>
+</svg>`,
+          tx: "Les bugs ce sont des erreurs dans la logique de ton code. Ils peuvent ne pas se voir à l'exécution normale, mais dans certains cas ils font planter l'application. SonarQube les détecte SANS exécuter le code — c'est ça l'analyse statique.",
+        },
+
+        {
+          t: "🔓 Vulnérabilités — failles de sécurité",
+          c: "#F0997B",
+          bg: "#FAECE7",
+          b: "pc",
+          svg: `<svg width="100%" viewBox="0 0 680 130">
+<rect x="20" y="10" width="640" height="110" rx="10" fill="#FAECE7" stroke="#D85A30" stroke-width="0.5"/>
+<text font-size="12" font-weight="500" x="340" y="34" text-anchor="middle" fill="#712B13">Vulnérabilités — un hacker peut exploiter ça</text>
+<text font-size="11" x="36" y="58" fill="#993C1D">⚠️ Injection SQL : "SELECT * FROM users WHERE name = '" + userInput + "'"</text>
+<text font-size="11" x="36" y="76" fill="#993C1D">⚠️ Mot de passe en clair : String pass = "monMotDePasse123"</text>
+<text font-size="11" x="36" y="94" fill="#993C1D">⚠️ XSS : afficher directement une entrée utilisateur en HTML</text>
+<text font-size="11" x="36" y="114" fill="#888780">→ Un attaquant peut voler des données ou prendre le contrôle du système</text>
+</svg>`,
+          tx: "Les vulnérabilités sont des portes d'entrée pour les hackers. L'injection SQL par exemple : si tu mets directement l'entrée de l'utilisateur dans une requête SQL, un hacker peut écrire du SQL malveillant et lire/supprimer toute ta base de données. SonarQube repère ces patterns dangereux.",
+        },
+
+        {
+          t: "🔥 Hotspots — zones sensibles à vérifier",
+          c: "#FAC775",
+          bg: "#FAEEDA",
+          b: "pa",
+          svg: `<svg width="100%" viewBox="0 0 680 110">
+<rect x="20" y="10" width="640" height="90" rx="10" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.5"/>
+<text font-size="12" font-weight="500" x="340" y="34" text-anchor="middle" fill="#633806">Hotspots — pas forcément un problème, mais à vérifier manuellement</text>
+<text font-size="11" x="36" y="58" fill="#854F0B">Ex : utilisation de cryptographie, accès à des fichiers système, gestion de sessions</text>
+<text font-size="11" x="36" y="78" fill="#854F0B">Ce n'est pas automatiquement dangereux — mais un humain doit vérifier.</text>
+<text font-size="11" x="36" y="96" fill="#888780">SonarQube t'alerte : "regarde ici, ça peut poser problème selon le contexte"</text>
+</svg>`,
+          tx: "Les Hotspots sont des zones du code qui POURRAIENT être dangereuses selon le contexte, mais ce n'est pas certain. SonarQube te dit \"attention ici\" mais c'est toi qui décides si c'est vraiment un problème après y avoir jeté un œil.",
+        },
+
+        {
+          t: "💩 Code Smells — mauvaises pratiques",
+          c: "#CECBF6",
+          bg: "#EEEDFE",
+          b: "pp",
+          svg: `<svg width="100%" viewBox="0 0 680 130">
+<rect x="20" y="10" width="640" height="110" rx="10" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+<text font-size="12" font-weight="500" x="340" y="34" text-anchor="middle" fill="#3C3489">Code Smells — ça "sent mauvais" mais ça marche encore</text>
+<text font-size="11" x="36" y="58" fill="#534AB7">💩 16× System.out.println("Hello World!") → utilise une constante ou un logger</text>
+<text font-size="11" x="36" y="78" fill="#534AB7">💩 Méthode de 200 lignes → trop longue, difficile à comprendre</text>
+<text font-size="11" x="36" y="98" fill="#534AB7">💩 Variable nommée "a", "x1", "temp2" → noms non descriptifs</text>
+<text font-size="11" x="36" y="116" fill="#888780">→ Ça marche aujourd'hui mais dans 6 mois tu ne comprends plus ton propre code</text>
+</svg>`,
+          tx: "Les Code Smells c'est du code qui fonctionne mais qui est mal écrit. Comme une chambre rangée en mettant tout sous le lit — ça paraît clean mais c'est galère quand tu cherches quelque chose. La \"dette technique\" = l'estimation du temps pour nettoyer tout ça.",
+        },
+
+        {
+          t: "✅ Coverage — couverture de tests",
+          c: "#4ac48a",
+          bg: "#E1F5EE",
+          b: "pg",
+          svg: `<svg width="100%" viewBox="0 0 680 130">
+<defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect x="20" y="10" width="300" height="110" rx="10" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/>
+<text font-size="12" font-weight="500" x="170" y="34" text-anchor="middle" fill="#085041">80% couverture ✅</text>
+<rect x="36" y="44" width="240" height="16" rx="4" fill="#1D9E75"/>
+<rect x="36" y="44" width="60" height="16" rx="4" fill="#D85A30"/>
+<text font-size="10" x="170" y="78" text-anchor="middle" fill="#085041">80% testé → OK pour Quality Gate</text>
+<text font-size="10" x="170" y="96" text-anchor="middle" fill="#D85A30">20% non testé → risque caché</text>
+<rect x="360" y="10" width="300" height="110" rx="10" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.5"/>
+<text font-size="12" font-weight="500" x="510" y="34" text-anchor="middle" fill="#791F1F">40% couverture ❌</text>
+<rect x="376" y="44" width="240" height="16" rx="4" fill="#D85A30"/>
+<rect x="376" y="44" width="96" height="16" rx="4" fill="#1D9E75"/>
+<text font-size="10" x="510" y="78" text-anchor="middle" fill="#791F1F">Seulement 40% testé</text>
+<text font-size="10" x="510" y="96" text-anchor="middle" fill="#791F1F">Quality Gate FAILED !</text>
+</svg>`,
+          tx: "La couverture de tests = quel % de ton code est exécuté par tes tests. Si 100 lignes et 80 sont testées → 80% de couverture. SonarQube NE calcule PAS ça lui-même : il lit le rapport de JaCoCo (Java) ou coverage (Python) qui a déjà fait ce calcul.",
+        },
+
+        {
+          t: "📋 Duplications — code copié-collé",
+          c: "#B5D4F4",
+          bg: "#E6F1FB",
+          b: "pb",
+          svg: `<svg width="100%" viewBox="0 0 680 110">
+<rect x="20" y="10" width="300" height="90" rx="10" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text font-size="11" font-weight="500" x="170" y="34" text-anchor="middle" fill="#0C447C">Fichier A — ligne 20 à 35</text>
+<text font-size="11" x="36" y="54" fill="#185FA5">calculerTVA(prix, taux) {</text>
+<text font-size="11" x="36" y="70" fill="#185FA5">  return prix * taux / 100;</text>
+<text font-size="11" x="36" y="86" fill="#185FA5">}</text>
+<rect x="360" y="10" width="300" height="90" rx="10" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5" stroke-dasharray="5 3"/>
+<text font-size="11" font-weight="500" x="510" y="34" text-anchor="middle" fill="#D85A30">Fichier B — copié-collé !</text>
+<text font-size="11" x="376" y="54" fill="#D85A30">calculerTaxe(prix, taux) {</text>
+<text font-size="11" x="376" y="70" fill="#D85A30">  return prix * taux / 100;</text>
+<text font-size="11" x="376" y="86" fill="#D85A30">}</text>
+</svg>`,
+          tx: "Le code dupliqué c'est du copié-collé. Si tu corriges un bug dans la version A mais pas dans la version B, tu as un problème. SonarQube détecte ces blocs identiques et te pousse à les regrouper dans une seule fonction réutilisable.",
+        },
+
+        {
+          t: "📏 Lines — taille du projet",
+          c: "#4ac48a",
+          bg: "#E1F5EE",
+          b: "pg",
+          svg: `<svg width="100%" viewBox="0 0 680 100">
+<rect x="20" y="10" width="640" height="80" rx="10" fill="var(--color-background-secondary)" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>
+<text font-size="12" x="40" y="36" fill="var(--color-text-secondary)">Petit projet (&lt;1 000 lignes) → facile à maintenir</text>
+<text font-size="12" x="40" y="56" fill="var(--color-text-secondary)">Projet moyen (1 000–50 000 lignes) → équipe nécessaire</text>
+<text font-size="12" x="40" y="76" fill="var(--color-text-secondary)">Grand projet (&gt;50 000 lignes) → très difficile à maintenir sans outils</text>
+</svg>`,
+          tx: "Lines = juste le nombre total de lignes de code. Ça donne une idée de la taille et de la complexité du projet. Plus il y a de lignes, plus il y a de risques et plus c'est important d'avoir SonarQube pour surveiller la qualité.",
+        },
+
+        {
+          t: "Système de notes A → E",
+          c: "#CECBF6",
+          bg: "#EEEDFE",
+          b: "pp",
+          svg: `<svg width="100%" viewBox="0 0 680 120">
+<rect x="20" y="20" width="100" height="80" rx="8" fill="#E1F5EE" stroke="#1D9E75" stroke-width="1"/>
+<text font-size="28" font-weight="500" x="70" y="64" text-anchor="middle" fill="#085041">A</text>
+<text font-size="10" x="70" y="90" text-anchor="middle" fill="#0F6E56">très bien</text>
+<rect x="140" y="20" width="100" height="80" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text font-size="28" font-weight="500" x="190" y="64" text-anchor="middle" fill="#0C447C">B</text>
+<text font-size="10" x="190" y="90" text-anchor="middle" fill="#185FA5">bien</text>
+<rect x="260" y="20" width="100" height="80" rx="8" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.5"/>
+<text font-size="28" font-weight="500" x="310" y="64" text-anchor="middle" fill="#633806">C</text>
+<text font-size="10" x="310" y="90" text-anchor="middle" fill="#854F0B">moyen</text>
+<rect x="380" y="20" width="100" height="80" rx="8" fill="#FAECE7" stroke="#D85A30" stroke-width="0.5"/>
+<text font-size="28" font-weight="500" x="430" y="64" text-anchor="middle" fill="#712B13">D</text>
+<text font-size="10" x="430" y="90" text-anchor="middle" fill="#993C1D">important</text>
+<rect x="500" y="20" width="100" height="80" rx="8" fill="#FCEBEB" stroke="#A32D2D" stroke-width="1"/>
+<text font-size="28" font-weight="500" x="550" y="64" text-anchor="middle" fill="#791F1F">E</text>
+<text font-size="10" x="550" y="90" text-anchor="middle" fill="#A32D2D">critique !</text>
+</svg>`,
+          tx: "Chaque catégorie reçoit une note. A = quasi aucun problème → E = critique, règle le ça maintenant. Ces notes t'aident à prioriser : commence par corriger les E, puis D, etc. C'est ton plan d'action de nettoyage de code.",
+        },
+      ];
+
+      /* ══ COMPLEXITE ══ */
+      const CXS = [
+        {
+          t: "Code TROP complexe ❌ — SonarQube va se plaindre",
+          code: `<span class="cm">// Une seule méthode fait TOUT → trop de if imbriqués</span>
+<span class="kw">public</span> String countVowels(String word) {
+    <span class="kw">int</span> count = <span class="nm">0</span>;
+    String[] vowels = {<span class="st">"a"</span>,<span class="st">"e"</span>,<span class="st">"i"</span>,<span class="st">"o"</span>,<span class="st">"u"</span>};
+    <span class="kw">for</span> (String c : word.split(<span class="st">""</span>)) {
+        <span class="kw">for</span> (String v : vowels) {          <span class="cm">← boucle imbriquée 1</span>
+            <span class="kw">if</span> (c.equalsIgnoreCase(v)) {   <span class="cm">← if dans boucle</span>
+                count++;
+            }
+        }
+    }
+    <span class="kw">if</span> (count == <span class="nm">0</span>) {
+        <span class="kw">if</span> (word.isEmpty()) {            <span class="cm">← if imbriqué 2</span>
+            <span class="kw">return</span> <span class="st">"empty string..."</span>;
+        } <span class="kw">else if</span> (word.length() &lt; <span class="nm">5</span>) {
+            <span class="kw">return</span> <span class="st">"less than 5 chars..."</span>;
+        } <span class="kw">else</span> { <span class="kw">return</span> <span class="st">"no vowels"</span>; }
+    } <span class="kw">else</span> {
+        <span class="kw">if</span> (count == <span class="nm">1</span>) { <span class="kw">return</span> <span class="st">"one vowel"</span>; }    <span class="cm">← if imbriqué 3</span>
+        <span class="kw">else if</span> (count &lt; <span class="nm">5</span>) { <span class="kw">return</span> <span class="st">"few vowels"</span>; }
+        <span class="kw">else</span> { <span class="kw">return</span> <span class="st">"many vowels"</span>; }
+    }
+}`,
+          tx: 'Cette méthode fait TOUT en une seule fois : compter les voyelles ET décider le message. Avec des boucles imbriquées ET des if imbriqués, la complexité cognitive explose. SonarQube: "This function has a cognitive complexity of 12 (maximum is 5)". C\'est illisible après 2 semaines.',
+        },
+
+        {
+          t: "Code simplifié ✅ — une méthode = une responsabilité",
+          code: `<span class="cm">// Chaque méthode fait UNE seule chose → simple à lire</span>
+<span class="kw">public</span> String countVowels(String word) {
+    <span class="kw">int</span> count = countVowelOccurrences(word);  <span class="cm">← délègue</span>
+    <span class="kw">if</span> (count == <span class="nm">0</span>) <span class="kw">return</span> getNoVowelMessage(word);
+    <span class="kw">else return</span> getVowelCountMessage(count);
+}
+
+<span class="kw">private int</span> countVowelOccurrences(String word) {
+    <span class="cm">// Fait UNE chose : compter</span>
+    <span class="kw">int</span> count = <span class="nm">0</span>;
+    <span class="kw">for</span> (String c : word.split(<span class="st">""</span>))
+        <span class="kw">for</span> (String v : <span class="kw">new</span> String[]{<span class="st">"a"</span>,<span class="st">"e"</span>,<span class="st">"i"</span>,<span class="st">"o"</span>,<span class="st">"u"</span>})
+            <span class="kw">if</span> (c.equalsIgnoreCase(v)) count++;
+    <span class="kw">return</span> count;
+}
+
+<span class="kw">private</span> String getNoVowelMessage(String word) {
+    <span class="cm">// Fait UNE chose : construire le message "pas de voyelle"</span>
+    <span class="kw">if</span> (word.isEmpty()) <span class="kw">return</span> <span class="st">"empty string..."</span>;
+    <span class="kw">if</span> (word.length() &lt; <span class="nm">5</span>) <span class="kw">return</span> <span class="st">"less than 5 chars..."</span>;
+    <span class="kw">return</span> <span class="st">"word does not contain vowels"</span>;
+}`,
+          tx: "Maintenant chaque méthode fait UNE seule chose. Si quelque chose plante, tu sais exactement où chercher. La méthode principale est lisible en 3 lignes. C'est le principe \"Single Responsibility\" — une des règles d'or du code propre.",
+        },
+      ];
+
+      /* ══ COVERAGE ══ */
+      const CVS = [
+        {
+          t: "C'est quoi la couverture de tests ?",
+          svg: `<svg width="100%" viewBox="0 0 680 170">
+<rect x="20" y="10" width="200" height="150" rx="10" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+<text font-size="12" font-weight="500" x="120" y="34" text-anchor="middle" fill="#3C3489">Ton code (10 lignes)</text>
+<rect x="36" y="44" width="168" height="14" rx="3" fill="#1D9E75"/>
+<rect x="36" y="62" width="168" height="14" rx="3" fill="#1D9E75"/>
+<rect x="36" y="80" width="168" height="14" rx="3" fill="#1D9E75"/>
+<rect x="36" y="98" width="168" height="14" rx="3" fill="#1D9E75"/>
+<rect x="36" y="116" width="168" height="14" rx="3" fill="#D85A30"/>
+<rect x="36" y="134" width="168" height="14" rx="3" fill="#D85A30"/>
+<text font-size="10" x="36" y="60" fill="#E1F5EE">✓ testée</text>
+<text font-size="10" x="36" y="114" fill="#fff">✗ pas testée</text>
+<defs><marker id="ar2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<line x1="222" y1="90" x2="278" y2="90" stroke="#888780" stroke-width="1.5" marker-end="url(#ar2)"/>
+<rect x="280" y="50" width="160" height="80" rx="8" fill="#E1F5EE" stroke="#1D9E75" stroke-width="1"/>
+<text font-size="18" font-weight="500" x="360" y="96" text-anchor="middle" fill="#085041">80%</text>
+<text font-size="11" x="360" y="116" text-anchor="middle" fill="#0F6E56">couverture</text>
+<rect x="460" y="50" width="200" height="80" rx="8" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/>
+<text font-size="11" x="476" y="76" fill="#085041">Quality Gate :</text>
+<text font-size="12" font-weight="500" x="476" y="96" fill="#1D9E75">✅ PASSED (≥80%)</text>
+<text font-size="10" x="476" y="116" fill="#888780">SonarQube lit ça</text>
+<text font-size="10" x="476" y="130" fill="#888780">dans jacoco.xml</text>
+</svg>`,
+          tx: "Imagine ton code comme une carte routière. Les tests unitaires sont les routes que tu as parcourues pour vérifier qu'elles fonctionnent. 80% de couverture = tu as parcouru 80% des routes. Les 20% restants sont des zones inconnues — peut-être il y a des bugs que tu ne sais pas encore.",
+        },
+
+        {
+          t: "JaCoCo — couverture pour Java",
+          svg: `<svg width="100%" viewBox="0 0 680 150">
+<rect x="20" y="10" width="640" height="130" rx="10" fill="#1a1915"/>
+<text font-size="11" font-family="monospace" x="36" y="36" fill="#5DCAA5">&lt;!-- pom.xml : ajouter JaCoCo --&gt;</text>
+<text font-size="11" font-family="monospace" x="36" y="56" fill="#FAC775">&lt;plugin&gt;</text>
+<text font-size="11" font-family="monospace" x="36" y="74" fill="#efede6">  &lt;groupId&gt;org.jacoco&lt;/groupId&gt;</text>
+<text font-size="11" font-family="monospace" x="36" y="92" fill="#efede6">  &lt;artifactId&gt;jacoco-maven-plugin&lt;/artifactId&gt;</text>
+<text font-size="11" font-family="monospace" x="36" y="110" fill="#FAC775">&lt;/plugin&gt;</text>
+<text font-size="11" font-family="monospace" x="36" y="132" fill="#5DCAA5">$ mvn clean test &amp;&amp; mvn jacoco:report  → génère target/site/jacoco/jacoco.xml</text>
+</svg>`,
+          tx: "JaCoCo (Java Code Coverage) est un outil Maven qui surveille quelles lignes de code sont exécutées pendant les tests. Tu l'ajoutes dans pom.xml, tu lances <code>mvn clean test</code> puis <code>mvn jacoco:report</code>, et il génère un fichier jacoco.xml que SonarQube va lire.",
+        },
+
+        {
+          t: "Coverage — couverture pour Python",
+          svg: `<svg width="100%" viewBox="0 0 680 130">
+<rect x="20" y="10" width="640" height="110" rx="10" fill="#1a1915"/>
+<text font-size="11" font-family="monospace" x="36" y="36" fill="#5DCAA5">$ pip install coverage</text>
+<text font-size="11" font-family="monospace" x="36" y="56" fill="#5DCAA5">$ coverage run -m unittest discover -s tests</text>
+<text font-size="11" font-family="monospace" x="36" y="74" fill="#5DCAA5">$ coverage xml -o coverage.xml</text>
+<text font-size="11" font-family="monospace" x="36" y="96" fill="#FAC775"># sonar-project.properties</text>
+<text font-size="11" font-family="monospace" x="36" y="114" fill="#efede6">sonar.python.coverage.reportPaths=./coverage.xml</text>
+</svg>`,
+          tx: "Pour Python c'est similaire. La librairie <code>coverage</code> surveille les lignes exécutées. Tu lances tes tests avec coverage, tu génères le rapport XML, et tu dis à SonarQube où il est dans le fichier properties. Même principe que JaCoCo, outil différent.",
+        },
+
+        {
+          t: "Vulnérabilité SQL — le pire exemple",
+          code: `<span class="cm">// ❌ CODE DANGEREUX — injection SQL possible</span>
+<span class="kw">public void</span> executeQuery(String userInput) {
+    Connection conn = DriverManager.getConnection(
+        <span class="st">"jdbc:mysql://localhost:3306/db"</span>,
+        <span class="st">"user"</span>, <span class="st">"pass"</span>  <span class="cm">← mot de passe en clair !</span>
+    );
+    Statement stmt = conn.createStatement();
+    stmt.execute(<span class="st">"SELECT * FROM users WHERE name = '"</span>
+        + userInput + <span class="st">"'"</span>);  <span class="cm">← injection SQL !</span>
+}
+
+<span class="cm">// Que fait un hacker ? Il entre : ' OR '1'='1</span>
+<span class="cm">// La requête devient :</span>
+<span class="cm">// SELECT * FROM users WHERE name = '' OR '1'='1'</span>
+<span class="cm">// → retourne TOUS les utilisateurs !</span>
+
+<span class="cm">// ✅ Solution : PreparedStatement</span>
+<span class="kw">PreparedStatement</span> ps = conn.prepareStatement(
+    <span class="st">"SELECT * FROM users WHERE name = ?"</span>);
+ps.setString(<span class="nm">1</span>, userInput);  <span class="cm">← sécurisé</span>`,
+          tx: "Deux problèmes ici : 1) Le mot de passe MySQL est écrit en clair dans le code → n'importe qui avec accès au code voit le mot de passe. 2) Injection SQL : si userInput = ' OR '1'='1, la requête retourne TOUS les utilisateurs. Solution : utiliser PreparedStatement qui sépare la structure SQL des données.",
+        },
+      ];
+
+      /* ══ COMMANDES ══ */
+      const CMDS = [
+        {
+          l: "docker network create sonar-network",
+          b: "pg",
+          bl: "réseau",
+          d: "Crée le réseau privé Docker pour que le Scanner et le Serveur se parlent.",
+          ps: [
+            { c: "docker network create", d: "Crée un réseau virtuel Docker" },
+            {
+              c: "sonar-network",
+              d: "Nom du réseau. Le Scanner utilisera ce nom pour trouver le Serveur.",
+            },
+          ],
+        },
+
+        {
+          l: "docker run -d --name sonarqube --network sonar-network -p 9000:9000 sonarqube:lts-community",
+          b: "pp",
+          bl: "docker",
+          d: "Lance le serveur SonarQube en arrière-plan.",
+          ps: [
+            { c: "-d", d: "Détaché : tourne en arrière-plan" },
+            {
+              c: "--name sonarqube",
+              d: "Nom important : le Scanner l'appellera par ce nom via HTTP",
+            },
+            { c: "--network sonar-network", d: "Connecte au réseau privé" },
+            {
+              c: "-p 9000:9000",
+              d: "Port 9000 de ta machine → port 9000 du conteneur (interface web)",
+            },
+            {
+              c: "sonarqube:lts-community",
+              d: "Image officielle SonarQube, version LTS (Long Term Support) gratuite",
+            },
+          ],
+        },
+
+        {
+          l: "docker pull sonarsource/sonar-scanner-cli",
+          b: "pb",
+          bl: "docker",
+          d: "Télécharge l'image du Scanner SonarQube.",
+          ps: [
+            {
+              c: "docker pull",
+              d: "Télécharge l'image depuis Docker Hub sans la démarrer",
+            },
+            {
+              c: "sonarsource/sonar-scanner-cli",
+              d: "L'outil qui lit le code et envoie le rapport au serveur",
+            },
+          ],
+        },
+
+        {
+          l: 'docker run --rm --network sonar-network -v "$(pwd):/usr/src" -e SONAR_HOST_URL="http://sonarqube:9000" -e SONAR_TOKEN="TON_TOKEN" sonarsource/sonar-scanner-cli',
+          b: "pp",
+          bl: "scanner",
+          d: "Lance l'analyse de ton code et envoie les résultats au serveur.",
+          ps: [
+            {
+              c: "--rm",
+              d: "Supprime le conteneur après l'analyse (temporaire)",
+            },
+            {
+              c: "--network sonar-network",
+              d: "Même réseau que le serveur pour communiquer",
+            },
+            {
+              c: '-v "$(pwd):/usr/src"',
+              d: "Monte ton dossier courant dans le conteneur → le Scanner peut lire ton code",
+            },
+            {
+              c: '-e SONAR_HOST_URL="http://sonarqube:9000"',
+              d: "Adresse du serveur SonarQube (nom du conteneur serveur comme hostname)",
+            },
+            {
+              c: '-e SONAR_TOKEN="TON_TOKEN"',
+              d: "Clé d'authentification copiée depuis l'interface web",
+            },
+          ],
+        },
+
+        {
+          l: "mvn clean compile",
+          b: "pa",
+          bl: "maven",
+          d: "Compile le projet Java (nécessaire avant l'analyse SonarQube).",
+          ps: [
+            { c: "mvn clean", d: "Supprime les fichiers compilés précédents" },
+            {
+              c: "compile",
+              d: "Compile le code Java → génère les .class dans target/classes",
+            },
+          ],
+        },
+
+        {
+          l: "mvn clean test",
+          b: "pa",
+          bl: "maven",
+          d: "Compile et exécute tous les tests unitaires.",
+          ps: [
+            { c: "clean", d: "Nettoie les anciens fichiers" },
+            {
+              c: "test",
+              d: "Compile + exécute tous les tests dans src/test/java via Surefire",
+            },
+          ],
+        },
+
+        {
+          l: "mvn jacoco:report",
+          b: "pa",
+          bl: "jacoco",
+          d: "Génère le rapport de couverture de tests JaCoCo.",
+          ps: [
+            {
+              c: "mvn jacoco:report",
+              d: "Lit les données collectées pendant mvn test et génère target/site/jacoco/jacoco.xml",
+            },
+          ],
+        },
+
+        {
+          l: "python -m venv venv",
+          b: "pb",
+          bl: "python",
+          d: "Crée un environnement virtuel Python isolé.",
+          ps: [
+            {
+              c: "python -m venv",
+              d: "Crée un environnement virtuel (copie isolée de Python)",
+            },
+            { c: "venv", d: "Nom du dossier qui contiendra l'environnement" },
+          ],
+        },
+
+        {
+          l: "source venv/bin/activate",
+          b: "pb",
+          bl: "python",
+          d: "Active l'environnement virtuel (Linux/macOS).",
+          ps: [
+            { c: "source", d: "Exécute le script dans le shell courant" },
+            {
+              c: "venv/bin/activate",
+              d: "Script qui configure les variables d'environnement pour utiliser le venv",
+            },
+          ],
+        },
+
+        {
+          l: "pip install coverage",
+          b: "pb",
+          bl: "python",
+          d: "Installe la librairie de couverture de tests Python.",
+          ps: [
+            {
+              c: "pip install",
+              d: "Gestionnaire de paquets Python, installe une librairie",
+            },
+            {
+              c: "coverage",
+              d: "Outil qui surveille quelles lignes sont exécutées pendant les tests",
+            },
+          ],
+        },
+
+        {
+          l: "coverage run -m unittest discover -s tests",
+          b: "pb",
+          bl: "coverage",
+          d: "Lance les tests en surveillant la couverture.",
+          ps: [
+            {
+              c: "coverage run",
+              d: "Lance une commande en surveillant quelles lignes sont exécutées",
+            },
+            {
+              c: "-m unittest discover",
+              d: "Exécute le module unittest en mode découverte automatique des tests",
+            },
+            { c: "-s tests", d: 'Cherche les tests dans le dossier "tests"' },
+          ],
+        },
+
+        {
+          l: "coverage xml -o coverage.xml",
+          b: "pb",
+          bl: "coverage",
+          d: "Génère le rapport de couverture en format XML pour SonarQube.",
+          ps: [
+            {
+              c: "coverage xml",
+              d: "Génère un rapport au format XML depuis les données collectées",
+            },
+            {
+              c: "-o coverage.xml",
+              d: "Nom du fichier de sortie (référencé dans sonar-project.properties)",
+            },
+          ],
+        },
+      ];
+
+      /* ══ QG CANVAS ══ */
+      function updateQG() {
+        const bugs = parseInt(document.getElementById("bugs-sl").value);
+        const cov = parseInt(document.getElementById("cov-sl").value);
+        const dup = parseFloat(document.getElementById("dup-sl").value);
+        document.getElementById("bugs-v").textContent = bugs;
+        document.getElementById("cov-v").textContent = cov + "%";
+        document.getElementById("dup-v").textContent = dup + "%";
+        const ok1 = bugs === 0,
+          ok2 = cov >= 80,
+          ok3 = dup <= 3;
+        const pass = ok1 && ok2 && ok3;
+        drawQG(bugs, cov, dup, ok1, ok2, ok3, pass);
+        const res = document.getElementById("qg-result");
+        if (res) {
+          res.textContent = pass
+            ? "✅ Quality Gate PASSED !"
+            : "❌ Quality Gate FAILED";
+          res.style.color = pass
+            ? "var(--color-text-success)"
+            : "var(--color-text-danger)";
+        }
+      }
+      function drawQG(bugs, cov, dup, ok1, ok2, ok3, pass) {
+        const cv = document.getElementById("qg-canvas");
+        if (!cv) return;
+        const ctx = cv.getContext("2d"),
+          W = cv.width,
+          H = cv.height;
+        ctx.clearRect(0, 0, W, H);
+        /* force dark palette */
+        const items = [
+          { l: "Bugs critiques", v: bugs + " bug(s)", ok: ok1, seuil: "= 0" },
+          { l: "Couverture", v: cov + "%", ok: ok2, seuil: "≥ 80%" },
+          { l: "Duplication", v: dup + "%", ok: ok3, seuil: "≤ 3%" },
+        ];
+        items.forEach((it, i) => {
+          const y = 30 + i * 52;
+          ctx.fillStyle = it.ok ? "#085041" : "#791F1F";
+          rr(ctx, 10, y, W - 20, 40, 8);
+          ctx.fill();
+          ctx.strokeStyle = it.ok ? "#1D9E75" : "#A32D2D";
+          ctx.lineWidth = 0.8;
+          rr(ctx, 10, y, W - 20, 40, 8);
+          ctx.stroke();
+          ctx.fillStyle = it.ok ? "#9FE1CB" : "#F7C1C1";
+          ctx.font = "bold 13px sans-serif";
+          ctx.textAlign = "left";
+          ctx.fillText((it.ok ? "✅ " : "❌ ") + it.l, 20, y + 16);
+          ctx.font = "11px sans-serif";
+          ctx.fillStyle = "#908e86";
+          ctx.fillText(it.v + " (seuil: " + it.seuil + ")", 20, y + 32);
+        });
+        ctx.fillStyle = pass ? "#085041" : "#791F1F";
+        rr(ctx, 10, 190, W - 20, 50, 10);
+        ctx.fill();
+        ctx.strokeStyle = pass ? "#1D9E75" : "#A32D2D";
+        ctx.lineWidth = 2;
+        rr(ctx, 10, 190, W - 20, 50, 10);
+        ctx.stroke();
+        ctx.fillStyle = pass ? "#9FE1CB" : "#F7C1C1";
+        ctx.font = "bold 16px sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText(pass ? "PASSED ✅" : "FAILED ❌", W / 2, 222);
+      }
+      function rr(ctx, x, y, w, h, r) {
+        ctx.beginPath();
+        ctx.moveTo(x + r, y);
+        ctx.lineTo(x + w - r, y);
+        ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+        ctx.lineTo(x + w, y + h - r);
+        ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+        ctx.lineTo(x + r, y + h);
+        ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+        ctx.lineTo(x, y + r);
+        ctx.quadraticCurveTo(x, y, x + r, y);
+        ctx.closePath();
+      }
+
+      /* ══ FONCTIONS ══ */
+      function xi(k) {
+        const e = XI[k];
+        document.getElementById("xi-box").innerHTML =
+          `<div class="fade"><p style="font-size:14px;font-weight:500;color:${e.c};margin:0 0 6px">${e.t}</p><p style="font-size:13px;margin:0;line-height:1.7;color:var(--color-text-primary)">${e.tx}</p></div>`;
+      }
+
+      function showAr(i, btn) {
+        document
+          .querySelectorAll("[id^=ar]")
+          .forEach((b) => b.classList.remove("on"));
+        if (btn) btn.classList.add("on");
+        const a = ARS[i];
+        document.getElementById("ar-box").innerHTML =
+          `<div class="fade"><p style="font-size:14px;font-weight:500;color:var(--color-text-primary);margin:0 0 8px">${a.t}</p><div style="margin:6px 0">${a.svg}</div><div class="card"><p style="font-size:13px;margin:0;line-height:1.7;color:var(--color-text-primary)">${a.tx}</p></div></div>`;
+      }
+
+      function showCat(i, btn) {
+        document
+          .querySelectorAll("[id^=cat]")
+          .forEach((b) => b.classList.remove("on"));
+        if (btn) btn.classList.add("on");
+        const c = CATS[i];
+        document.getElementById("cat-box").innerHTML =
+          `<div class="fade"><div style="margin:6px 0">${c.svg}</div><div class="card" style="border-left:3px solid ${c.c}"><p style="font-size:13px;margin:0;line-height:1.7;color:var(--color-text-primary)">${c.tx}</p></div></div>`;
+      }
+
+      function showCx(i, btn) {
+        document
+          .querySelectorAll("[id^=cx]")
+          .forEach((b) => b.classList.remove("on"));
+        if (btn) btn.classList.add("on");
+        const x = CXS[i];
+        document.getElementById("cx-box").innerHTML =
+          `<div class="fade"><p style="font-size:14px;font-weight:500;color:var(--color-text-primary);margin:0 0 8px">${x.t}</p><pre class="code">${x.code}</pre><div class="card"><p style="font-size:13px;margin:0;line-height:1.7;color:var(--color-text-primary)">${x.tx}</p></div></div>`;
+      }
+
+      function showCv(i, btn) {
+        document
+          .querySelectorAll("[id^=cv]")
+          .forEach((b) => b.classList.remove("on"));
+        if (btn) btn.classList.add("on");
+        const v = CVS[i];
+        const content = v.svg
+          ? `<div style="margin:6px 0">${v.svg}</div>`
+          : `<pre class="code">${v.code}</pre>`;
+        document.getElementById("cv-box").innerHTML =
+          `<div class="fade"><p style="font-size:14px;font-weight:500;color:var(--color-text-primary);margin:0 0 8px">${v.t}</p>${content}<div class="card"><p style="font-size:13px;margin:0;line-height:1.7;color:var(--color-text-primary)">${v.tx}</p></div></div>`;
+      }
+
+      let openCmd = -1;
+      function buildCmds() {
+        const div = document.getElementById("cmd-list");
+        if (!div) return;
+        div.innerHTML = CMDS.map(
+          (c, i) => `
+    <div class="card" style="cursor:pointer;margin-bottom:8px" onclick="toggleCmd(${i})">
+      <div style="display:flex;align-items:flex-start;gap:8px;flex-wrap:wrap">
+        <span class="pill ${c.b}">${c.bl}</span>
+        <code style="font-family:var(--font-mono);font-size:11px;flex:1;word-break:break-all;color:var(--color-text-primary)">${c.l}</code>
+        <span style="font-size:12px;color:var(--color-text-secondary)">${openCmd === i ? "▲" : "▼"}</span>
+      </div>
+      <p style="font-size:12px;color:var(--color-text-secondary);margin:5px 0 0">${c.d}</p>
+      ${openCmd === i ? `<div style="margin-top:10px;display:grid;grid-template-columns:auto 1fr;gap:6px 12px;align-items:start">${c.ps.map((p) => `<code style="font-family:var(--font-mono);font-size:11px;background:var(--color-background-secondary);padding:2px 6px;border-radius:4px;color:#AFA9EC;white-space:nowrap">${p.c}</code><span style="font-size:12px;color:var(--color-text-primary);line-height:1.6">${p.d}</span>`).join("")}</div>` : ""}
+    </div>`,
+        ).join("");
+      }
+      function toggleCmd(i) {
+        openCmd = openCmd === i ? -1 : i;
+        buildCmds();
+      }
+
+      function tab(key, btn) {
+        document
+          .querySelectorAll(".nb")
+          .forEach((b) => b.classList.remove("on"));
+        if (btn) btn.classList.add("on");
+        document.getElementById("zone").innerHTML = TABS[key];
+        if (key === "archi") showAr(0, document.getElementById("ar0"));
+        if (key === "categories") showCat(0, document.getElementById("cat0"));
+        if (key === "complexite") showCx(0, document.getElementById("cx0"));
+        if (key === "coverage") showCv(0, document.getElementById("cv0"));
+        if (key === "qualitygate") setTimeout(() => updateQG(), 50);
+        if (key === "commandes") buildCmds();
+      }
+
+      tab("intro", document.querySelector(".nb"));
+    </script>
+  </body>
+</html>

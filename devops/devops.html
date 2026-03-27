@@ -31,8 +31,16 @@
         font-family: "Lexend", sans-serif;
         color: var(--text);
         background:
-          radial-gradient(circle at top, rgba(99, 210, 255, 0.18), transparent 30%),
-          radial-gradient(circle at bottom left, rgba(52, 224, 161, 0.15), transparent 28%),
+          radial-gradient(
+            circle at top,
+            rgba(99, 210, 255, 0.18),
+            transparent 30%
+          ),
+          radial-gradient(
+            circle at bottom left,
+            rgba(52, 224, 161, 0.15),
+            transparent 28%
+          ),
           linear-gradient(180deg, #050b14 0%, #081120 100%);
         padding: 28px 18px 48px;
       }
@@ -62,7 +70,11 @@
         border: 1px solid var(--border);
         border-radius: 28px;
         background:
-          linear-gradient(135deg, rgba(52, 224, 161, 0.12), rgba(99, 210, 255, 0.08)),
+          linear-gradient(
+            135deg,
+            rgba(52, 224, 161, 0.12),
+            rgba(99, 210, 255, 0.08)
+          ),
           rgba(10, 18, 32, 0.92);
         box-shadow: var(--shadow);
         overflow: hidden;
@@ -76,7 +88,11 @@
         width: 220px;
         height: 220px;
         border-radius: 50%;
-        background: radial-gradient(circle, rgba(99, 210, 255, 0.2), transparent 65%);
+        background: radial-gradient(
+          circle,
+          rgba(99, 210, 255, 0.2),
+          transparent 65%
+        );
         pointer-events: none;
       }
 
@@ -317,6 +333,9 @@
           </button>
           <button class="tab-btn" data-tab="compose">DevOps compose</button>
           <button class="tab-btn" data-tab="nginx">Nginx</button>
+          <button class="tab-btn" data-tab="sonarqube">
+            TD 06 - Vérifier avec Sonarqube
+          </button>
         </div>
 
         <article class="panel active" id="panel-bases">
@@ -340,7 +359,10 @@
               <span class="dot green"></span>
               <span class="frame-label">Module Docker - bases</span>
             </div>
-            <iframe src="td03_docker_complet.html" title="DevOps - les bases"></iframe>
+            <iframe
+              src="td03_docker_complet.html"
+              title="DevOps - les bases"
+            ></iframe>
           </div>
         </article>
 
@@ -399,6 +421,37 @@
               <span class="frame-label">Module Nginx</span>
             </div>
             <iframe src="td05_nginx_devops_complet.html" title="Nginx"></iframe>
+          </div>
+        </article>
+        <article class="panel" id="panel-sonarqube">
+          <div class="panel-head">
+            <div>
+              <h2>TD 06 - Vérifier avec Sonarqube</h2>
+              <p>
+                Découvre SonarQube : l'outil d'analyse statique de code qui
+                détecte les bugs, vulnérabilités, code smells et mesure la
+                couverture de tests. Quality Gate, complexité cognitive, JaCoCo
+                — tout y est.
+              </p>
+            </div>
+            <a
+              class="open-link"
+              href="td06_sonarqube_complet.html"
+              target="_blank"
+              >Ouvrir en grand</a
+            >
+          </div>
+          <div class="frame-shell">
+            <div class="frame-top">
+              <span class="dot red"></span>
+              <span class="dot yellow"></span>
+              <span class="dot green"></span>
+              <span class="frame-label">TD 06 - SonarQube</span>
+            </div>
+            <iframe
+              src="td06_sonarqube_complet.html"
+              title="TD 06 - Vérifier avec Sonarqube"
+            ></iframe>
           </div>
         </article>
       </section>
