@@ -1,0 +1,1007 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>TD 07 – GitLab CI/CD</title>
+<style>
+:root {
+  --color-background-primary: #232118;
+  --color-background-secondary: #2c2a20;
+  --color-text-primary: #efede6;
+  --color-text-secondary: #908e86;
+  --color-border-secondary: rgba(255,255,255,0.1);
+  --color-border-tertiary: rgba(255,255,255,0.07);
+  --color-border-info: #4a87e8;
+  --color-background-info: rgba(74,135,232,0.16);
+  --color-text-info: #80aae8;
+  --color-text-success: #4ac48a;
+  --color-text-danger: #e06b6b;
+  --font-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, "Courier New", monospace;
+}
+body {
+  background: #1c1b18;
+  color: #efede6;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  padding: 18px 20px;
+}
+*{box-sizing:border-box}
+.nb{font-size:12px;padding:5px 12px;border-radius:8px;border:0.5px solid var(--color-border-secondary);background:transparent;color:var(--color-text-primary);cursor:pointer;transition:background .15s}
+.nb:hover{background:var(--color-background-secondary)}
+.nb.on{background:var(--color-background-info);color:var(--color-text-info);border-color:var(--color-border-info)}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:12px;padding:14px 16px;margin:10px 0}
+.code{font-family:var(--font-mono);font-size:11.5px;background:var(--color-background-secondary);border-radius:8px;padding:12px 14px;line-height:1.9;white-space:pre;overflow-x:auto;color:var(--color-text-primary);margin:8px 0}
+.kw{color:#534AB7;font-weight:500}.fl{color:#185FA5;font-weight:500}.cm{color:#888780}.st{color:#0F6E56}.nm{color:#993C1D}
+@media(prefers-color-scheme:dark){.kw{color:#AFA9EC}.fl{color:#85B7EB}.st{color:#5DCAA5}.nm{color:#F0997B}}
+.pill{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;font-weight:500;margin-right:3px}
+.pb{background:#E6F1FB;color:#0C447C}.pg{background:#E1F5EE;color:#085041}.pp{background:#EEEDFE;color:#3C3489}.pa{background:#FAEEDA;color:#633806}.pc{background:#FAECE7;color:#712B13}.pr{background:#FCEBEB;color:#791F1F}
+@media(prefers-color-scheme:dark){.pb{background:#0C447C;color:#B5D4F4}.pg{background:#085041;color:#9FE1CB}.pp{background:#3C3489;color:#CECBF6}.pa{background:#633806;color:#FAC775}.pc{background:#712B13;color:#F5C4B3}.pr{background:#791F1F;color:#F7C1C1}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.fade{animation:fadeIn .2s ease}
+@keyframes flow{from{stroke-dashoffset:20}to{stroke-dashoffset:0}}
+.fan{stroke-dasharray:6 4;animation:flow 1.1s linear infinite}
+</style>
+
+<div style="padding:.75rem 0">
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.25rem">
+  <button class="nb on" onclick="tab('intro',this)">🤖 C'est quoi ?</button>
+  <button class="nb" onclick="tab('install',this)">⚙️ Installation Runner</button>
+  <button class="nb" onclick="tab('premiers',this)">🚀 Premiers scripts</button>
+  <button class="nb" onclick="tab('variables',this)">📦 Variables</button>
+  <button class="nb" onclick="tab('stages',this)">🎭 Stages & Jobs</button>
+  <button class="nb" onclick="tab('artifacts',this)">📂 Artifacts</button>
+  <button class="nb" onclick="tab('cache',this)">⚡ Cache</button>
+  <button class="nb" onclick="tab('when',this)">🎛️ when & workflow</button>
+  <button class="nb" onclick="tab('sonar',this)">🔍 SonarQube + SSH</button>
+  <button class="nb" onclick="tab('dind',this)">🐳 Docker in Docker</button>
+  <button class="nb" onclick="tab('commandes',this)">📋 Toutes les cmds</button>
+</div>
+<div id="zone"></div>
+</div>
+
+<script>
+const TABS={
+
+/* ══════════════════════ INTRO ══════════════════════ */
+intro:`<div class="fade">
+<p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 10px;line-height:1.7">
+CI/CD = <strong>robot dev automatique</strong> 🤖. Tu fais <code>git push</code> → GitLab compile, teste, déploie TOUT seul. Clique sur chaque brique.
+</p>
+<svg width="100%" viewBox="0 0 680 290">
+<defs><marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<g onclick="xi('dev')" style="cursor:pointer">
+  <rect x="10" y="110" width="90" height="55" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+  <text font-size="18" x="55" y="140" text-anchor="middle">👨‍💻</text>
+  <text font-size="10" x="55" y="156" text-anchor="middle" fill="#0C447C">git push</text>
+</g>
+<line class="fan" x1="102" y1="138" x2="130" y2="138" stroke="#378ADD" stroke-width="1.8" marker-end="url(#a)"/>
+<g onclick="xi('gitlab')" style="cursor:pointer">
+  <rect x="132" y="95" width="110" height="85" rx="10" fill="#FAECE7" stroke="#D85A30" stroke-width="1"/>
+  <text font-size="18" x="187" y="143" text-anchor="middle">🦊</text>
+  <text font-size="11" font-weight="500" x="187" y="162" text-anchor="middle" fill="#712B13">GitLab</text>
+  <text font-size="10" x="187" y="175" text-anchor="middle" fill="#993C1D">lit .gitlab-ci.yml</text>
+</g>
+<g onclick="xi('yml')" style="cursor:pointer">
+  <rect x="152" y="210" width="110" height="46" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+  <text font-size="10" font-weight="500" x="207" y="231" text-anchor="middle" fill="#3C3489">.gitlab-ci.yml</text>
+  <text font-size="10" x="207" y="248" text-anchor="middle" fill="#534AB7">recette du pipeline</text>
+</g>
+<line x1="207" y1="208" x2="207" y2="182" stroke="#534AB7" stroke-width="0.8" stroke-dasharray="3 2"/>
+<line class="fan" x1="244" y1="138" x2="282" y2="138" stroke="#D85A30" stroke-width="1.8" marker-end="url(#a)"/>
+<g onclick="xi('runner')" style="cursor:pointer">
+  <rect x="284" y="95" width="120" height="85" rx="10" fill="#E1F5EE" stroke="#1D9E75" stroke-width="1"/>
+  <text font-size="18" x="344" y="143" text-anchor="middle">⚙️</text>
+  <text font-size="11" font-weight="500" x="344" y="162" text-anchor="middle" fill="#085041">GitLab Runner</text>
+  <text font-size="10" x="344" y="175" text-anchor="middle" fill="#0F6E56">crée les conteneurs</text>
+</g>
+<line class="fan" x1="406" y1="120" x2="444" y2="90" stroke="#1D9E75" stroke-width="1.5" marker-end="url(#a)"/>
+<line class="fan" x1="406" y1="138" x2="444" y2="153" stroke="#1D9E75" stroke-width="1.5" marker-end="url(#a)"/>
+<line class="fan" x1="406" y1="158" x2="444" y2="218" stroke="#1D9E75" stroke-width="1.5" marker-end="url(#a)"/>
+<g onclick="xi('jobs')" style="cursor:pointer">
+  <rect x="446" y="58" width="100" height="44" rx="7" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/><text font-size="11" font-weight="500" x="496" y="84" text-anchor="middle" fill="#085041">🔨 build</text>
+</g>
+<g onclick="xi('jobs')" style="cursor:pointer">
+  <rect x="446" y="118" width="100" height="44" rx="7" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/><text font-size="11" font-weight="500" x="496" y="144" text-anchor="middle" fill="#085041">🧪 test</text>
+</g>
+<g onclick="xi('jobs')" style="cursor:pointer">
+  <rect x="446" y="178" width="100" height="44" rx="7" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/><text font-size="11" font-weight="500" x="496" y="204" text-anchor="middle" fill="#085041">🚀 deploy</text>
+</g>
+<rect x="436" y="46" width="124" height="190" rx="8" fill="none" stroke="#888780" stroke-width="0.5" stroke-dasharray="4 3"/>
+<text font-size="10" x="498" y="42" text-anchor="middle" fill="#888780">pipeline</text>
+<g onclick="xi('token')" style="cursor:pointer">
+  <rect x="284" y="215" width="120" height="44" rx="8" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.5"/>
+  <text font-size="11" x="344" y="235" text-anchor="middle" fill="#633806">🔑 Token</text>
+  <text font-size="10" x="344" y="251" text-anchor="middle" fill="#854F0B">authentifie le Runner</text>
+</g>
+<line x1="344" y1="213" x2="344" y2="182" stroke="#BA7517" stroke-width="0.7" stroke-dasharray="3 2"/>
+</svg>
+<div id="xi-box" class="card" style="min-height:64px;margin-top:4px">
+  <p style="font-size:13px;color:var(--color-text-secondary);margin:0">👆 Clique sur une brique pour l'explication.</p>
+</div>
+</div>`,
+
+/* ══════════════════════ INSTALL ══════════════════════ */
+install:`<div class="fade">
+<p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 10px;line-height:1.7">
+3 étapes obligatoires avant de pouvoir utiliser CI/CD. Clique chaque étape.
+</p>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+  <button class="nb on" id="in0" onclick="si(0,this)">① Lancer le Runner</button>
+  <button class="nb" id="in1" onclick="si(1,this)">② Créer le token GitLab</button>
+  <button class="nb" id="in2" onclick="si(2,this)">③ Enregistrer le Runner</button>
+  <button class="nb" id="in3" onclick="si(3,this)">Le socket Docker ?</button>
+  <button class="nb" id="in4" onclick="si(4,this)">Réenregistrer avec Sonar</button>
+  <button class="nb" id="in5" onclick="si(5,this)">Réenregistrer avec DinD</button>
+</div>
+<div id="in-box"></div>
+</div>`,
+
+/* ══════════════════════ PREMIERS SCRIPTS ══════════════════════ */
+premiers:`<div class="fade">
+<p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 10px;line-height:1.7">
+Tout commence par un fichier <code style="font-family:var(--font-mono);font-size:12px">.gitlab-ci.yml</code> à la racine du projet. Clique sur chaque exemple.
+</p>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+  <button class="nb on" id="pr0" onclick="sp(0,this)">Hello World</button>
+  <button class="nb" id="pr1" onclick="sp(1,this)">Condition shell (|)</button>
+  <button class="nb" id="pr2" onclick="sp(2,this)">before/after_script</button>
+  <button class="nb" id="pr3" onclick="sp(3,this)">image: Docker</button>
+  <button class="nb" id="pr4" onclick="sp(4,this)">Job en échec (exit 1)</button>
+  <button class="nb" id="pr5" onclick="sp(5,this)">Vars prédéfinies GitLab</button>
+</div>
+<div id="pr-box"></div>
+</div>`,
+
+/* ══════════════════════ VARIABLES ══════════════════════ */
+variables:`<div class="fade">
+<p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 10px;line-height:1.7">
+3 façons de déclarer des variables dans GitLab CI/CD. Clique pour voir chaque méthode.
+</p>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+  <button class="nb on" id="va0" onclick="sv(0,this)">Dans le .yml (visible)</button>
+  <button class="nb" id="va1" onclick="sv(1,this)">Interface GitLab (secrète)</button>
+  <button class="nb" id="va2" onclick="sv(2,this)">Variable Masked vs Protected</button>
+  <button class="nb" id="va3" onclick="sv(3,this)">Variable type Fichier</button>
+</div>
+<div id="va-box"></div>
+</div>`,
+
+/* ══════════════════════ STAGES ══════════════════════ */
+stages:`<div class="fade">
+<p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 10px;line-height:1.7">
+Les stages = les <strong>étapes</strong> du pipeline. Les jobs = les <strong>tâches</strong> dans chaque étape. Clique sur le bouton pour simuler.
+</p>
+<div style="display:flex;gap:8px;margin-bottom:10px;align-items:center;flex-wrap:wrap">
+  <button class="nb" id="st-btn" onclick="toggleStages()">▶ Simuler le pipeline</button>
+  <span id="st-status" style="font-size:12px;color:var(--color-text-secondary)"></span>
+</div>
+<canvas id="st-canvas" width="660" height="230" style="width:100%;border-radius:10px;border:0.5px solid var(--color-border-tertiary);background:var(--color-background-secondary);margin-bottom:10px"></canvas>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+<div class="card" style="border-left:3px solid #534AB7">
+  <p style="font-size:12px;font-weight:500;color:#534AB7;margin:0 0 5px">Règles des stages</p>
+  <p style="font-size:12px;color:var(--color-text-secondary);margin:0;line-height:1.8">
+    ▶ Les stages s'exécutent <strong>dans l'ordre déclaré</strong><br>
+    ▶ Tous les jobs d'un stage doivent réussir avant le suivant<br>
+    ▶ Jobs du même stage → <strong>en parallèle</strong> (si plusieurs runners)<br>
+    ▶ 1 job = 1 conteneur Docker neuf et vide
+  </p>
+</div>
+<pre class="code" style="font-size:11px"><span class="kw">stages:</span>
+  - build    <span class="cm">← 1er</span>
+  - test     <span class="cm">← 2e</span>
+  - deploy   <span class="cm">← 3e</span>
+
+<span class="fl">frontend_build:</span>
+  <span class="kw">stage:</span> build  <span class="cm">← en parallèle</span>
+  <span class="kw">script:</span>
+    - echo "Build frontend"
+
+<span class="fl">backend_build:</span>
+  <span class="kw">stage:</span> build  <span class="cm">← avec frontend_build</span>
+  <span class="kw">script:</span>
+    - echo "Build backend"</pre>
+</div>
+</div>`,
+
+/* ══════════════════════ ARTIFACTS ══════════════════════ */
+artifacts:`<div class="fade">
+<p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 10px;line-height:1.7">
+Chaque job tourne dans un conteneur <strong>vide</strong>. Les artifacts permettent de passer des fichiers d'un job à un autre dans le même pipeline.
+</p>
+<div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+  <button class="nb on" id="ar0" onclick="sar(0,this)">Problème sans artifact</button>
+  <button class="nb" id="ar1" onclick="sar(1,this)">Solution avec artifact</button>
+  <button class="nb" id="ar2" onclick="sar(2,this)">Pipeline complet demo-no-db</button>
+  <button class="nb" id="ar3" onclick="sar(3,this)">Artifact vs Cache</button>
+</div>
+<div id="ar-box"></div>
+</div>`,
+
+/* ══════════════════════ CACHE ══════════════════════ */
+cache:`<div class="fade">
+<p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 10px;line-height:1.7">
+Le cache évite de retélécharger les mêmes dépendances à chaque pipeline. Clique pour voir les exemples.
+</p>
+<div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+  <button class="nb on" id="ca0" onclick="sca(0,this)">Cache Maven</button>
+  <button class="nb" id="ca1" onclick="sca(1,this)">Cache Python/pip</button>
+  <button class="nb" id="ca2" onclick="sca(2,this)">Différence cache vs artifact</button>
+</div>
+<div id="ca-box"></div>
+</div>`,
+
+/* ══════════════════════ WHEN & WORKFLOW ══════════════════════ */
+when:`<div class="fade">
+<p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 10px;line-height:1.7">
+Tu peux contrôler <em>quand</em> un job ou tout le pipeline s'exécute. Clique pour voir chaque cas.
+</p>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+  <button class="nb on" id="wh0" onclick="swh(0,this)">when: on_failure</button>
+  <button class="nb" id="wh1" onclick="swh(1,this)">when: always</button>
+  <button class="nb" id="wh2" onclick="swh(2,this)">when: manual</button>
+  <button class="nb" id="wh3" onclick="swh(3,this)">allow_failure: true</button>
+  <button class="nb" id="wh4" onclick="swh(4,this)">workflow: rules</button>
+  <button class="nb" id="wh5" onclick="swh(5,this)">workflow: tag version</button>
+  <button class="nb" id="wh6" onclick="swh(6,this)">git tag + push</button>
+</div>
+<div id="wh-box"></div>
+</div>`,
+
+/* ══════════════════════ SONAR + SSH ══════════════════════ */
+sonar:`<div class="fade">
+<p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 10px;line-height:1.7">
+Deux exercices avancés du TD : intégrer SonarQube dans le pipeline, et déployer sur AlwaysData via SSH.
+</p>
+<div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+  <button class="nb on" id="so0" onclick="sso(0,this)">Pipeline complet + SonarQube</button>
+  <button class="nb" id="so1" onclick="sso(1,this)">Déploiement SSH AlwaysData</button>
+  <button class="nb" id="so2" onclick="sso(2,this)">Variable SSH_PRIVATE_KEY</button>
+</div>
+<div id="so-box"></div>
+</div>`,
+
+/* ══════════════════════ DOCKER IN DOCKER ══════════════════════ */
+dind:`<div class="fade">
+<p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 10px;line-height:1.7">
+Docker in Docker (DinD) = faire tourner Docker DANS un conteneur Docker. Utile pour construire des images dans un pipeline CI/CD.
+</p>
+<div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+  <button class="nb on" id="di0" onclick="sdi(0,this)">C'est quoi DinD ?</button>
+  <button class="nb" id="di1" onclick="sdi(1,this)">Pipeline avec DinD</button>
+  <button class="nb" id="di2" onclick="sdi(2,this)">Réenregistrer le Runner</button>
+</div>
+<div id="di-box"></div>
+</div>`,
+
+/* ══════════════════════ COMMANDES ══════════════════════ */
+commandes:`<div class="fade">
+<p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 10px;line-height:1.7">Toutes les commandes du TD07, décortiquées. Clique pour déplier.</p>
+<div id="cmd-list"></div>
+</div>`
+};
+
+/* ══ DONNÉES ══ */
+const XI={
+  dev:{t:'👨‍💻 Toi',c:'#185FA5',tx:'Tu écris du code, tu fais <code>git push</code>. C\'est TOUT. Le robot fait le reste automatiquement.'},
+  gitlab:{t:'🦊 GitLab — le cerveau',c:'#D85A30',tx:'Quand tu push, GitLab lit automatiquement le fichier <code>.gitlab-ci.yml</code> dans ton dépôt et envoie les instructions au Runner pour lancer le pipeline.'},
+  yml:{t:'📄 .gitlab-ci.yml — la recette',c:'#534AB7',tx:'Fichier YAML à la RACINE de ton dépôt. Il définit tout : les stages, les jobs, les commandes, les conditions. C\'est la recette que GitLab exécute à chaque push.'},
+  runner:{t:'⚙️ GitLab Runner — les bras',c:'#0F6E56',tx:'Conteneur Docker qui tourne sur ta machine. Il reçoit les ordres de GitLab, crée un nouveau conteneur Docker pour chaque job, exécute les commandes, et renvoie les résultats (succès ou échec).'},
+  jobs:{t:'📦 Jobs — les tâches',c:'#0F6E56',tx:'Chaque job = une tâche dans un conteneur Docker neuf et vide. Build = compiler, Test = lancer les tests, Deploy = envoyer en prod. Chaque job tourne isolément des autres.'},
+  token:{t:'🔑 Token — le badge d\'accès',c:'#854F0B',tx:'Généré sur GitLab (Settings > CI/CD > Runners). Le Runner en a besoin pour prouver qu\'il est autorisé à exécuter les pipelines de TON projet. ⚠️ Copie-le immédiatement, il disparaît !'},
+};
+
+const INS=[
+{t:'① Lancer le conteneur Runner',code:`<span class="cm"># Télécharger l'image</span>
+docker pull gitlab/gitlab-runner:latest
+
+<span class="cm"># Démarrer le runner (Linux/GitBash - double // pour GitBash)</span>
+docker run -d --name gitlab-runner --restart always \\
+  -v //srv/gitlab-runner/config:/etc/gitlab-runner \\
+  -v //var/run/docker.sock:/var/run/docker.sock \\
+  gitlab/gitlab-runner:latest`,
+tx:'<strong>--restart always</strong> = le Runner redémarre tout seul si Docker redémarre.<br><strong>-v /srv/...</strong> = sa config est sauvegardée sur ta machine (persiste entre redémarrages).<br><strong>-v /var/run/docker.sock</strong> = le Runner peut créer des conteneurs Docker pour les jobs.'},
+{t:'② Créer le token sur GitLab',svg:`<svg width="100%" viewBox="0 0 680 130">
+<defs><marker id="a2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect x="20" y="20" width="140" height="38" rx="7" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/><text font-size="11" x="90" y="43" text-anchor="middle" fill="#0C447C">Settings &gt; CI/CD</text>
+<line x1="162" y1="39" x2="188" y2="39" stroke="#888780" stroke-width="1" marker-end="url(#a2)"/>
+<rect x="190" y="20" width="130" height="38" rx="7" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/><text font-size="11" x="255" y="43" text-anchor="middle" fill="#085041">Runners → New</text>
+<line x1="322" y1="39" x2="348" y2="39" stroke="#888780" stroke-width="1" marker-end="url(#a2)"/>
+<rect x="350" y="20" width="200" height="38" rx="7" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.5"/><text font-size="11" x="450" y="43" text-anchor="middle" fill="#633806">✅ Run untagged jobs → Generate</text>
+<text font-size="11" x="340" y="88" text-anchor="middle" fill="#D85A30">⚠️ Copie le token MAINTENANT — affiché une seule fois !</text>
+<text font-size="11" x="340" y="108" text-anchor="middle" fill="#888780">export RUNNER_TOKEN="glrt-xxxxxxxxxxxxx"</text>
+</svg>`,
+tx:'"Run untagged jobs" = le Runner accepte les jobs sans tag (les nôtres). Sans ça, aucun job ne démarre. Le token disparaît après quelques minutes — copie-le et exporte-le immédiatement dans ta variable RUNNER_TOKEN.'},
+{t:'③ Enregistrer le Runner',code:`docker run --rm \\
+  -v //srv/gitlab-runner/config:/etc/gitlab-runner \\
+  gitlab/gitlab-runner register \\
+    --non-interactive \\           <span class="cm">← pas de questions interactives</span>
+    --url "https://git.esi-bru.be" \\   <span class="cm">← ton GitLab</span>
+    --token "$RUNNER_TOKEN" \\     <span class="cm">← ton token exporté</span>
+    --executor "docker" \\         <span class="cm">← créer des conteneurs Docker</span>
+    --docker-image alpine:latest \\ <span class="cm">← image par défaut des jobs</span>
+    --description "docker-runner"  <span class="cm">← nom visible dans GitLab</span>`,
+tx:'Après cette commande, ton Runner apparaît dans Settings > CI/CD > Runners avec un point vert. Sans enregistrement, GitLab ne sait pas que ton Runner existe.'},
+{t:'Le socket /var/run/docker.sock',svg:`<svg width="100%" viewBox="0 0 680 160">
+<defs><marker id="a3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect x="20" y="20" width="180" height="130" rx="10" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text font-size="11" font-weight="500" x="110" y="40" text-anchor="middle" fill="#0C447C">Ta machine hôte</text>
+<rect x="36" y="50" width="148" height="36" rx="6" fill="#185FA5"/>
+<text font-size="11" x="110" y="73" text-anchor="middle" fill="#E6F1FB">Docker daemon (dockerd)</text>
+<rect x="36" y="100" width="148" height="30" rx="6" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.5"/>
+<text font-size="11" x="110" y="120" text-anchor="middle" fill="#633806">/var/run/docker.sock</text>
+<line x1="202" y1="115" x2="278" y2="115" stroke="#BA7517" stroke-width="1.5" stroke-dasharray="4 2" marker-end="url(#a3)"/>
+<text font-size="10" x="240" y="107" text-anchor="middle" fill="#BA7517">volume -v</text>
+<rect x="280" y="60" width="150" height="70" rx="10" fill="#E1F5EE" stroke="#1D9E75" stroke-width="1"/>
+<text font-size="11" font-weight="500" x="355" y="82" text-anchor="middle" fill="#085041">Runner conteneur</text>
+<text font-size="10" x="355" y="100" text-anchor="middle" fill="#0F6E56">peut créer d'autres</text>
+<text font-size="10" x="355" y="116" text-anchor="middle" fill="#0F6E56">conteneurs → les jobs</text>
+<line x1="432" y1="95" x2="468" y2="95" stroke="#1D9E75" stroke-width="1.5" marker-end="url(#a3)"/>
+<rect x="470" y="68" width="110" height="54" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+<text font-size="11" font-weight="500" x="525" y="92" text-anchor="middle" fill="#3C3489">Job conteneur</text>
+<text font-size="10" x="525" y="108" text-anchor="middle" fill="#534AB7">alpine, maven...</text>
+</svg>`,
+tx:'Le socket est comme un "téléphone interne" entre le Runner et le daemon Docker. En partageant ce socket, le Runner peut dire à Docker "crée un conteneur alpine pour ce job". Sans ça, le Runner ne peut pas créer les conteneurs des jobs.'},
+{t:'Réenregistrer avec --docker-network-mode (Sonar)',code:`<span class="cm"># 1. Retirer le Runner dans GitLab (Settings > CI/CD)</span>
+<span class="cm"># 2. Arrêter et supprimer le conteneur</span>
+docker stop gitlab-runner && docker rm gitlab-runner
+
+<span class="cm"># 3. Relancer le conteneur (même commande qu'avant)</span>
+docker run -d --name gitlab-runner --restart always \\
+  -v //srv/gitlab-runner/config:/etc/gitlab-runner \\
+  -v //var/run/docker.sock:/var/run/docker.sock \\
+  gitlab/gitlab-runner:latest
+
+<span class="cm"># 4. Réenregistrer avec le réseau SonarQube</span>
+docker run --rm \\
+  -v //srv/gitlab-runner/config:/etc/gitlab-runner \\
+  gitlab/gitlab-runner register \\
+    --non-interactive \\
+    --url "https://git.esi-bru.be" \\
+    --token "$RUNNER_TOKEN" \\
+    --executor "docker" \\
+    --docker-image alpine:latest \\
+    --description "docker-runner" \\
+    --docker-network-mode "sonar-network"  <span class="cm">← NOUVEAU</span>`,
+tx:'Pour que les jobs puissent parler à SonarQube (localhost:9000), ils doivent être sur le même réseau Docker. L\'option <code>--docker-network-mode "sonar-network"</code> connecte automatiquement tous les conteneurs de jobs à ce réseau.'},
+{t:'Réenregistrer avec --docker-volumes (DinD)',code:`<span class="cm"># Même processus stop/rm/run que ci-dessus</span>
+<span class="cm"># Réenregistrer avec le socket Docker en volume</span>
+
+docker run --rm \\
+  -v //srv/gitlab-runner/config:/etc/gitlab-runner \\
+  gitlab/gitlab-runner register \\
+    --non-interactive \\
+    --url "https://git.esi-bru.be" \\
+    --token "$RUNNER_TOKEN" \\
+    --executor "docker" \\
+    --docker-image alpine:latest \\
+    --description "docker-runner" \\
+    --docker-volumes /var/run/docker.sock:/var/run/docker.sock  <span class="cm">← NOUVEAU</span>`,
+tx:'Pour Docker in Docker (construire des images Docker dans un job), les conteneurs des jobs doivent eux aussi avoir accès au socket Docker. On monte le socket en tant que volume dans chaque job via cette option.'},
+];
+
+const PRS=[
+{t:'Hello World — le pipeline minimal',code:`<span class="cm"># .gitlab-ci.yml à la RACINE du projet</span>
+<span class="fl">my_first_job:</span>       <span class="cm">← nom du job (affiché dans Build > Jobs)</span>
+  <span class="kw">script:</span>            <span class="cm">← commandes à exécuter</span>
+    - echo <span class="st">"Hello World!"</span>
+
+<span class="cm"># Pour déclencher : git add . && git commit -m "..." && git push</span>
+<span class="cm"># Voir les logs : Build > Jobs > cliquer sur le numéro du job</span>`,
+tx:'Le pipeline le plus simple possible : un seul job, une seule commande. Dès que tu push ce fichier, GitLab crée automatiquement un pipeline et l\'exécute. Résultat visible dans Build > Jobs.'},
+{t:'Condition shell avec | (bloc multiligne YAML)',code:`<span class="fl">my_first_job:</span>
+  <span class="kw">script:</span>
+    - echo <span class="st">"Hello!"</span>
+    - |
+      if [ <span class="st">"$MY_VARIABLE"</span> -eq 42 ]; then
+        echo <span class="st">"La variable vaut 42 ✅"</span>
+      else
+        echo <span class="st">"Valeur inattendue : $MY_VARIABLE"</span>
+      fi
+
+<span class="cm"># Le | = Block Style Indicator YAML</span>
+<span class="cm"># Permet d'écrire un bloc multiligne en préservant les retours à la ligne</span>`,
+tx:'Le symbole <code>|</code> en YAML = tout ce qui suit est du texte multiligne. Les indentations et retours à la ligne sont préservés. Utile pour les scripts shell avec if/else, boucles, etc.'},
+{t:'before_script & after_script',code:`<span class="fl">my_first_job:</span>
+  <span class="kw">before_script:</span>
+    - echo <span class="st">"Préparation..."</span>
+    - apk update            <span class="cm">← update Alpine</span>
+    - apk add curl          <span class="cm">← installe curl</span>
+  <span class="kw">script:</span>
+    - curl --version        <span class="cm">← maintenant disponible</span>
+  <span class="kw">after_script:</span>
+    - echo <span class="st">"Nettoyage..."</span>  <span class="cm">← toujours exécuté même si échec</span>`,
+tx:'<strong>before_script</strong> = commandes avant le job principal (installer des outils, configurer l\'environnement).<br><strong>after_script</strong> = commandes après, MÊME si le job a échoué (nettoyage, rapport, notification). Important pour les logs.'},
+{t:'image: — choisir l\'environnement Docker',code:`<span class="cm"># Sans image = alpine par défaut (pas de Java, pas de Maven !)</span>
+<span class="fl">my_first_job:</span>
+  <span class="kw">image:</span> maven:3.9.9-eclipse-temurin-23-alpine   <span class="cm">← Java + Maven inclus</span>
+  <span class="kw">script:</span>
+    - mvn --version   <span class="cm">← fonctionne !</span>
+
+<span class="cm"># Autres exemples :</span>
+<span class="cm"># image: python:3.8          → Python 3.8</span>
+<span class="cm"># image: node:20             → Node.js</span>
+<span class="cm"># image: docker:20.10.16     → Docker (pour DinD)</span>`,
+tx:'Sans <code>image</code>, le job utilise l\'image par défaut définie lors de l\'enregistrement (alpine → très minimal, pas de Java, pas de Maven). Avec <code>image</code>, chaque job peut avoir son propre environnement sur mesure.'},
+{t:'Job en échec — exit 1',code:`<span class="fl">my_first_job:</span>
+  <span class="kw">script:</span>
+    - mvn --version   <span class="cm">← ❌ Maven non installé dans alpine → FAILED</span>
+
+<span class="cm"># Ou simuler un échec intentionnel :</span>
+<span class="fl">build-job:</span>
+  <span class="kw">script:</span>
+    - echo <span class="st">"Compilation..."</span>
+    - exit 1          <span class="cm">← force l'échec</span>
+
+<span class="cm"># Voir le statut : Build > Jobs → rouge = FAILED</span>
+<span class="cm"># Voir la cause : cliquer sur le job → lire les logs</span>`,
+tx:'Si une commande échoue (exit code ≠ 0), le job passe en FAILED et le pipeline s\'arrête. <code>exit 1</code> simule un échec volontaire. Très utile pour tester le comportement du pipeline en cas d\'erreur.'},
+{t:'Variables prédéfinies par GitLab',code:`<span class="fl">mon_job:</span>
+  <span class="kw">script:</span>
+    - echo <span class="st">"URL: $CI_PROJECT_URL"</span>
+    - echo <span class="st">"Auteur: $CI_COMMIT_AUTHOR"</span>
+    - echo <span class="st">"Branche: $CI_COMMIT_BRANCH"</span>
+    - echo <span class="st">"Tag: $CI_COMMIT_TAG"</span>
+    - echo <span class="st">"Ref: $CI_COMMIT_REF_NAME"</span>
+    - echo <span class="st">"Dossier projet: $CI_PROJECT_DIR"</span>
+
+<span class="cm"># GitLab injecte automatiquement +50 variables dans chaque job</span>
+<span class="cm"># Doc complète : docs.gitlab.com/ci/variables/predefined_variables/</span>`,
+tx:'GitLab injecte automatiquement des dizaines de variables dans chaque job : qui a fait le commit, sur quelle branche, quel tag, l\'URL du projet... Tu peux les utiliser directement avec $ sans les déclarer.'},
+];
+
+const VAS=[
+{t:'Déclarer dans le .yml (visible dans les logs)',code:`<span class="cm"># Globales — disponibles dans TOUS les jobs</span>
+<span class="kw">variables:</span>
+  FIRST_VARIABLE: <span class="st">"Test"</span>
+  MON_PORT: <span class="st">"8080"</span>
+
+<span class="fl">deploy_job:</span>
+  <span class="kw">variables:</span>               <span class="cm">← locales — ce job seulement</span>
+    ENV: <span class="st">"production"</span>
+  <span class="kw">script:</span>
+    - echo <span class="st">"Port: $MON_PORT"</span>
+    - echo <span class="st">"Env: $ENV"</span>`,
+tx:'Variables déclarées directement dans le fichier YAML. Visibles dans le code et dans les logs. À utiliser pour les valeurs non sensibles (ports, noms de dossiers, versions...).'},
+{t:'Via l\'interface GitLab (secrète / masquée)',svg:`<svg width="100%" viewBox="0 0 680 170">
+<rect x="20" y="10" width="640" height="150" rx="10" fill="var(--color-background-secondary)" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>
+<text font-size="12" font-weight="500" x="340" y="32" text-anchor="middle" fill="var(--color-text-primary)">Settings &gt; CI/CD &gt; Variables &gt; Add Variable</text>
+<text font-size="11" x="36" y="58" fill="#534AB7" font-weight="500">Key :</text><text font-size="11" x="110" y="58" fill="var(--color-text-secondary)">MY_VARIABLE  (le nom, ex: SONAR_TOKEN, SSH_PRIVATE_KEY)</text>
+<text font-size="11" x="36" y="78" fill="#534AB7" font-weight="500">Value :</text><text font-size="11" x="110" y="78" fill="var(--color-text-secondary)">42  (la valeur, ex: glpat-xxxx, clé privée SSH)</text>
+<text font-size="11" x="36" y="98" fill="#534AB7" font-weight="500">Masked :</text><text font-size="11" x="110" y="98" fill="var(--color-text-secondary)">✅ Cocher → valeur cachée dans les logs (★★★★★ au lieu de la vraie valeur)</text>
+<text font-size="11" x="36" y="118" fill="#534AB7" font-weight="500">Protected :</text><text font-size="11" x="110" y="118" fill="var(--color-text-secondary)">✅ Cocher → accessible uniquement sur branches protégées (main...)</text>
+<text font-size="11" x="36" y="138" fill="#D85A30" font-weight="500">Environnements :</text><text font-size="11" x="160" y="138" fill="var(--color-text-secondary)">All → disponible dans tous les envs (ou choisir un env spécifique)</text>
+<text font-size="11" x="36" y="156" fill="#888780">→ Utilisation dans le YAML : echo "$MY_VARIABLE" (le $ devant le nom)</text>
+</svg>`,
+tx:'Pour les mots de passe, tokens, clés API : JAMAIS dans le fichier YAML (visible dans Git). Utilise toujours l\'interface GitLab. Les variables Masked ne s\'affichent pas dans les logs même si tu fais echo.'},
+{t:'Masked vs Protected — quelle différence ?',svg:`<svg width="100%" viewBox="0 0 680 150">
+<rect x="20" y="10" width="300" height="120" rx="10" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+<text font-size="12" font-weight="500" x="170" y="32" text-anchor="middle" fill="#3C3489">Masked = cachée dans les LOGS</text>
+<text font-size="11" x="36" y="56" fill="#534AB7">echo "$MY_PASS" dans le script</text>
+<text font-size="11" x="36" y="74" fill="#534AB7">→ logs affichent : [MASKED]</text>
+<text font-size="11" x="36" y="92" fill="#534AB7">Visible dans Settings > Variables</text>
+<text font-size="11" x="36" y="118" fill="#888780">Cas : SONAR_TOKEN, SSH_PRIVATE_KEY</text>
+<rect x="360" y="10" width="300" height="120" rx="10" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/>
+<text font-size="12" font-weight="500" x="510" y="32" text-anchor="middle" fill="#085041">Protected = branche protégée seulement</text>
+<text font-size="11" x="376" y="56" fill="#0F6E56">Disponible UNIQUEMENT si le</text>
+<text font-size="11" x="376" y="74" fill="#0F6E56">pipeline tourne sur "main"</text>
+<text font-size="11" x="376" y="92" fill="#0F6E56">Invisible sur feature/*, dev...</text>
+<text font-size="11" x="376" y="118" fill="#888780">Cas : clés de déploiement prod</text>
+</svg>`,
+tx:'Tu peux combiner les deux ! Masked + Protected = variable cachée dans les logs ET accessible seulement sur main. Idéal pour les tokens de déploiement en production.'},
+{t:'Variable de type Fichier',code:`<span class="cm"># Dans Settings > CI/CD > Variables</span>
+<span class="cm"># Type = "File" (au lieu de "Variable")</span>
+<span class="cm"># La valeur est stockée dans un fichier temporaire</span>
+<span class="cm"># La variable contient le CHEMIN vers ce fichier</span>
+
+<span class="fl">deploy_job:</span>
+  <span class="kw">script:</span>
+    - echo <span class="st">"Chemin du fichier: $MON_CERT"</span>
+    - cat <span class="st">"$MON_CERT"</span>   <span class="cm">← lit le contenu du fichier</span>
+
+<span class="cm"># Utile pour :</span>
+<span class="cm"># - Certificats SSL</span>
+<span class="cm"># - Clés privées SSH (alternative à SSH_PRIVATE_KEY string)</span>
+<span class="cm"># - Fichiers de configuration secrets (kubeconfig, etc.)</span>`,
+tx:'Quand le type est "Fichier", GitLab crée un fichier temporaire sur le Runner avec la valeur, et la variable contient le chemin vers ce fichier. Très pratique pour les certificats et clés privées qui peuvent contenir des sauts de ligne.'},
+];
+
+const ARS=[
+{t:'Problème sans artifact — conteneur vide',svg:`<svg width="100%" viewBox="0 0 680 160">
+<defs><marker id="a4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect x="20" y="30" width="140" height="80" rx="8" fill="#E1F5EE" stroke="#1D9E75" stroke-width="1"/>
+<text font-size="11" font-weight="500" x="90" y="58" text-anchor="middle" fill="#085041">build_job</text>
+<text font-size="10" x="90" y="76" text-anchor="middle" fill="#0F6E56">mvn compile</text>
+<text font-size="10" x="90" y="94" text-anchor="middle" fill="#1D9E75">→ crée target/*.jar ✅</text>
+<rect x="90" y="118" width="60" height="14" rx="3" fill="#D85A30"/>
+<text font-size="9" x="120" y="129" text-anchor="middle" fill="#fff">supprimé !</text>
+<line x1="162" y1="70" x2="218" y2="70" stroke="#888780" stroke-width="1.5" marker-end="url(#a4)"/>
+<text font-size="10" x="190" y="62" text-anchor="middle" fill="#D85A30">conteneur détruit</text>
+<rect x="220" y="30" width="140" height="80" rx="8" fill="#FCEBEB" stroke="#A32D2D" stroke-width="1"/>
+<text font-size="11" font-weight="500" x="290" y="58" text-anchor="middle" fill="#791F1F">test_job</text>
+<text font-size="10" x="290" y="76" text-anchor="middle" fill="#A32D2D">conteneur VIDE !</text>
+<text font-size="10" x="290" y="94" text-anchor="middle" fill="#D85A30">target/*.jar introuvable ❌</text>
+<text font-size="11" x="340" y="145" text-anchor="middle" fill="#888780">Chaque job repart d'un conteneur totalement vide → les fichiers ne survivent pas</text>
+</svg>`,
+tx:'Sans artifact, les fichiers générés par un job disparaissent quand le conteneur est détruit. Le job suivant repart d\'un conteneur neuf et ne voit rien de ce que le job précédent a produit.'},
+{t:'Solution avec artifact — partager les fichiers',code:`<span class="fl">build:</span>
+  <span class="kw">stage:</span> build
+  <span class="kw">image:</span> maven:3.9.9-eclipse-temurin-23-alpine
+  <span class="kw">script:</span>
+    - mvn compile
+  <span class="kw">artifacts:</span>
+    <span class="kw">paths:</span>
+      - target/          <span class="cm">← GitLab stocke ce dossier</span>
+    <span class="kw">expire_in:</span> 1h     <span class="cm">← supprimé après 1h</span>
+
+<span class="fl">test:</span>
+  <span class="kw">stage:</span> test
+  <span class="kw">image:</span> maven:3.9.9-eclipse-temurin-23-alpine
+  <span class="kw">script:</span>
+    - ls target/         <span class="cm">← disponible ici automatiquement !</span>
+    - mvn test`,
+tx:'GitLab stocke temporairement les artifacts sur ses serveurs. Les jobs suivants les téléchargent automatiquement. Aucune configuration supplémentaire côté job destinataire !'},
+{t:'Pipeline complet demo-no-db (3 stages)',code:`<span class="kw">stages:</span>
+  - compile
+  - test
+  - package
+
+<span class="fl">compile_job:</span>
+  <span class="kw">stage:</span> compile
+  <span class="kw">image:</span> maven:3.9.9-eclipse-temurin-23-alpine
+  <span class="kw">script:</span>
+    - mvn compile
+  <span class="kw">artifacts:</span>
+    <span class="kw">paths:</span>
+      - target/classes/
+    <span class="kw">expire_in:</span> 1h
+
+<span class="fl">test_job:</span>
+  <span class="kw">stage:</span> test
+  <span class="kw">image:</span> maven:3.9.9-eclipse-temurin-23-alpine
+  <span class="kw">script:</span>
+    - mvn test -o          <span class="cm">← offline, utilise les classes compilées</span>
+  <span class="kw">artifacts:</span>
+    <span class="kw">paths:</span>
+      - target/surefire-reports/
+    <span class="kw">expire_in:</span> 1h
+
+<span class="fl">package_job:</span>
+  <span class="kw">stage:</span> package
+  <span class="kw">image:</span> maven:3.9.9-eclipse-temurin-23-alpine
+  <span class="kw">script:</span>
+    - mvn package -DskipTests
+  <span class="kw">artifacts:</span>
+    <span class="kw">paths:</span>
+      - target/*.jar       <span class="cm">← récupérer le .jar final !</span>
+    <span class="kw">expire_in:</span> 24h`,
+tx:'Pipeline complet avec 3 stages. Le .jar final est dans les artifacts du stage package — tu peux le télécharger depuis l\'interface GitLab (Build > Jobs > Download artifacts).'},
+{t:'Artifact vs Cache — la différence essentielle',svg:`<svg width="100%" viewBox="0 0 680 170">
+<rect x="20" y="10" width="300" height="145" rx="10" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+<text font-size="12" font-weight="500" x="170" y="32" text-anchor="middle" fill="#3C3489">📂 Artifact</text>
+<text font-size="11" x="36" y="54" fill="#534AB7">✅ Partager fichiers entre jobs</text>
+<text font-size="11" x="36" y="72" fill="#534AB7">✅ Même pipeline</text>
+<text font-size="11" x="36" y="90" fill="#534AB7">✅ Stocker le résultat final (.jar)</text>
+<text font-size="11" x="36" y="108" fill="#534AB7">✅ Téléchargeable dans l'interface</text>
+<text font-size="11" x="36" y="126" fill="#888780">expire_in: 1h (supprimé après)</text>
+<text font-size="11" x="36" y="144" fill="#888780">Exemple: target/*.jar, rapports</text>
+<rect x="360" y="10" width="300" height="145" rx="10" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/>
+<text font-size="12" font-weight="500" x="510" y="32" text-anchor="middle" fill="#085041">⚡ Cache</text>
+<text font-size="11" x="376" y="54" fill="#0F6E56">✅ Éviter de retélécharger</text>
+<text font-size="11" x="376" y="72" fill="#0F6E56">✅ Entre plusieurs PIPELINES</text>
+<text font-size="11" x="376" y="90" fill="#0F6E56">✅ Dépendances (Maven, pip)</text>
+<text font-size="11" x="376" y="108" fill="#0F6E56">✅ Stocké sur le Runner</text>
+<text font-size="11" x="376" y="126" fill="#888780">Persist entre exécutions</text>
+<text font-size="11" x="376" y="144" fill="#888780">Exemple: .m2/repository, ~/.cache/pip</text>
+</svg>`,
+tx:'Artifact = "passe ce fichier au job suivant dans CE pipeline". Cache = "mémorise ces fichiers pour accélérer les prochains pipelines". Les deux servent des buts différents et complémentaires.'},
+];
+
+const CAS=[
+{t:'Cache Maven — éviter de retélécharger les libs Java',code:`<span class="fl">my_job:</span>
+  <span class="kw">image:</span> maven:3.9.9-eclipse-temurin-23-alpine
+  <span class="kw">cache:</span>
+    <span class="kw">paths:</span>
+      - .m2/repository/   <span class="cm">← dossier à mettre en cache sur le Runner</span>
+  <span class="kw">script:</span>
+    - mvn test -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository
+
+<span class="cm"># $CI_PROJECT_DIR = chemin absolu du projet dans le conteneur</span>
+<span class="cm"># On pointe Maven vers notre cache local au lieu de ~/.m2</span>`,
+tx:'Sans cache : Maven télécharge TOUTES les dépendances à chaque pipeline (2-3 minutes). Avec cache : dépendances stockées sur le Runner entre les pipelines → 2ème exécution ultra-rapide. Le dossier .m2/repository doit être dans le projet pour que le cache fonctionne avec Maven.'},
+{t:'Cache Python/pip — éviter pip install',code:`<span class="fl">run-python:</span>
+  <span class="kw">image:</span> python:3.8
+  <span class="kw">cache:</span>
+    <span class="kw">paths:</span>
+      - .cache/pip/       <span class="cm">← cache pip dans le projet</span>
+  <span class="kw">before_script:</span>
+    - pip install --cache-dir .cache/pip requests
+  <span class="kw">script:</span>
+    - python mon_script.py
+
+<span class="cm"># Script Python utilisé (exercice G du TD) :</span>
+<span class="cm"># import requests</span>
+<span class="cm"># response = requests.get("https://git.esi-bru.be/api/v4/broadcast_messages")</span>`,
+tx:'Même principe que Maven mais pour Python. Sans cache, pip télécharge requests à chaque pipeline. Avec <code>--cache-dir .cache/pip</code>, les packages sont stockés dans le projet et réutilisés au pipeline suivant.'},
+{t:'Résumé visuel : artifact vs cache dans le temps',svg:`<svg width="100%" viewBox="0 0 680 180">
+<defs><marker id="a5" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text font-size="11" font-weight="500" x="10" y="24" fill="var(--color-text-primary)">Pipeline 1</text>
+<rect x="10" y="30" width="100" height="34" rx="6" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/><text font-size="10" x="60" y="51" text-anchor="middle" fill="#0C447C">build</text>
+<line x1="112" y1="47" x2="148" y2="47" stroke="#185FA5" stroke-width="1" stroke-dasharray="3 2" marker-end="url(#a5)"/>
+<text font-size="9" x="130" y="42" text-anchor="middle" fill="#534AB7">artifact</text>
+<rect x="150" y="30" width="100" height="34" rx="6" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/><text font-size="10" x="200" y="51" text-anchor="middle" fill="#0C447C">test</text>
+<line x1="252" y1="47" x2="288" y2="47" stroke="#185FA5" stroke-width="1" stroke-dasharray="3 2" marker-end="url(#a5)"/>
+<text font-size="9" x="270" y="42" text-anchor="middle" fill="#534AB7">artifact</text>
+<rect x="290" y="30" width="100" height="34" rx="6" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/><text font-size="10" x="340" y="51" text-anchor="middle" fill="#0C447C">deploy</text>
+<rect x="420" y="30" width="100" height="34" rx="6" fill="#E1F5EE" stroke="#1D9E75" stroke-width="1"/><text font-size="10" x="470" y="51" text-anchor="middle" fill="#085041">💾 cache</text>
+<text font-size="11" font-weight="500" x="10" y="104" fill="var(--color-text-primary)">Pipeline 2</text>
+<rect x="10" y="110" width="100" height="34" rx="6" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/><text font-size="10" x="60" y="131" text-anchor="middle" fill="#3C3489">build</text>
+<line x1="112" y1="127" x2="148" y2="127" stroke="#534AB7" stroke-width="1" stroke-dasharray="3 2" marker-end="url(#a5)"/>
+<rect x="150" y="110" width="100" height="34" rx="6" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/><text font-size="10" x="200" y="131" text-anchor="middle" fill="#3C3489">test</text>
+<line x1="252" y1="127" x2="288" y2="127" stroke="#534AB7" stroke-width="1" stroke-dasharray="3 2" marker-end="url(#a5)"/>
+<rect x="290" y="110" width="100" height="34" rx="6" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/><text font-size="10" x="340" y="131" text-anchor="middle" fill="#3C3489">deploy</text>
+<line x1="420" y1="112" x2="420" y2="66" stroke="#1D9E75" stroke-width="1.5" marker-end="url(#a5)"/>
+<text font-size="10" x="400" y="92" fill="#1D9E75">réutilise</text>
+<rect x="420" y="110" width="100" height="34" rx="6" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/><text font-size="10" x="470" y="131" text-anchor="middle" fill="#085041">⚡ depuis cache</text>
+<text font-size="10" x="340" y="170" text-anchor="middle" fill="#888780">Artifact = dans UN pipeline │ Cache = entre PLUSIEURS pipelines</text>
+</svg>`,tx:'Le cache reste entre les pipelines (persisté sur le Runner). Les artifacts ne vivent que le temps d\'un pipeline puis expirent. Retenez : artifact = fichier à passer au job suivant maintenant. Cache = dépendances à réutiliser demain.'},
+];
+
+const WHD=[
+{t:'when: on_failure — réagir à un échec',code:`<span class="kw">stages:</span>
+  - build
+  - test
+  - notify
+
+<span class="fl">build-job:</span>
+  <span class="kw">stage:</span> build
+  <span class="kw">script:</span>
+    - exit 1          <span class="cm">← simule un échec !</span>
+
+<span class="fl">test-job:</span>
+  <span class="kw">stage:</span> test
+  <span class="kw">script:</span>
+    - echo "tests..."  <span class="cm">← ⏭ JAMAIS exécuté (build a échoué)</span>
+
+<span class="fl">notify-job:</span>
+  <span class="kw">stage:</span> notify
+  <span class="kw">script:</span>
+    - echo <span class="st">"🚨 Notification d'échec envoyée !"</span>
+  <span class="kw">when:</span> on_failure   <span class="cm">← s'exécute PARCE QUE build a échoué</span>`,
+tx:'Quand build échoue → test est SAUTÉ → notify s\'exécute car <code>when: on_failure</code>. Parfait pour envoyer une notification Slack, email, ou faire un rollback de base de données.'},
+{t:'when: always — toujours exécuter',code:`<span class="fl">cleanup-job:</span>
+  <span class="kw">stage:</span> cleanup
+  <span class="kw">script:</span>
+    - echo <span class="st">"Nettoyage des fichiers temporaires..."</span>
+    - rm -rf /tmp/build-*
+  <span class="kw">when:</span> always   <span class="cm">← s'exécute que build ait réussi ou échoué</span>
+
+<span class="cm"># Équivalent de "finally" en Java / try-catch-finally</span>
+<span class="cm"># Utile pour : rapports, nettoyage, archivage</span>`,
+tx:'<code>when: always</code> = le job s\'exécute dans TOUS les cas, peu importe ce qui s\'est passé avant. C\'est l\'équivalent d\'un bloc <code>finally</code> en Java. Utile pour les nettoyages et rapports.'},
+{t:'when: manual — déclenchement humain',code:`<span class="fl">deploy-prod:</span>
+  <span class="kw">stage:</span> deploy
+  <span class="kw">script:</span>
+    - echo <span class="st">"Déploiement en PRODUCTION !"</span>
+  <span class="kw">when:</span> manual   <span class="cm">← attend qu'un humain clique sur ▶</span>
+
+<span class="cm"># Dans l'interface GitLab : Build > Pipelines</span>
+<span class="cm"># Le job apparaît avec un bouton ▶ grisé</span>
+<span class="cm"># Quelqu'un doit cliquer pour déclencher</span>
+<span class="cm"># Parfait pour : déploiement en production, actions irréversibles</span>`,
+tx:'<code>when: manual</code> = le job n\'exécute pas automatiquement. Un humain doit cliquer sur le bouton Play dans l\'interface. Essentiel pour les déploiements en production qui nécessitent une validation humaine.'},
+{t:'allow_failure: true — tolérer l\'échec',code:`<span class="fl">build-job:</span>
+  <span class="kw">stage:</span> build
+  <span class="kw">script:</span>
+    - exit 1          <span class="cm">← échoue volontairement</span>
+  <span class="kw">allow_failure:</span> <span class="nm">true</span>  <span class="cm">← le pipeline CONTINUE quand même</span>
+
+<span class="fl">test-job:</span>
+  <span class="kw">stage:</span> test
+  <span class="kw">script:</span>
+    - echo <span class="st">"Je tourne même si build a échoué !"</span>
+
+<span class="cm"># Sans allow_failure (défaut) : build échoue → tout s'arrête → FAILED</span>
+<span class="cm"># Avec allow_failure:true : build "échoue" avec ⚠️ → pipeline continue → PASSED</span>`,
+tx:'<code>allow_failure: true</code> + le job qui échoue → pipeline passe quand même en PASSED (avec un ⚠️ avertissement). Utile pour des analyses non bloquantes comme SonarQube, des tests optionnels, ou des linting qui ne doivent pas bloquer le déploiement.'},
+{t:'workflow: rules — déclencher sur conditions',code:`<span class="cm"># Déclencher seulement sur la branche main</span>
+<span class="kw">workflow:</span>
+  <span class="kw">rules:</span>
+    - <span class="kw">if:</span> <span class="st">'$CI_COMMIT_BRANCH == "main"'</span>
+
+<span class="cm"># Déclencher sur main OU sur merge request</span>
+<span class="kw">workflow:</span>
+  <span class="kw">rules:</span>
+    - <span class="kw">if:</span> <span class="st">'$CI_COMMIT_BRANCH == "main"'</span>
+    - <span class="kw">if:</span> <span class="st">'$CI_PIPELINE_SOURCE == "merge_request_event"'</span>
+
+<span class="cm"># ⚠️ only/except → DEPRECATED, ne pas utiliser</span>
+<span class="cm"># Utiliser workflow: rules: à la place</span>`,
+tx:'<code>workflow</code> contrôle si le PIPELINE entier démarre ou non. Sans workflow → chaque push sur n\'importe quelle branche déclenche le pipeline. Avec workflow → on peut restreindre à main, à des tags, à des merge requests...'},
+{t:'workflow: tag de version',code:`<span class="kw">workflow:</span>
+  <span class="kw">rules:</span>
+    - <span class="kw">if:</span> <span class="st">'$CI_COMMIT_TAG =~ /^v\d+\.\d+$/'</span>
+    <span class="cm"># Déclenche seulement sur : v1.0, v2.0, v1.5...</span>
+    <span class="cm"># Pas sur : "test", "feature-xyz", "v1.0.0-beta"</span>
+
+<span class="cm"># Pour créer et pousser un tag :</span>
+git tag v1.0
+git push origin v1.0`,
+tx:'L\'expression régulière <code>^v\\d+\\.\\d+$</code> matche v1.0, v2.0, v10.5 mais PAS v1.0.0 ou "test". Très utilisé pour déclencher un déploiement automatique uniquement quand on crée une nouvelle version officielle.'},
+{t:'git tag — créer et pousser un tag',code:`<span class="cm"># Créer un tag sur le commit actuel</span>
+git tag v1.0
+
+<span class="cm"># Pousser SEULEMENT le tag (pas les commits)</span>
+git push origin v1.0
+
+<span class="cm"># Voir tous les tags</span>
+git tag
+
+<span class="cm"># Supprimer un tag local</span>
+git tag -d v1.0
+
+<span class="cm"># Supprimer un tag distant</span>
+git push origin --delete v1.0`,
+tx:'Un tag Git = une étiquette collée sur un commit. Contrairement à une branche, il ne bouge pas. Très utilisé pour marquer les versions (v1.0, v2.0). <code>git push origin v1.0</code> pousse UNIQUEMENT le tag, pas les commits.'},
+];
+
+const SOS=[
+{t:'Pipeline complet avec SonarQube (3 stages)',code:`<span class="kw">stages:</span>
+  - build
+  - test
+  - sonarqube
+
+<span class="fl">build:</span>
+  <span class="kw">stage:</span> build
+  <span class="kw">image:</span> maven:3.9.9-eclipse-temurin-23-alpine
+  <span class="kw">script:</span>
+    - mvn compile
+  <span class="kw">artifacts:</span>
+    <span class="kw">paths:</span>
+      - target/
+    <span class="kw">expire_in:</span> 1h
+
+<span class="fl">test:</span>
+  <span class="kw">stage:</span> test
+  <span class="kw">image:</span> maven:3.9.9-eclipse-temurin-23-alpine
+  <span class="kw">script:</span>
+    - mvn test jacoco:report
+  <span class="kw">artifacts:</span>
+    <span class="kw">paths:</span>
+      - target/site/jacoco/
+    <span class="kw">expire_in:</span> 1h
+
+<span class="fl">sonarqube:</span>
+  <span class="kw">stage:</span> sonarqube
+  <span class="kw">image:</span>
+    <span class="kw">name:</span> sonarsource/sonar-scanner-cli:latest
+  <span class="kw">script:</span>
+    - sonar-scanner
+        -Dsonar.host.url=http://sonarqube:9000
+        -Dsonar.login=$SONAR_TOKEN  <span class="cm">← variable masquée dans GitLab</span>`,
+tx:'Le Runner doit être dans le réseau sonar-network (réenregistrer avec --docker-network-mode sonar-network). Le token SonarQube doit être ajouté comme variable masquée SONAR_TOKEN dans Settings > CI/CD > Variables. Le job sonar-scanner utilise les artifacts JaCoCo du stage test.'},
+{t:'Déploiement sur AlwaysData via SSH',code:`<span class="kw">stages:</span>
+  - build
+  - deploy
+
+<span class="fl">build:</span>
+  <span class="kw">stage:</span> build
+  <span class="kw">image:</span> maven:3.9.9-eclipse-temurin-23-alpine
+  <span class="kw">script:</span>
+    - mvn package -DskipTests
+  <span class="kw">artifacts:</span>
+    <span class="kw">paths:</span>
+      - target/*.jar
+    <span class="kw">expire_in:</span> 1h
+
+<span class="fl">deploy:</span>
+  <span class="kw">stage:</span> deploy
+  <span class="kw">before_script:</span>
+    - mkdir -p ~/.ssh
+    - echo <span class="st">"$SSH_PRIVATE_KEY"</span> > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa           <span class="cm">← droits obligatoires</span>
+    - ssh-keyscan alwaysdata.net >> ~/.ssh/known_hosts
+  <span class="kw">script:</span>
+    - scp target/*.jar user@ssh.alwaysdata.net:/home/user/app/
+    <span class="cm"># Bonus : redémarrer via l'API AlwaysData</span>
+    <span class="cm"># curl -X POST -u "token:" https://api.alwaysdata.com/v1/site/restart/</span>`,
+tx:'La clé privée SSH est stockée comme variable masquée SSH_PRIVATE_KEY dans GitLab. Le job la récupère, la place dans ~/.ssh/id_rsa avec les bons droits (chmod 600 obligatoire), puis utilise scp pour transférer le .jar vers AlwaysData.'},
+{t:'Créer la variable SSH_PRIVATE_KEY',svg:`<svg width="100%" viewBox="0 0 680 155">
+<rect x="20" y="10" width="640" height="135" rx="10" fill="var(--color-background-secondary)" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>
+<text font-size="12" font-weight="500" x="340" y="32" text-anchor="middle" fill="var(--color-text-primary)">Settings &gt; CI/CD &gt; Variables &gt; Add Variable</text>
+<text font-size="11" x="36" y="58" fill="#534AB7" font-weight="500">Key :</text><text font-size="11" x="100" y="58" fill="var(--color-text-secondary)">SSH_PRIVATE_KEY</text>
+<text font-size="11" x="36" y="78" fill="#534AB7" font-weight="500">Value :</text><text font-size="11" x="100" y="78" fill="var(--color-text-secondary)">Le contenu de ~/.ssh/id_rsa (ta clé privée)</text>
+<text font-size="11" x="36" y="98" fill="#D85A30" font-weight="500">Type :</text><text font-size="11" x="100" y="98" fill="var(--color-text-secondary)">Variable (ou Fichier pour les sauts de ligne)</text>
+<text font-size="11" x="36" y="118" fill="#534AB7" font-weight="500">Masked :</text><text font-size="11" x="100" y="118" fill="var(--color-text-secondary)">✅ Obligatoire — clé privée JAMAIS visible dans les logs</text>
+<text font-size="11" x="36" y="138" fill="#888780">cat ~/.ssh/id_rsa → copier tout le contenu (-----BEGIN/END OPENSSH PRIVATE KEY-----)</text>
+</svg>`,
+tx:'Ta clé privée SSH permet de se connecter à AlwaysData sans mot de passe. En la mettant comme variable masquée, le Runner peut l\'utiliser pour faire des transferts scp/ssh automatiques sans que la clé ne soit jamais visible dans les logs.'},
+];
+
+const DIS=[
+{t:'Docker in Docker — c\'est quoi ?',svg:`<svg width="100%" viewBox="0 0 680 190">
+<defs><marker id="a6" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect x="20" y="20" width="640" height="155" rx="12" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.5"/>
+<text font-size="12" font-weight="500" x="340" y="44" text-anchor="middle" fill="#633806">Machine hôte → contient Docker</text>
+<rect x="60" y="56" width="540" height="105" rx="10" fill="#E1F5EE" stroke="#1D9E75" stroke-width="0.5"/>
+<text font-size="11" font-weight="500" x="330" y="76" text-anchor="middle" fill="#085041">Conteneur Runner (avec socket Docker)</text>
+<rect x="100" y="86" width="200" height="62" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+<text font-size="11" x="200" y="110" text-anchor="middle" fill="#3C3489">Job conteneur</text>
+<text font-size="10" x="200" y="128" text-anchor="middle" fill="#534AB7">image: docker:20.10.16</text>
+<text font-size="10" x="200" y="144" text-anchor="middle" fill="#534AB7">→ docker build -t mon-image .</text>
+<line x1="302" y1="117" x2="358" y2="117" stroke="#534AB7" stroke-width="1.5" marker-end="url(#a6)"/>
+<rect x="360" y="86" width="200" height="62" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text font-size="11" x="460" y="110" text-anchor="middle" fill="#0C447C">Nouvelle image créée</text>
+<text font-size="10" x="460" y="128" text-anchor="middle" fill="#185FA5">g12345/4dop1dr-image:main</text>
+<text font-size="10" x="460" y="144" text-anchor="middle" fill="#185FA5">→ docker push (Docker Hub)</text>
+</svg>`,
+tx:'DinD = un job qui construit des images Docker. Le job tourne dans un conteneur avec l\'image docker:20.10.16 et un service dind. Il peut faire des <code>docker build</code> et <code>docker push</code> pour vérifier que ton Dockerfile fonctionne avant de le déployer.'},
+{t:'Pipeline avec Docker in Docker',code:`<span class="fl">docker_build:</span>
+  <span class="kw">stage:</span> docker_build
+  <span class="kw">image:</span> docker:20.10.16         <span class="cm">← image Docker CLI</span>
+  <span class="kw">services:</span>
+    - docker:20.10.16-dind      <span class="cm">← service Docker daemon</span>
+  <span class="kw">variables:</span>
+    DOCKER_TLS_CERTDIR: <span class="st">"/certs"</span>  <span class="cm">← obligatoire pour DinD</span>
+  <span class="kw">script:</span>
+    - docker build -t $DOCKER_USERNAME/4dop1dr-image:$CI_COMMIT_REF_NAME .
+    - docker push $DOCKER_USERNAME/4dop1dr-image:$CI_COMMIT_REF_NAME
+
+<span class="cm"># $DOCKER_USERNAME = variable masquée dans Settings > CI/CD > Variables</span>
+<span class="cm"># $CI_COMMIT_REF_NAME = nom de la branche ou du tag (ex: "main", "v1.0")</span>`,
+tx:'<code>services</code> = un conteneur qui tourne en parallèle du job principal. Ici c\'est le daemon Docker (dind). Le job principal (CLI) lui parle pour construire et pousser l\'image. <code>$CI_COMMIT_REF_NAME</code> permet de tagger l\'image avec le nom de la branche.'},
+{t:'Réenregistrer le Runner pour DinD',code:`<span class="cm"># 1. Retirer le Runner de GitLab (Settings > CI/CD)</span>
+<span class="cm"># 2. Arrêter et supprimer le conteneur actuel</span>
+docker stop gitlab-runner && docker rm gitlab-runner
+
+<span class="cm"># 3. Relancer le Runner</span>
+docker run -d --name gitlab-runner --restart always \\
+  -v //srv/gitlab-runner/config:/etc/gitlab-runner \\
+  -v //var/run/docker.sock:/var/run/docker.sock \\
+  gitlab/gitlab-runner:latest
+
+<span class="cm"># 4. Réenregistrer avec --docker-volumes pour DinD</span>
+docker run --rm \\
+  -v //srv/gitlab-runner/config:/etc/gitlab-runner \\
+  gitlab/gitlab-runner register \\
+    --non-interactive \\
+    --url "https://git.esi-bru.be" \\
+    --token "$RUNNER_TOKEN" \\
+    --executor "docker" \\
+    --docker-image alpine:latest \\
+    --description "docker-runner" \\
+    --docker-volumes /var/run/docker.sock:/var/run/docker.sock`,
+tx:'Pour DinD, le Runner doit passer le socket Docker aux conteneurs de jobs (via --docker-volumes). Comme ça, le job peut utiliser docker build/push directement.'},
+];
+
+/* ══ COMMANDES ══ */
+const CMDS=[
+{l:'docker pull gitlab/gitlab-runner:latest',b:'pb',bl:'setup',d:'Télécharge l\'image du Runner GitLab.',ps:[{c:'gitlab/gitlab-runner:latest',d:'Image officielle du Runner, version la plus récente'}]},
+{l:'docker run -d --name gitlab-runner --restart always -v //srv/gitlab-runner/config:/etc/gitlab-runner -v //var/run/docker.sock:/var/run/docker.sock gitlab/gitlab-runner:latest',b:'pp',bl:'setup',d:'Lance le conteneur Runner en arrière-plan.',ps:[{c:'--restart always',d:'Redémarre si Docker redémarre (Runner toujours disponible)'},{c:'-v /srv/.../config',d:'Config persistante entre redémarrages du Runner'},{c:'-v /var/run/docker.sock',d:'Socket pour créer des conteneurs de jobs'}]},
+{l:'export RUNNER_TOKEN="glrt-xxxx"',b:'pa',bl:'shell',d:'Exporte le token dans la variable d\'environnement.',ps:[{c:'export',d:'Rend la variable disponible pour toutes les commandes suivantes du terminal'}]},
+{l:'docker run --rm -v //srv/gitlab-runner/config:/etc/gitlab-runner gitlab/gitlab-runner register --non-interactive --url "..." --token "$RUNNER_TOKEN" --executor "docker" --docker-image alpine:latest --description "docker-runner"',b:'pg',bl:'register',d:'Enregistre le Runner auprès de GitLab.',ps:[{c:'--non-interactive',d:'Sans questions → peut être scripté'},{c:'--url',d:'URL de ton instance GitLab'},{c:'--token $RUNNER_TOKEN',d:'Token copié depuis Settings > CI/CD > Runners'},{c:'--executor "docker"',d:'Crée un conteneur Docker par job'},{c:'--docker-image alpine:latest',d:'Image par défaut si le job ne spécifie pas image'}]},
+{l:'docker stop gitlab-runner && docker rm gitlab-runner',b:'pc',bl:'runner',d:'Arrête et supprime le Runner (pour réinstaller).',ps:[{c:'docker stop',d:'Arrête proprement le conteneur'},{c:'docker rm',d:'Supprime le conteneur (config /srv conservée)'}]},
+{l:'git add . && git commit -m "Ajout pipeline" && git push',b:'pg',bl:'git',d:'Déclenche automatiquement un pipeline GitLab.',ps:[{c:'git add .',d:'Ajoute tous les fichiers (dont .gitlab-ci.yml)'},{c:'git push',d:'GitLab détecte .gitlab-ci.yml → lance le pipeline'}]},
+{l:'git tag v1.0 && git push origin v1.0',b:'pg',bl:'git',d:'Crée et pousse un tag de version → déclenche un pipeline conditionnel.',ps:[{c:'git tag v1.0',d:'Crée une étiquette sur le commit actuel'},{c:'git push origin v1.0',d:'Pousse uniquement le tag vers GitLab'}]},
+{l:'docker run -d --name gitlab-runner ... --docker-network-mode "sonar-network"',b:'pp',bl:'sonar',d:'Réenregistrement Runner avec réseau SonarQube.',ps:[{c:'--docker-network-mode "sonar-network"',d:'Tous les jobs rejoignent ce réseau → peuvent parler à sonarqube:9000'}]},
+{l:'docker run --rm ... gitlab/gitlab-runner register ... --docker-volumes /var/run/docker.sock:/var/run/docker.sock',b:'pp',bl:'dind',d:'Réenregistrement Runner pour Docker in Docker.',ps:[{c:'--docker-volumes /var/run/docker.sock:/var/run/docker.sock',d:'Les jobs peuvent utiliser docker build/push (DinD)'}]},
+];
+
+/* ══ STAGES ANIMATION ══ */
+let stTimer=null,stRunning=false,stStep=-1;
+const STAGES=[
+  {n:'build',color:'#378ADD',jobs:['compile_frontend','compile_backend'],parallel:true},
+  {n:'test',color:'#1D9E75',jobs:['test_job'],parallel:false},
+  {n:'deploy',color:'#D85A30',jobs:['deploy_job'],parallel:false},
+];
+function toggleStages(){
+  stRunning?stopSt():startSt();
+  const b=document.getElementById('st-btn');
+  if(b)b.textContent=stRunning?'⏹ Arrêter':'▶ Simuler le pipeline';
+}
+function stopSt(){clearInterval(stTimer);stRunning=false;stStep=-1;const b=document.getElementById('st-btn');if(b)b.textContent='▶ Simuler le pipeline';}
+function startSt(){
+  stRunning=true;stStep=0;drawSt(-1);
+  stTimer=setInterval(()=>{
+    if(!document.getElementById('st-canvas')){stopSt();return;}
+    if(stStep>=STAGES.length){
+      const s=document.getElementById('st-status');if(s)s.textContent='✅ Pipeline PASSED !';
+      stopSt();drawSt(STAGES.length);return;
+    }
+    const s=document.getElementById('st-status');
+    if(s)s.textContent=`⚙️ Stage en cours : "${STAGES[stStep].n}"…`;
+    drawSt(stStep);stStep++;
+  },1300);
+}
+function drawSt(cur){
+  const cv=document.getElementById('st-canvas');if(!cv)return;
+  const ctx=cv.getContext('2d'),W=660,H=230;
+  ctx.clearRect(0,0,W,H);
+  const isDark=window.matchMedia('(prefers-color-scheme:dark)').matches;
+  const sw=180,gap=20,ox=16;
+  STAGES.forEach((st,i)=>{
+    const x=ox+i*(sw+gap);
+    const done=i<cur,active=i===cur;
+    const bg=done?(isDark?'rgba(29,158,117,0.2)':'#E1F5EE'):active?(isDark?`rgba(55,138,221,0.2)`:`rgba(55,138,221,0.1)`):(isDark?'#2C2C2A':'#F1EFE8');
+    ctx.fillStyle=bg;ctx.strokeStyle=done?'#1D9E75':active?st.color:'#B4B2A9';ctx.lineWidth=done||active?1.5:0.5;
+    rrx(ctx,x,14,sw,206,10);ctx.fill();ctx.stroke();
+    ctx.fillStyle=done?'#085041':active?st.color:'#888780';
+    ctx.font='bold 12px sans-serif';ctx.textAlign='center';
+    ctx.fillText((done?'✅ ':active?'⚙️ ':'⏳ ')+st.n,x+sw/2,44);
+    if(st.parallel&&st.jobs.length>1){
+      ctx.font='9px sans-serif';ctx.fillStyle='#888780';
+      ctx.fillText('(parallèle)',x+sw/2,58);
+    }
+    st.jobs.forEach((j,ji)=>{
+      const jy=70+ji*70;
+      ctx.fillStyle=done?(isDark?'rgba(29,158,117,0.3)':'#9FE1CB'):active?(isDark?'rgba(55,138,221,0.15)':'rgba(55,138,221,0.08)'):(isDark?'#444441':'#D3D1C7');
+      ctx.strokeStyle=done?'#1D9E75':active?st.color:'#B4B2A9';ctx.lineWidth=0.5;
+      rrx(ctx,x+10,jy,sw-20,54,6);ctx.fill();ctx.stroke();
+      ctx.fillStyle=done?'#085041':active?st.color:'#888780';ctx.font='11px sans-serif';
+      ctx.fillText(j,x+sw/2,jy+22);
+      ctx.font='9px sans-serif';ctx.fillStyle='#888780';
+      ctx.fillText('1 conteneur Docker',x+sw/2,jy+40);
+    });
+    if(i<STAGES.length-1){
+      ctx.strokeStyle=done?'#1D9E75':'#B4B2A9';ctx.lineWidth=1.5;
+      ctx.beginPath();ctx.moveTo(x+sw+2,117);ctx.lineTo(x+sw+gap-2,117);ctx.stroke();
+      ctx.fillStyle=done?'#1D9E75':'#B4B2A9';ctx.beginPath();
+      ctx.moveTo(x+sw+gap-2,112);ctx.lineTo(x+sw+gap+4,117);ctx.lineTo(x+sw+gap-2,122);ctx.fill();
+    }
+  });
+}
+function rrx(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();}
+
+/* ══ FONCTIONS ══ */
+function xi(k){const e=XI[k];document.getElementById('xi-box').innerHTML=`<div class="fade"><p style="font-size:14px;font-weight:500;color:${e.c};margin:0 0 5px">${e.t}</p><p style="font-size:13px;margin:0;line-height:1.7;color:var(--color-text-primary)">${e.tx}</p></div>`;}
+function mkBox(data,i,arr,prefix){
+  const d=arr[i];
+  const body=d.code?`<pre class="code">${d.code}</pre>`:d.svg?`<div style="margin:6px 0">${d.svg}</div>`:'';
+  document.getElementById(prefix+'-box').innerHTML=`<div class="fade"><p style="font-size:14px;font-weight:500;color:var(--color-text-primary);margin:0 0 8px">${d.t}</p>${body}<div class="card"><p style="font-size:13px;margin:0;line-height:1.7;color:var(--color-text-primary)">${d.tx}</p></div></div>`;
+}
+function si(i,btn){document.querySelectorAll('[id^=in]').forEach(b=>b.classList.remove('on'));if(btn)btn.classList.add('on');mkBox(null,i,INS,'in');}
+function sp(i,btn){document.querySelectorAll('[id^=pr]').forEach(b=>b.classList.remove('on'));if(btn)btn.classList.add('on');mkBox(null,i,PRS,'pr');}
+function sv(i,btn){document.querySelectorAll('[id^=va]').forEach(b=>b.classList.remove('on'));if(btn)btn.classList.add('on');mkBox(null,i,VAS,'va');}
+function sar(i,btn){document.querySelectorAll('[id^=ar]').forEach(b=>b.classList.remove('on'));if(btn)btn.classList.add('on');mkBox(null,i,ARS,'ar');}
+function sca(i,btn){document.querySelectorAll('[id^=ca]').forEach(b=>b.classList.remove('on'));if(btn)btn.classList.add('on');mkBox(null,i,CAS,'ca');}
+function swh(i,btn){document.querySelectorAll('[id^=wh]').forEach(b=>b.classList.remove('on'));if(btn)btn.classList.add('on');mkBox(null,i,WHD,'wh');}
+function sso(i,btn){document.querySelectorAll('[id^=so]').forEach(b=>b.classList.remove('on'));if(btn)btn.classList.add('on');mkBox(null,i,SOS,'so');}
+function sdi(i,btn){document.querySelectorAll('[id^=di]').forEach(b=>b.classList.remove('on'));if(btn)btn.classList.add('on');mkBox(null,i,DIS,'di');}
+
+let oCmd=-1;
+function buildCmds(){
+  const div=document.getElementById('cmd-list');if(!div)return;
+  div.innerHTML=CMDS.map((c,i)=>`
+    <div class="card" style="cursor:pointer;margin-bottom:8px" onclick="tCmd(${i})">
+      <div style="display:flex;align-items:flex-start;gap:8px;flex-wrap:wrap">
+        <span class="pill ${c.b}">${c.bl}</span>
+        <code style="font-family:var(--font-mono);font-size:11px;flex:1;word-break:break-all;color:var(--color-text-primary)">${c.l}</code>
+        <span style="font-size:11px;color:var(--color-text-secondary)">${oCmd===i?'▲':'▼'}</span>
+      </div>
+      <p style="font-size:12px;color:var(--color-text-secondary);margin:5px 0 0">${c.d}</p>
+      ${oCmd===i?`<div style="margin-top:10px;display:grid;grid-template-columns:auto 1fr;gap:6px 12px;align-items:start">${c.ps.map(p=>`<code style="font-family:var(--font-mono);font-size:11px;background:var(--color-background-secondary);padding:2px 6px;border-radius:4px;color:#534AB7;white-space:nowrap">${p.c}</code><span style="font-size:12px;color:var(--color-text-primary);line-height:1.6">${p.d}</span>`).join('')}</div>`:''}
+    </div>`).join('');
+}
+function tCmd(i){oCmd=oCmd===i?-1:i;buildCmds();}
+
+function tab(key,btn){
+  stopSt();
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
+  if(btn)btn.classList.add('on');
+  document.getElementById('zone').innerHTML=TABS[key];
+  if(key==='install'){si(0,document.getElementById('in0'));}
+  if(key==='premiers'){sp(0,document.getElementById('pr0'));}
+  if(key==='variables'){sv(0,document.getElementById('va0'));}
+  if(key==='stages')setTimeout(()=>drawSt(-1),50);
+  if(key==='artifacts'){sar(0,document.getElementById('ar0'));}
+  if(key==='cache'){sca(0,document.getElementById('ca0'));}
+  if(key==='when'){swh(0,document.getElementById('wh0'));}
+  if(key==='sonar'){sso(0,document.getElementById('so0'));}
+  if(key==='dind'){sdi(0,document.getElementById('di0'));}
+  if(key==='commandes')buildCmds();
+}
+tab('intro',document.querySelector('.nb'));
+</script>
+</body>
+</html>

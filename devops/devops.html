@@ -312,11 +312,11 @@
 
         <div class="stat-grid">
           <div class="stat-card">
-            <strong>3</strong>
+            <strong>4</strong>
             <span>chapitres principaux</span>
           </div>
           <div class="stat-card">
-            <strong>3</strong>
+            <strong>4</strong>
             <span>supports interactifs</span>
           </div>
           <div class="stat-card">
@@ -329,19 +329,24 @@
       <section class="workspace">
         <div class="tabs">
           <button class="tab-btn active" data-tab="bases">
-            DevOps - les bases
+            TD 03 - Docker
           </button>
-          <button class="tab-btn" data-tab="compose">DevOps compose</button>
-          <button class="tab-btn" data-tab="nginx">Nginx</button>
+          <button class="tab-btn" data-tab="compose">
+            TD 04 - Docker Compose
+          </button>
+          <button class="tab-btn" data-tab="nginx">TD 05 - Nginx</button>
           <button class="tab-btn" data-tab="sonarqube">
             TD 06 - Vérifier avec Sonarqube
+          </button>
+          <button class="tab-btn" data-tab="gitlab">
+            TD 07 - GitLab CI/CD
           </button>
         </div>
 
         <article class="panel active" id="panel-bases">
           <div class="panel-head">
             <div>
-              <h2>DevOps - les bases</h2>
+              <h2>TD 03 - Docker</h2>
               <p>
                 Cette partie reprend ton support Docker de base avec les notions
                 importantes : images, conteneurs, Dockerfile, ports, volumes et
@@ -369,7 +374,7 @@
         <article class="panel" id="panel-compose">
           <div class="panel-head">
             <div>
-              <h2>DevOps compose</h2>
+              <h2>TD 04 - Docker Compose</h2>
               <p>
                 Ici tu retrouves la partie Docker Compose pour apprendre a faire
                 tourner plusieurs services ensemble, organiser le YAML et
@@ -400,7 +405,7 @@
         <article class="panel" id="panel-nginx">
           <div class="panel-head">
             <div>
-              <h2>Nginx</h2>
+              <h2>TD 05 - Nginx</h2>
               <p>
                 Cette partie rassemble ton support Nginx avec les notions de
                 reverse proxy, load balancer et integration avec Docker Compose.
@@ -451,6 +456,37 @@
             <iframe
               src="td06_sonarqube_complet.html"
               title="TD 06 - Vérifier avec Sonarqube"
+            ></iframe>
+          </div>
+        </article>
+
+        <article class="panel" id="panel-gitlab">
+          <div class="panel-head">
+            <div>
+              <h2>TD 07 - GitLab CI/CD</h2>
+              <p>
+                Automatise ton workflow avec GitLab CI/CD : pipelines, runners,
+                stages, jobs, artifacts, cache, variables et déploiement via
+                SSH.
+              </p>
+            </div>
+            <a
+              class="open-link"
+              href="td07_gitlab_cicd_ultra_complet.html"
+              target="_blank"
+              >Ouvrir en grand</a
+            >
+          </div>
+          <div class="frame-shell">
+            <div class="frame-top">
+              <span class="dot red"></span>
+              <span class="dot yellow"></span>
+              <span class="dot green"></span>
+              <span class="frame-label">TD 07 - GitLab CI/CD</span>
+            </div>
+            <iframe
+              src="td07_gitlab_cicd_ultra_complet.html"
+              title="TD 07 - GitLab CI/CD"
             ></iframe>
           </div>
         </article>
