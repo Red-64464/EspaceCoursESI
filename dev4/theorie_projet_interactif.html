@@ -1,0 +1,2673 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap");
+      :root {
+        --fs: "Lexend", sans-serif;
+        --fm: "JetBrains Mono", monospace;
+        --rmd: 8px;
+        --rlg: 12px;
+        --bg0: #1f1d1a;
+        --bg1: #2a2723;
+        --bg2: #332f2b;
+        --ib: #183448;
+        --ibr: #2a5f83;
+        --it: #8fd3ff;
+        --b2: #57514b;
+        --b3: #48423d;
+        --t1: #f3ede3;
+        --t2: #b8aea0;
+        --t3: #888780;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: var(--bg0);
+        color: var(--t1);
+        font-family: var(--fs);
+      }
+      body {
+        padding: 20px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      .cours {
+        padding: 0.5rem 0;
+      }
+
+      /* NAV */
+      .nav {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin-bottom: 1.25rem;
+      }
+      .nav-btn {
+        padding: 5px 13px;
+        border-radius: var(--rmd);
+        border: 0.5px solid var(--b2);
+        background: var(--bg1);
+        cursor: pointer;
+        font-size: 12px;
+        color: var(--t2);
+        transition: all 0.15s;
+        font-family: var(--fs);
+      }
+      .nav-btn.active {
+        background: var(--ib);
+        color: var(--it);
+        border-color: var(--ibr);
+      }
+      .nav-btn:hover:not(.active) {
+        background: var(--bg2);
+        color: var(--t1);
+      }
+      .section {
+        display: none;
+      }
+      .section.active {
+        display: block;
+      }
+
+      /* CARDS */
+      .card {
+        background: var(--bg1);
+        border: 0.5px solid var(--b3);
+        border-radius: var(--rlg);
+        padding: 1rem 1.25rem;
+        margin-bottom: 0.9rem;
+      }
+      h2 {
+        font-size: 15px;
+        font-weight: 500;
+        margin: 0 0 7px;
+        color: var(--t1);
+      }
+      h3 {
+        font-size: 13px;
+        font-weight: 500;
+        margin: 10px 0 5px;
+        color: var(--t2);
+      }
+      p {
+        font-size: 13px;
+        color: var(--t1);
+        margin: 5px 0;
+        line-height: 1.65;
+      }
+      code {
+        font-family: var(--fm);
+        font-size: 12px;
+        background: var(--bg2);
+        padding: 1px 5px;
+        border-radius: 4px;
+      }
+      .code-block {
+        background: var(--bg2);
+        border-radius: var(--rmd);
+        padding: 11px 15px;
+        font-family: var(--fm);
+        font-size: 12px;
+        color: var(--t1);
+        margin: 7px 0;
+        line-height: 1.65;
+        border: 0.5px solid var(--b3);
+        overflow-x: auto;
+      }
+      .kw {
+        color: #afa9ec;
+        font-weight: 500;
+      }
+      .cm {
+        color: var(--t2);
+      }
+      .str {
+        color: #5dcaa5;
+      }
+
+      /* BUTTONS */
+      .step-btn {
+        padding: 7px 18px;
+        border-radius: var(--rmd);
+        border: 0.5px solid var(--b2);
+        background: var(--bg2);
+        cursor: pointer;
+        font-size: 12px;
+        color: var(--t1);
+        transition: all 0.15s;
+        margin-top: 7px;
+        font-family: var(--fs);
+      }
+      .step-btn:hover {
+        background: var(--ib);
+        color: var(--it);
+        border-color: var(--ibr);
+      }
+      .step-btn + .step-btn {
+        margin-left: 6px;
+      }
+
+      /* BADGES & PILLS */
+      .badge {
+        display: inline-block;
+        padding: 2px 7px;
+        border-radius: 20px;
+        font-size: 10px;
+        font-weight: 500;
+      }
+      .badge.ok {
+        background: #085041;
+        color: #9fe1cb;
+      }
+      .badge.err {
+        background: #791f1f;
+        color: #f7c1c1;
+      }
+      .badge.inf {
+        background: #0c447c;
+        color: #b5d4f4;
+      }
+      .badge.amr {
+        background: #633806;
+        color: #fac775;
+      }
+      .pill {
+        display: inline-block;
+        padding: 2px 9px;
+        border-radius: 20px;
+        font-size: 11px;
+        background: #0c447c;
+        color: #b5d4f4;
+        margin: 2px;
+      }
+      .pill.g {
+        background: #085041;
+        color: #9fe1cb;
+      }
+      .pill.a {
+        background: #633806;
+        color: #fac775;
+      }
+      .pill.r {
+        background: #791f1f;
+        color: #f7c1c1;
+      }
+
+      /* INFO BOXES */
+      .info-box {
+        background: var(--ib);
+        border: 0.5px solid var(--ibr);
+        border-radius: var(--rmd);
+        padding: 9px 13px;
+        margin: 7px 0;
+        font-size: 12px;
+        color: var(--it);
+        line-height: 1.65;
+      }
+      .warn-box {
+        background: #201500;
+        border: 0.5px solid #7a4e00;
+        border-radius: var(--rmd);
+        padding: 9px 13px;
+        margin: 7px 0;
+        font-size: 12px;
+        color: #fac775;
+        line-height: 1.65;
+      }
+
+      /* LAYOUT */
+      .two-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .three-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 10px;
+      }
+      .slider-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 7px 0;
+        font-size: 12px;
+      }
+      .slider-row input[type="range"] {
+        flex: 1;
+        accent-color: #8fd3ff;
+        cursor: pointer;
+        height: 4px;
+      }
+      .slider-row label {
+        color: var(--t2);
+        min-width: 100px;
+      }
+      .result-box {
+        border-radius: var(--rmd);
+        padding: 9px 13px;
+        font-size: 12px;
+        font-family: var(--fm);
+        margin-top: 7px;
+        border: 0.5px solid var(--b3);
+        background: var(--bg2);
+        color: var(--it);
+      }
+
+      /* CANVAS */
+      canvas {
+        display: block;
+        border-radius: var(--rmd);
+      }
+
+      /* BUFFER CELLS */
+      .buf-row {
+        display: flex;
+        gap: 3px;
+        flex-wrap: wrap;
+        margin: 7px 0;
+        align-items: center;
+      }
+      .buf-cell {
+        min-width: 40px;
+        height: 40px;
+        border-radius: 6px;
+        border: 0.5px solid var(--b3);
+        background: var(--bg2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--fm);
+        font-size: 9px;
+        padding: 0 3px;
+        color: var(--t3);
+        transition: all 0.35s ease;
+        font-weight: 500;
+        text-align: center;
+      }
+      .buf-cell.lit-L {
+        background: #0b2540;
+        border-color: #378add;
+        color: #b5d4f4;
+        transform: scale(1.12);
+        box-shadow: 0 0 8px rgba(55, 138, 221, 0.4);
+      }
+      .buf-cell.lit-R {
+        background: #042e1a;
+        border-color: #3ea874;
+        color: #9fe1cb;
+        transform: scale(1.12);
+        box-shadow: 0 0 8px rgba(62, 168, 116, 0.4);
+      }
+      .buf-cell.lit-S {
+        background: #2e1a00;
+        border-color: #ba7517;
+        color: #fac775;
+        transform: scale(1.1);
+        box-shadow: 0 0 6px rgba(186, 117, 23, 0.4);
+      }
+      .buf-cell.lit-W {
+        background: #1a0c2e;
+        border-color: #7c3aed;
+        color: #d8b4fe;
+        transform: scale(1.1);
+        box-shadow: 0 0 6px rgba(124, 58, 237, 0.4);
+      }
+
+      /* SEQUENCER */
+      .seq-wrap {
+        overflow-x: auto;
+        padding-bottom: 6px;
+      }
+      .seq-step-row {
+        display: flex;
+        padding-left: 76px;
+        gap: 3px;
+        margin-bottom: 2px;
+      }
+      .seq-step-num {
+        flex: 1;
+        text-align: center;
+        font-size: 9px;
+        color: var(--t3);
+        font-family: var(--fm);
+        min-width: 0;
+      }
+      .seq-row {
+        display: flex;
+        gap: 3px;
+        margin-bottom: 3px;
+      }
+      .seq-lbl {
+        width: 74px;
+        min-width: 74px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding-right: 8px;
+        font-size: 11px;
+        color: var(--t2);
+        font-family: var(--fm);
+      }
+      .seq-cell {
+        flex: 1;
+        height: 28px;
+        border-radius: 5px;
+        min-width: 0;
+        border: 0.5px solid var(--b3);
+        background: var(--bg2);
+        cursor: pointer;
+        transition: all 0.1s;
+      }
+      .seq-cell:hover {
+        border-color: var(--b2);
+        background: #3a3530;
+      }
+      .seq-cell.on0 {
+        background: #0c2540;
+        border-color: #1a6ab5;
+      }
+      .seq-cell.on1 {
+        background: #0a2a18;
+        border-color: #2e7a4e;
+      }
+      .seq-cell.on2 {
+        background: #2e1a00;
+        border-color: #9a6010;
+      }
+      .seq-cell.on3 {
+        background: #1a0a2e;
+        border-color: #6c3aad;
+      }
+      .seq-cell.cur {
+        box-shadow: 0 0 0 2px #8fd3ff;
+      }
+      .seq-cell.cur.on0 {
+        background: #1a4870;
+        box-shadow:
+          0 0 0 2px #8fd3ff,
+          0 0 10px rgba(143, 211, 255, 0.5);
+      }
+      .seq-cell.cur.on1 {
+        background: #155a30;
+        box-shadow:
+          0 0 0 2px #5dcaa5,
+          0 0 10px rgba(93, 202, 165, 0.5);
+      }
+      .seq-cell.cur.on2 {
+        background: #4a2e00;
+        box-shadow:
+          0 0 0 2px #fac775,
+          0 0 10px rgba(250, 199, 117, 0.5);
+      }
+      .seq-cell.cur.on3 {
+        background: #301550;
+        box-shadow:
+          0 0 0 2px #c4b5fd,
+          0 0 10px rgba(196, 181, 253, 0.5);
+      }
+
+      /* PIPELINE */
+      .pipe-zone {
+        display: flex;
+        gap: 8px;
+        align-items: stretch;
+        flex-wrap: wrap;
+        margin: 10px 0;
+      }
+      .pipe-blk {
+        border-radius: var(--rmd);
+        padding: 8px 12px;
+        font-size: 11px;
+        cursor: pointer;
+        border: 0.5px solid var(--b3);
+        background: var(--bg1);
+        transition: all 0.2s;
+        text-align: center;
+        font-family: var(--fm);
+        position: relative;
+        user-select: none;
+      }
+      .pipe-blk:hover {
+        filter: brightness(1.2);
+      }
+      .pipe-blk.sel {
+        outline: 2px solid currentColor;
+        outline-offset: 2px;
+        filter: brightness(1.3);
+      }
+      .pipe-blk.seq {
+        background: #131f2d;
+        border-color: #2a5f83;
+        color: #8fd3ff;
+      }
+      .pipe-blk.play {
+        background: #0c2318;
+        border-color: #2e7a3e;
+        color: #9fe1cb;
+      }
+      .pipe-blk.dly {
+        background: #201500;
+        border-color: #7a4e00;
+        color: #fac775;
+      }
+      .pipe-blk.mix {
+        background: #1a0c2e;
+        border-color: #5c2ea0;
+        color: #d8b4fe;
+      }
+      .pipe-blk.out {
+        background: #280c0c;
+        border-color: #b02020;
+        color: #fca5a5;
+      }
+      .pipe-arr {
+        color: var(--t3);
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        align-self: center;
+      }
+      .pipe-col {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .pipe-mini-arr {
+        color: var(--t3);
+        font-size: 11px;
+        text-align: center;
+      }
+
+      /* FLOW PARTICLE ANIMATION */
+      .flow-line {
+        position: relative;
+        height: 2px;
+        flex: 1;
+        min-width: 20px;
+        background: var(--b3);
+        border-radius: 2px;
+        overflow: visible;
+        align-self: center;
+      }
+      .flow-line::after {
+        content: "";
+        position: absolute;
+        top: -3px;
+        left: 0;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--it);
+        opacity: 0;
+        animation: flow-anim 2s ease-in-out infinite;
+      }
+      @keyframes flow-anim {
+        0% {
+          left: 0%;
+          opacity: 0;
+        }
+        10% {
+          opacity: 1;
+        }
+        90% {
+          opacity: 1;
+        }
+        100% {
+          left: calc(100% - 8px);
+          opacity: 0;
+        }
+      }
+      .flow-line.green::after {
+        background: #9fe1cb;
+        animation-delay: 0.5s;
+      }
+      .flow-line.amber::after {
+        background: #fac775;
+        animation-delay: 1s;
+      }
+      .flow-line.purple::after {
+        background: #d8b4fe;
+        animation-delay: 1.5s;
+      }
+      .flow-line.red::after {
+        background: #fca5a5;
+        animation-delay: 1.8s;
+      }
+
+      @media (max-width: 600px) {
+        .two-col,
+        .three-col {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+
+    <div class="cours">
+      <div class="nav">
+        <button class="nav-btn active" onclick="show('onde', event)">
+          1. Son &amp; Onde
+        </button>
+        <button class="nav-btn" onclick="show('samples', event)">
+          2. Samples &amp; Buffer
+        </button>
+        <button class="nav-btn" onclick="show('freq', event)">
+          3. Fréquence
+        </button>
+        <button class="nav-btn" onclick="show('stereo', event)">
+          4. Stéréo &amp; Frames
+        </button>
+        <button class="nav-btn" onclick="show('wav', event)">
+          5. Fichier .WAV
+        </button>
+        <button class="nav-btn" onclick="show('seq', event)">
+          6. Séquenceur
+        </button>
+        <button class="nav-btn" onclick="show('pipe', event)">
+          7. Architecture
+        </button>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════
+           1. SON & ONDE
+      ═══════════════════════════════════════════════════════════ -->
+      <div class="section active" id="s-onde">
+        <div class="card">
+          <h2>C'est quoi un son ?</h2>
+          <p>
+            Le son = une <strong>vibration dans l'air</strong>. L'air bouge, ça
+            crée une onde de pression qui voyage jusqu'à ton oreille → tu
+            entends.
+          </p>
+          <div class="two-col" style="gap: 8px; margin-top: 10px">
+            <div
+              style="
+                background: #0c2318;
+                border: 0.5px solid #2e7a3e;
+                border-radius: 8px;
+                padding: 10px;
+              "
+            >
+              <div
+                style="
+                  font-size: 10px;
+                  color: #9fe1cb;
+                  margin-bottom: 5px;
+                  font-weight: 500;
+                "
+              >
+                DANS LA VIE RÉELLE
+              </div>
+              <p style="font-size: 12px; margin: 0">
+                Air qui bouge → oreille → tu entends 🎵
+              </p>
+            </div>
+            <div
+              style="
+                background: #131f2d;
+                border: 0.5px solid #2a5f83;
+                border-radius: 8px;
+                padding: 10px;
+              "
+            >
+              <div
+                style="
+                  font-size: 10px;
+                  color: #8fd3ff;
+                  margin-bottom: 5px;
+                  font-weight: 500;
+                "
+              >
+                EN INFORMATIQUE
+              </div>
+              <p style="font-size: 12px; margin: 0">
+                L'ordi ne comprend pas les vagues →
+                <strong>il les transforme en nombres</strong>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Onde sinusoïdale — interactive</h2>
+          <p style="color: var(--t2)">
+            Modifie les sliders pour voir comment change la forme du son :
+          </p>
+          <div class="slider-row">
+            <label>Fréquence</label>
+            <input
+              type="range"
+              id="sl-wfreq"
+              min="0.5"
+              max="5"
+              step="0.1"
+              value="2"
+            />
+            <span
+              id="wfreq-lbl"
+              style="min-width: 55px; color: var(--it); font-family: var(--fm)"
+              >2.0 Hz</span
+            >
+          </div>
+          <div class="slider-row">
+            <label>Amplitude</label>
+            <input
+              type="range"
+              id="sl-wamp"
+              min="10"
+              max="90"
+              step="1"
+              value="62"
+            />
+            <span
+              id="wamp-lbl"
+              style="min-width: 55px; color: #fac775; font-family: var(--fm)"
+              >0.69</span
+            >
+          </div>
+          <canvas
+            id="cv-wave"
+            width="800"
+            height="170"
+            style="width: 100%; background: #1a1816; margin-top: 6px"
+          ></canvas>
+          <div
+            style="
+              display: flex;
+              gap: 16px;
+              margin-top: 7px;
+              font-size: 11px;
+              flex-wrap: wrap;
+              color: var(--t2);
+            "
+          >
+            <span><span style="color: #5dcaa5">■</span> onde</span>
+            <span><span style="color: #fac775">●</span> crête (+1)</span>
+            <span><span style="color: #e24b4a">●</span> creux (-1)</span>
+            <span><span style="color: #3a5f7a">—</span> silence (0)</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Les valeurs : de -1 à +1</h2>
+          <div class="three-col" style="gap: 8px; margin-top: 6px">
+            <div
+              style="
+                background: #791f1f;
+                border: 0.5px solid #e24b4a;
+                border-radius: 8px;
+                padding: 10px;
+                text-align: center;
+              "
+            >
+              <div
+                style="
+                  font-family: var(--fm);
+                  font-size: 20px;
+                  color: #f7c1c1;
+                  font-weight: 700;
+                "
+              >
+                -1
+              </div>
+              <div style="font-size: 11px; color: #f7c1c1; margin-top: 4px">
+                Son fort (bas)
+              </div>
+            </div>
+            <div
+              style="
+                background: #1a1816;
+                border: 0.5px solid var(--b3);
+                border-radius: 8px;
+                padding: 10px;
+                text-align: center;
+              "
+            >
+              <div
+                style="
+                  font-family: var(--fm);
+                  font-size: 20px;
+                  color: var(--t3);
+                  font-weight: 700;
+                "
+              >
+                0
+              </div>
+              <div style="font-size: 11px; color: var(--t3); margin-top: 4px">
+                Silence 🤫
+              </div>
+            </div>
+            <div
+              style="
+                background: #0c447c;
+                border: 0.5px solid #378add;
+                border-radius: 8px;
+                padding: 10px;
+                text-align: center;
+              "
+            >
+              <div
+                style="
+                  font-family: var(--fm);
+                  font-size: 20px;
+                  color: #b5d4f4;
+                  font-weight: 700;
+                "
+              >
+                +1
+              </div>
+              <div style="font-size: 11px; color: #b5d4f4; margin-top: 4px">
+                Son fort (haut)
+              </div>
+            </div>
+          </div>
+          <div class="code-block" style="margin-top: 10px">
+            <span class="cm">// Transformation magique :</span><br />
+            Vague sonore →
+            <span class="str"
+              >[ 0.0, 0.4, 0.8, 1.0, 0.8, 0.4, 0.0, -0.4, -0.8, -1.0, ...
+              ]</span
+            ><br />
+            <span class="cm">// ↑ silence ↑ max ↑ min</span>
+          </div>
+          <div class="info-box">
+            💡 <strong>Modifier le son = opérations sur les nombres</strong
+            ><br />
+            Volume ×2 → multiplier par 2 &nbsp;|&nbsp; Mix → additionner deux
+            tableaux
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════
+           2. SAMPLES & BUFFER
+      ═══════════════════════════════════════════════════════════ -->
+      <div class="section" id="s-samples">
+        <div class="card">
+          <h2>C'est quoi un sample (échantillon) ?</h2>
+          <p>
+            Un <strong>sample</strong> = une
+            <strong>mesure du son à un instant précis</strong>. Comme une photo
+            du son.
+          </p>
+          <div class="two-col" style="gap: 8px; margin-top: 8px">
+            <div
+              style="
+                background: #0c2318;
+                border: 0.5px solid #2e7a3e;
+                border-radius: 8px;
+                padding: 10px;
+              "
+            >
+              <div
+                style="
+                  font-size: 10px;
+                  color: #9fe1cb;
+                  font-weight: 500;
+                  margin-bottom: 5px;
+                "
+              >
+                ANALOGIE VIDÉO 🎥
+              </div>
+              <div
+                class="code-block"
+                style="margin: 0; font-size: 11px; padding: 7px"
+              >
+                Vidéo = plein d'images<br />Son = plein de nombres
+              </div>
+            </div>
+            <div
+              style="
+                background: #131f2d;
+                border: 0.5px solid #2a5f83;
+                border-radius: 8px;
+                padding: 10px;
+              "
+            >
+              <div
+                style="
+                  font-size: 10px;
+                  color: #8fd3ff;
+                  font-weight: 500;
+                  margin-bottom: 5px;
+                "
+              >
+                EN PRATIQUE
+              </div>
+              <div
+                class="code-block"
+                style="margin: 0; font-size: 11px; padding: 7px"
+              >
+                t1→0.0 t2→0.4<br />t3→0.8 t4→1.0
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Visualisation : onde → samples → buffer</h2>
+          <div class="slider-row">
+            <label>Nombre de samples</label>
+            <input
+              type="range"
+              id="sl-nsamp"
+              min="4"
+              max="28"
+              step="1"
+              value="10"
+            />
+            <span
+              id="nsamp-lbl"
+              style="min-width: 40px; color: #fac775; font-family: var(--fm)"
+              >10</span
+            >
+          </div>
+          <canvas
+            id="cv-samples"
+            width="800"
+            height="210"
+            style="
+              width: 100%;
+              background: #1a1816;
+              margin-top: 4px;
+              border-radius: 8px;
+            "
+          ></canvas>
+          <p style="font-size: 11px; color: var(--t2); margin-top: 5px">
+            Les <span style="color: #fac775">points orange</span> sur la courbe
+            = les samples prélevés.
+          </p>
+
+          <h3 style="margin-top: 12px">Buffer résultant</h3>
+          <div id="buf-samp-row" class="buf-row"></div>
+          <button class="step-btn" onclick="animSampBuf()">
+            ▶ Animer le remplissage
+          </button>
+        </div>
+
+        <div class="card">
+          <h2>Terminologie essentielle</h2>
+          <div class="two-col" style="gap: 8px">
+            <div
+              style="
+                background: #2e1a00;
+                border: 0.5px solid #ba7517;
+                border-radius: 8px;
+                padding: 11px;
+              "
+            >
+              <div
+                style="
+                  font-size: 10px;
+                  color: #fac775;
+                  font-weight: 500;
+                  margin-bottom: 5px;
+                "
+              >
+                SAMPLE
+              </div>
+              <span style="color: #fac775; font-size: 14px; font-weight: 500"
+                >Une seule valeur</span
+              ><br />
+              <span style="font-size: 11px; color: var(--t2)"
+                >entre -1 et +1</span
+              >
+            </div>
+            <div
+              style="
+                background: #0c2318;
+                border: 0.5px solid #2e7a4e;
+                border-radius: 8px;
+                padding: 11px;
+              "
+            >
+              <div
+                style="
+                  font-size: 10px;
+                  color: #9fe1cb;
+                  font-weight: 500;
+                  margin-bottom: 5px;
+                "
+              >
+                BUFFER
+              </div>
+              <span style="color: #9fe1cb; font-size: 14px; font-weight: 500"
+                >Tableau de samples</span
+              ><br />
+              <span style="font-size: 11px; color: var(--t2)"
+                >[0.2, -0.1, 0.5, ...]</span
+              >
+            </div>
+          </div>
+          <div class="code-block" style="margin-top: 8px">
+            <span class="kw">float</span> buffer[] = {<span class="str"
+              >0.0</span
+            >, <span class="str">0.4</span>, <span class="str">0.7</span>,
+            <span class="str">1.0</span>, <span class="str">0.7</span>,
+            <span class="str">0.4</span>, <span class="str">0.0</span>,
+            <span class="str">-0.4</span>, ...};<br />
+            <span class="cm">// ↑ chaque élément = un sample</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════
+           3. FRÉQUENCE D'ÉCHANTILLONNAGE
+      ═══════════════════════════════════════════════════════════ -->
+      <div class="section" id="s-freq">
+        <div class="card">
+          <h2>Fréquence d'échantillonnage — c'est quoi ?</h2>
+          <p>
+            C'est <strong>combien de samples on prélève par seconde</strong>.
+            Unité : Hz (Hertz).
+          </p>
+          <div class="warn-box">
+            ⏱ Exemple : <code>44100 Hz</code> = 44 100 samples par seconde.<br />En
+            1 seconde, l'ordi mesure l'onde <strong>44 100 fois</strong>.
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Comparaison interactive : peu vs beaucoup</h2>
+          <div class="slider-row">
+            <label>Nombre de points</label>
+            <input
+              type="range"
+              id="sl-sr"
+              min="4"
+              max="60"
+              step="1"
+              value="12"
+            />
+            <span
+              id="sr-lbl"
+              style="min-width: 60px; color: #fac775; font-family: var(--fm)"
+              >12 pts</span
+            >
+          </div>
+          <div class="two-col" style="gap: 8px; margin-top: 8px">
+            <div>
+              <div
+                style="
+                  font-size: 10px;
+                  color: #e24b4a;
+                  margin-bottom: 4px;
+                  font-weight: 500;
+                "
+              >
+                ⚠ PEU DE SAMPLES — reconstruction grossière
+              </div>
+              <canvas
+                id="cv-sr-low"
+                width="380"
+                height="130"
+                style="width: 100%; background: #1a1816; border-radius: 8px"
+              ></canvas>
+            </div>
+            <div>
+              <div
+                style="
+                  font-size: 10px;
+                  color: #5dcaa5;
+                  margin-bottom: 4px;
+                  font-weight: 500;
+                "
+              >
+                ✓ BEAUCOUP DE SAMPLES — reconstruction fidèle
+              </div>
+              <canvas
+                id="cv-sr-high"
+                width="380"
+                height="130"
+                style="width: 100%; background: #1a1816; border-radius: 8px"
+              ></canvas>
+            </div>
+          </div>
+          <div
+            id="sr-qual"
+            class="result-box"
+            style="text-align: center; margin-top: 8px"
+          ></div>
+        </div>
+
+        <div class="card">
+          <h2>Analogie : FPS vidéo vs Hz audio</h2>
+          <div class="two-col" style="gap: 8px">
+            <div>
+              <div
+                style="font-size: 11px; color: var(--t2); margin-bottom: 6px"
+              >
+                Vidéo
+              </div>
+              <div
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  gap: 4px;
+                  font-size: 12px;
+                "
+              >
+                <div
+                  style="
+                    background: #791f1f;
+                    border: 0.5px solid #e24b4a;
+                    border-radius: 6px;
+                    padding: 7px 10px;
+                    color: #f7c1c1;
+                  "
+                >
+                  5 fps → saccadé 😵
+                </div>
+                <div
+                  style="
+                    background: #633806;
+                    border: 0.5px solid #ba7517;
+                    border-radius: 6px;
+                    padding: 7px 10px;
+                    color: #fac775;
+                  "
+                >
+                  15 fps → passable
+                </div>
+                <div
+                  style="
+                    background: #085041;
+                    border: 0.5px solid #639922;
+                    border-radius: 6px;
+                    padding: 7px 10px;
+                    color: #9fe1cb;
+                  "
+                >
+                  30 fps → fluide ✅
+                </div>
+              </div>
+            </div>
+            <div>
+              <div
+                style="font-size: 11px; color: var(--t2); margin-bottom: 6px"
+              >
+                Audio
+              </div>
+              <div
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  gap: 4px;
+                  font-size: 12px;
+                "
+              >
+                <div
+                  style="
+                    background: #791f1f;
+                    border: 0.5px solid #e24b4a;
+                    border-radius: 6px;
+                    padding: 7px 10px;
+                    color: #f7c1c1;
+                  "
+                >
+                  8 000 Hz → téléphone
+                </div>
+                <div
+                  style="
+                    background: #633806;
+                    border: 0.5px solid #ba7517;
+                    border-radius: 6px;
+                    padding: 7px 10px;
+                    color: #fac775;
+                  "
+                >
+                  22 050 Hz → radio FM
+                </div>
+                <div
+                  style="
+                    background: #085041;
+                    border: 0.5px solid #639922;
+                    border-radius: 6px;
+                    padding: 7px 10px;
+                    color: #9fe1cb;
+                  "
+                >
+                  44 100 Hz → CD / ton projet 🎯
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="info-box" style="margin-top: 10px">
+            💡 Plus il y a de samples → plus le son est précis → plus le fichier
+            est lourd.
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════
+           4. STÉRÉO & FRAMES
+      ═══════════════════════════════════════════════════════════ -->
+      <div class="section" id="s-stereo">
+        <div class="card">
+          <h2>Pourquoi "stéréo" ?</h2>
+          <p>
+            Parce qu'on a <strong>2 oreilles</strong> ! Gauche et droite. Le son
+            arrive différemment à chacune → sensation d'espace.
+          </p>
+          <div class="two-col" style="gap: 10px; margin-top: 10px">
+            <div
+              style="
+                background: #0c2540;
+                border: 0.5px solid #378add;
+                border-radius: 10px;
+                padding: 14px;
+                text-align: center;
+              "
+            >
+              <div style="font-size: 36px">👂</div>
+              <div style="color: #b5d4f4; font-weight: 500; margin-top: 5px">
+                Canal L (Gauche)
+              </div>
+              <div
+                id="ear-L"
+                style="
+                  font-family: var(--fm);
+                  font-size: 22px;
+                  margin-top: 8px;
+                  color: #8fd3ff;
+                  min-height: 28px;
+                "
+              >
+                —
+              </div>
+            </div>
+            <div
+              style="
+                background: #042e1a;
+                border: 0.5px solid #3ea874;
+                border-radius: 10px;
+                padding: 14px;
+                text-align: center;
+              "
+            >
+              <div style="font-size: 36px">👂</div>
+              <div style="color: #9fe1cb; font-weight: 500; margin-top: 5px">
+                Canal R (Droite)
+              </div>
+              <div
+                id="ear-R"
+                style="
+                  font-family: var(--fm);
+                  font-size: 22px;
+                  margin-top: 8px;
+                  color: #5dcaa5;
+                  min-height: 28px;
+                "
+              >
+                —
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Buffer interleaved — comment l'ordi stocke le stéréo</h2>
+          <p>
+            Les deux canaux sont mélangés dans <strong>un seul tableau</strong>,
+            case par case :
+          </p>
+          <div class="code-block">
+            <span class="str">[ L ][ R ][ L ][ R ][ L ][ R ]...</span><br />
+            <span class="cm"
+              >// ↑ gauche ↑ droite → interleaved (entrelacé)</span
+            >
+          </div>
+          <div
+            id="stereo-buf"
+            class="buf-row"
+            style="justify-content: center; margin-top: 10px"
+          ></div>
+          <div
+            style="display: flex; gap: 14px; margin-top: 6px; font-size: 11px"
+          >
+            <span><span style="color: #b5d4f4">■</span> Gauche (L)</span>
+            <span><span style="color: #9fe1cb">■</span> Droite (R)</span>
+          </div>
+          <div style="margin-top: 8px">
+            <button class="step-btn" onclick="stepStereo()">
+              ▶ Avancer 1 frame
+            </button>
+            <button class="step-btn" onclick="resetStereo()">
+              ↺ Recommencer
+            </button>
+          </div>
+          <div id="stereo-msg" class="info-box" style="margin-top: 8px">
+            Clique "Avancer 1 frame" pour voir comment le buffer se remplit.
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Mono vs Stéréo</h2>
+          <div class="two-col" style="gap: 8px">
+            <div
+              style="
+                background: #201500;
+                border: 0.5px solid #7a5000;
+                border-radius: 8px;
+                padding: 12px;
+              "
+            >
+              <div
+                style="
+                  font-weight: 500;
+                  color: #fac775;
+                  margin-bottom: 6px;
+                  font-size: 13px;
+                "
+              >
+                🔈 MONO — 1 canal
+              </div>
+              <p style="font-size: 11px; color: var(--t2)">
+                Même son dans les 2 oreilles.
+              </p>
+              <div
+                class="code-block"
+                style="font-size: 10px; padding: 6px; margin: 6px 0"
+              >
+                1 frame = 1 sample
+              </div>
+              <div class="buf-row" style="justify-content: center; gap: 3px">
+                <div
+                  class="buf-cell"
+                  style="
+                    background: #2e1a00;
+                    border-color: #ba7517;
+                    color: #fac775;
+                    min-width: 32px;
+                    height: 32px;
+                    font-size: 9px;
+                  "
+                >
+                  0.5
+                </div>
+                <div
+                  class="buf-cell"
+                  style="
+                    background: #2e1a00;
+                    border-color: #ba7517;
+                    color: #fac775;
+                    min-width: 32px;
+                    height: 32px;
+                    font-size: 9px;
+                  "
+                >
+                  0.8
+                </div>
+                <div
+                  class="buf-cell"
+                  style="
+                    background: #2e1a00;
+                    border-color: #ba7517;
+                    color: #fac775;
+                    min-width: 32px;
+                    height: 32px;
+                    font-size: 9px;
+                  "
+                >
+                  0.3
+                </div>
+              </div>
+            </div>
+            <div
+              style="
+                background: #0a1a28;
+                border: 0.5px solid #1a5080;
+                border-radius: 8px;
+                padding: 12px;
+              "
+            >
+              <div
+                style="
+                  font-weight: 500;
+                  color: #8fd3ff;
+                  margin-bottom: 6px;
+                  font-size: 13px;
+                "
+              >
+                🎧 STÉRÉO — 2 canaux
+              </div>
+              <p style="font-size: 11px; color: var(--t2)">
+                Son différent gauche/droite.
+              </p>
+              <div
+                class="code-block"
+                style="font-size: 10px; padding: 6px; margin: 6px 0"
+              >
+                1 frame = 2 samples
+              </div>
+              <div class="buf-row" style="justify-content: center; gap: 3px">
+                <div
+                  class="buf-cell"
+                  style="
+                    background: #0c2540;
+                    border-color: #378add;
+                    color: #b5d4f4;
+                    min-width: 32px;
+                    height: 32px;
+                    font-size: 9px;
+                  "
+                >
+                  L
+                </div>
+                <div
+                  class="buf-cell"
+                  style="
+                    background: #042e1a;
+                    border-color: #3ea874;
+                    color: #9fe1cb;
+                    min-width: 32px;
+                    height: 32px;
+                    font-size: 9px;
+                  "
+                >
+                  R
+                </div>
+                <div
+                  class="buf-cell"
+                  style="
+                    background: #0c2540;
+                    border-color: #378add;
+                    color: #b5d4f4;
+                    min-width: 32px;
+                    height: 32px;
+                    font-size: 9px;
+                  "
+                >
+                  L
+                </div>
+                <div
+                  class="buf-cell"
+                  style="
+                    background: #042e1a;
+                    border-color: #3ea874;
+                    color: #9fe1cb;
+                    min-width: 32px;
+                    height: 32px;
+                    font-size: 9px;
+                  "
+                >
+                  R
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="warn-box" style="margin-top: 10px">
+            ⚠ Dans ton projet C++ : le buffer est interleaved stéréo !<br />
+            <code
+              >index 0 → L &nbsp;|&nbsp; index 1 → R &nbsp;|&nbsp; index 2 → L
+              &nbsp;|&nbsp; index 3 → R ...</code
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════
+           5. FICHIER .WAV
+      ═══════════════════════════════════════════════════════════ -->
+      <div class="section" id="s-wav">
+        <div class="card">
+          <h2>C'est quoi un fichier .WAV ?</h2>
+          <p>
+            Un <code>.wav</code> = une
+            <strong>boîte remplie de nombres (samples)</strong>. Le fichier
+            stocke les données audio <strong>sans compression</strong>.
+          </p>
+          <div class="two-col" style="gap: 8px; margin-top: 8px">
+            <div
+              style="
+                background: #0c2318;
+                border: 0.5px solid #2e7a3e;
+                border-radius: 8px;
+                padding: 11px;
+              "
+            >
+              <div style="color: #9fe1cb; font-weight: 500; margin-bottom: 6px">
+                WAV ✅
+              </div>
+              <div style="font-size: 12px">✓ Qualité parfaite</div>
+              <div style="font-size: 12px">✓ Facile à lire en C++</div>
+              <div style="font-size: 12px">✓ Non compressé</div>
+              <div style="font-size: 12px; color: var(--t2)">
+                ✗ Fichier lourd
+              </div>
+            </div>
+            <div
+              style="
+                background: #2a2723;
+                border: 0.5px solid #57514b;
+                border-radius: 8px;
+                padding: 11px;
+              "
+            >
+              <div
+                style="color: var(--t2); font-weight: 500; margin-bottom: 6px"
+              >
+                MP3
+              </div>
+              <div style="font-size: 12px">✓ Fichier léger</div>
+              <div style="font-size: 12px; color: var(--t2)">
+                ✗ Perd de la qualité
+              </div>
+              <div style="font-size: 12px; color: var(--t2)">
+                ✗ Plus complexe à décoder
+              </div>
+              <div style="font-size: 12px; color: var(--t2)">
+                ✗ Non utilisé dans le projet
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Anatomie d'un fichier WAV + simulation de chargement</h2>
+          <div
+            id="wav-diagram"
+            style="
+              border: 0.5px solid #2a5f83;
+              border-radius: 8px;
+              overflow: hidden;
+              font-family: var(--fm);
+              font-size: 11px;
+            "
+          >
+            <div
+              style="
+                background: #131f2d;
+                color: #8fd3ff;
+                padding: 8px 12px;
+                border-bottom: 0.5px solid #2a5f83;
+                display: flex;
+                justify-content: space-between;
+              "
+            >
+              <span id="wav-fname">📁 kick.wav</span>
+              <span style="color: var(--t3)">RIFF / WAV format</span>
+            </div>
+            <div
+              id="wav-header"
+              style="
+                background: #1a2030;
+                padding: 8px 12px;
+                border-bottom: 0.5px solid #2a5f83;
+                transition: all 0.4s;
+              "
+            >
+              <div style="color: #8fd3ff; font-size: 10px; margin-bottom: 4px">
+                ── HEADER (métadonnées)
+              </div>
+              <div
+                style="
+                  display: flex;
+                  gap: 16px;
+                  flex-wrap: wrap;
+                  font-size: 11px;
+                "
+              >
+                <span
+                  ><span style="color: var(--t2)">sample_rate:</span>
+                  <span id="wav-sr" style="color: #5dcaa5">?</span></span
+                >
+                <span
+                  ><span style="color: var(--t2)">channels:</span>
+                  <span id="wav-ch" style="color: #5dcaa5">?</span></span
+                >
+                <span
+                  ><span style="color: var(--t2)">bit_depth:</span>
+                  <span id="wav-bd" style="color: #5dcaa5">?</span></span
+                >
+              </div>
+            </div>
+            <div style="background: #1a1816; padding: 8px 12px">
+              <div style="color: #fac775; font-size: 10px; margin-bottom: 6px">
+                ── DATA (samples)
+              </div>
+              <div id="wav-data" class="buf-row" style="gap: 3px"></div>
+            </div>
+          </div>
+          <button class="step-btn" id="wav-btn" onclick="stepWav()">
+            ▶ Étape 1 : ouvrir le fichier
+          </button>
+          <div id="wav-msg" class="info-box" style="margin-top: 8px">
+            Clique pour simuler le chargement de <code>kick.wav</code> en
+            mémoire.
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Dans ton code C++</h2>
+          <div class="code-block">
+            <span class="cm">// 1. Ouvrir le fichier</span><br />
+            <span class="kw">open</span>(<span class="str">"kick.wav"</span
+            >)<br /><br />
+            <span class="cm">// 2. Lire le header → récupérer infos</span><br />
+            sampleRate = <span class="str">44100</span>; channels =
+            <span class="str">2</span>; bitDepth =
+            <span class="str">16</span>;<br /><br />
+            <span class="cm"
+              >// 3. Extraire les samples → remplir le buffer</span
+            ><br />
+            <span class="kw">float</span>* buffer = {
+            <span class="str">0.2</span>, <span class="str">0.1</span>,
+            <span class="str">0.5</span>, <span class="str">0.3</span>,
+            <span class="str">-0.3</span>, <span class="str">-0.2</span>, ...
+            };<br /><br />
+            <span class="cm">// 4. Prêt à jouer / looper / modifier !</span>
+          </div>
+          <div class="info-box">
+            💡 <strong>Analogie :</strong> WAV = bouteille d'eau. Samples = eau
+            dedans.<br />
+            Ton programme : ouvre la bouteille → boit l'eau → utilise l'énergie
+            ⚡
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════
+           6. SÉQUENCEUR
+      ═══════════════════════════════════════════════════════════ -->
+      <div class="section" id="s-seq">
+        <div class="card">
+          <h2>C'est quoi une boîte à rythmes ?</h2>
+          <p>
+            C'est une machine qui joue des sons
+            <strong>automatiquement et en boucle</strong>. Un
+            <strong>séquenceur</strong> gère une grille : lignes = instruments,
+            colonnes = pas de temps.
+          </p>
+          <div class="code-block" style="color: #8fd3ff">
+            Temps → [ 1 ][ 2 ][ 3 ][ 4 ][ 5 ][ 6 ][ 7 ][ 8 ]...<br />
+            Kick → [ X ][ ][ X ][ ][ X ][ ][ ][ ]<br />
+            Snare → [ ][ X ][ ][ X ][ ][ X ][ ][ ]<br />
+            Hi-Hat → [ X ][ X ][ X ][ X ][ X ][ X ][ X ][ X ]
+          </div>
+          <p style="font-size: 12px; color: var(--t2)">
+            Un curseur avance case par case → case active ✅ = son joué →
+            arrivée à la fin → retour au début 🔁
+          </p>
+        </div>
+
+        <div class="card">
+          <h2>Séquenceur interactif — 4 pistes × 16 steps</h2>
+          <p style="font-size: 12px; color: var(--t2); margin-bottom: 8px">
+            Clique sur les cases pour les activer/désactiver, puis appuie sur
+            Play !
+          </p>
+          <div class="slider-row">
+            <label>BPM</label>
+            <input
+              type="range"
+              id="sl-bpm"
+              min="40"
+              max="240"
+              step="5"
+              value="120"
+            />
+            <span
+              id="bpm-lbl"
+              style="min-width: 65px; color: #fac775; font-family: var(--fm)"
+              >120 BPM</span
+            >
+          </div>
+          <div class="seq-wrap">
+            <div class="seq-step-row" id="seq-nums"></div>
+            <div id="seq-grid"></div>
+          </div>
+          <div
+            style="display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap"
+          >
+            <button class="step-btn" id="seq-play-btn" onclick="seqToggle()">
+              ▶ Play
+            </button>
+            <button class="step-btn" onclick="seqReset()">☐ Clear</button>
+            <button class="step-btn" onclick="seqPreset('basic')">
+              🥁 Basic Beat
+            </button>
+            <button class="step-btn" onclick="seqPreset('techno')">
+              ⚡ Techno
+            </button>
+          </div>
+          <div
+            style="
+              display: flex;
+              gap: 12px;
+              margin-top: 8px;
+              flex-wrap: wrap;
+              font-size: 11px;
+              color: var(--t2);
+            "
+          >
+            <span
+              ><i
+                style="
+                  display: inline-block;
+                  width: 11px;
+                  height: 11px;
+                  background: #0c2540;
+                  border: 1px solid #1a6ab5;
+                  border-radius: 3px;
+                  vertical-align: middle;
+                "
+              ></i>
+              Kick</span
+            >
+            <span
+              ><i
+                style="
+                  display: inline-block;
+                  width: 11px;
+                  height: 11px;
+                  background: #0a2a18;
+                  border: 1px solid #2e7a4e;
+                  border-radius: 3px;
+                  vertical-align: middle;
+                "
+              ></i>
+              Snare</span
+            >
+            <span
+              ><i
+                style="
+                  display: inline-block;
+                  width: 11px;
+                  height: 11px;
+                  background: #2e1a00;
+                  border: 1px solid #9a6010;
+                  border-radius: 3px;
+                  vertical-align: middle;
+                "
+              ></i>
+              Hi-Hat</span
+            >
+            <span
+              ><i
+                style="
+                  display: inline-block;
+                  width: 11px;
+                  height: 11px;
+                  background: #1a0a2e;
+                  border: 1px solid #6c3aad;
+                  border-radius: 3px;
+                  vertical-align: middle;
+                "
+              ></i>
+              Clap</span
+            >
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Calcul : BPM → durée d'un step</h2>
+          <div class="code-block">
+            durée_beat = <span class="str">60</span> / BPM
+            <span class="cm">// en secondes</span><br />
+            durée_step = durée_beat / <span class="str">4</span>
+            <span class="cm">// 4 subdivisions par beat</span><br /><br />
+            <span class="cm">// À 120 BPM :</span><br />
+            durée_beat = <span class="str">60</span> /
+            <span class="str">120</span> = <span class="str">0.5</span> s<br />
+            durée_step = <span class="str">0.5</span> /
+            <span class="str">4</span> = <span class="str">0.125</span> s =
+            <span class="str">125</span> ms
+          </div>
+          <div id="bpm-calc" class="result-box"></div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════
+           7. ARCHITECTURE PIPELINE
+      ═══════════════════════════════════════════════════════════ -->
+      <div class="section" id="s-pipe">
+        <div class="card">
+          <h2>Architecture de la boîte à rythmes</h2>
+          <p>Quand tu appuies sur Play, le son suit ce chemin :</p>
+          <div class="code-block" style="color: #8fd3ff; font-size: 11px">
+            Séquenceur → Audio Player 1,2,3,4 → Delay 1,2,3,4 → Mixer → Audio
+            Out
+          </div>
+          <p style="font-size: 12px; color: var(--t2)">
+            👆 Clique sur un bloc pour voir sa description détaillée.
+          </p>
+        </div>
+
+        <div class="card">
+          <h2>Pipeline interactif</h2>
+          <div id="pipe-vis" style="margin: 10px 0"></div>
+          <div id="pipe-detail" class="info-box">
+            Clique sur un bloc ci-dessus pour voir son rôle.
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Résumé — ce qu'il faut absolument retenir</h2>
+          <div
+            style="
+              display: flex;
+              flex-direction: column;
+              gap: 5px;
+              margin-top: 6px;
+            "
+          >
+            <div
+              style="
+                background: #131f2d;
+                border: 0.5px solid #2a5f83;
+                border-radius: 7px;
+                padding: 8px 12px;
+                font-size: 12px;
+              "
+            >
+              <strong style="color: #8fd3ff">Séquenceur</strong> — décide
+              <strong>quand</strong> jouer (grille 4×16, BPM)
+            </div>
+            <div
+              style="
+                background: #0c2318;
+                border: 0.5px solid #2e7a3e;
+                border-radius: 7px;
+                padding: 8px 12px;
+                font-size: 12px;
+              "
+            >
+              <strong style="color: #9fe1cb">Audio Player ×4</strong> — lit son
+              fichier WAV (kick, snare, hihat, clap)
+            </div>
+            <div
+              style="
+                background: #201500;
+                border: 0.5px solid #7a4e00;
+                border-radius: 7px;
+                padding: 8px 12px;
+                font-size: 12px;
+              "
+            >
+              <strong style="color: #fac775">Delay ×4</strong> — ajoute un écho
+              à la piste (delay_time + delay_mix)
+            </div>
+            <div
+              style="
+                background: #1a0c2e;
+                border: 0.5px solid #5c2ea0;
+                border-radius: 7px;
+                padding: 8px 12px;
+                font-size: 12px;
+              "
+            >
+              <strong style="color: #d8b4fe">Mixer</strong> — additionne les 4
+              sons en un seul signal stéréo
+            </div>
+            <div
+              style="
+                background: #280c0c;
+                border: 0.5px solid #b02020;
+                border-radius: 7px;
+                padding: 8px 12px;
+                font-size: 12px;
+              "
+            >
+              <strong style="color: #fca5a5">Audio Out</strong> — envoie vers
+              les haut-parleurs / casque 🔊
+            </div>
+          </div>
+          <div class="info-box" style="margin-top: 10px">
+            💡 <strong>Feynman version :</strong> Imagine 4 robots musiciens. Un
+            chef leur dit quand jouer. Chaque robot peut ajouter un écho. Une
+            machine mélange tout. La musique sort dans tes oreilles ! 🤖🎧
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- .cours -->
+
+    <script>
+      // ══════════════════════════════════════════════════════
+      // NAVIGATION
+      // ══════════════════════════════════════════════════════
+      function show(id, ev) {
+        document
+          .querySelectorAll(".section")
+          .forEach((s) => s.classList.remove("active"));
+        document
+          .querySelectorAll(".nav-btn")
+          .forEach((b) => b.classList.remove("active"));
+        document.getElementById("s-" + id).classList.add("active");
+        ev.currentTarget.classList.add("active");
+        onShow(id);
+      }
+
+      function onShow(id) {
+        if (id === "onde") {
+          startWave();
+        } else {
+          stopWave();
+        }
+        if (id === "samples") {
+          drawSamples();
+          buildSampBuf();
+        }
+        if (id === "freq") {
+          drawFreq();
+        }
+        if (id === "stereo") {
+          initStereo();
+        }
+        if (id === "wav") {
+          initWav();
+        }
+        if (id === "seq") {
+          initSeq();
+        }
+        if (id === "pipe") {
+          buildPipe();
+        }
+      }
+
+      // ══════════════════════════════════════════════════════
+      // 1. ONDE SINUSOÏDALE
+      // ══════════════════════════════════════════════════════
+      let wRaf = null;
+
+      function drawWave() {
+        const cv = document.getElementById("cv-wave");
+        if (
+          !cv ||
+          !document.getElementById("s-onde").classList.contains("active")
+        ) {
+          wRaf = null;
+          return;
+        }
+        const ctx = cv.getContext("2d");
+        const W = cv.width,
+          H = cv.height;
+        const freq = parseFloat(document.getElementById("sl-wfreq").value);
+        const amp = parseFloat(document.getElementById("sl-wamp").value) / 100;
+        const ph = performance.now() / 650;
+
+        ctx.clearRect(0, 0, W, H);
+
+        // Background grid
+        ctx.strokeStyle = "#272420";
+        ctx.lineWidth = 1;
+        for (let y = H / 4; y < H; y += H / 4) {
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(W, y);
+          ctx.stroke();
+        }
+
+        // Zero axis
+        ctx.strokeStyle = "#3a5f7a";
+        ctx.lineWidth = 1;
+        ctx.setLineDash([5, 4]);
+        ctx.beginPath();
+        ctx.moveTo(0, H / 2);
+        ctx.lineTo(W, H / 2);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Axis labels
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.fillStyle = "#57514b";
+        ctx.fillText("+1", 4, 14);
+        ctx.fillText(" 0", 4, H / 2 + 4);
+        ctx.fillText("-1", 4, H - 5);
+
+        // Wave
+        const aH = (H / 2 - 14) * amp;
+        ctx.beginPath();
+        ctx.strokeStyle = "#5dcaa5";
+        ctx.lineWidth = 2.5;
+        let maxY = H,
+          minY = 0,
+          maxX = 0,
+          minX = 0;
+        for (let x = 0; x <= W; x++) {
+          const t = x / W;
+          const y = H / 2 - aH * Math.sin(2 * Math.PI * freq * t + ph);
+          if (x === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+          if (y < maxY) {
+            maxY = y;
+            maxX = x;
+          }
+          if (y > minY) {
+            minY = y;
+            minX = x;
+          }
+        }
+        ctx.stroke();
+
+        // Crest dot
+        ctx.beginPath();
+        ctx.arc(maxX, maxY, 5, 0, Math.PI * 2);
+        ctx.fillStyle = "#fac775";
+        ctx.fill();
+        ctx.fillStyle = "#fac775";
+        ctx.font = '10px "JetBrains Mono",monospace';
+        if (maxX < W - 50) ctx.fillText("crête", maxX + 8, maxY + 4);
+
+        // Trough dot
+        ctx.beginPath();
+        ctx.arc(minX, minY, 5, 0, Math.PI * 2);
+        ctx.fillStyle = "#e24b4a";
+        ctx.fill();
+        ctx.fillStyle = "#e24b4a";
+        if (minX < W - 50) ctx.fillText("creux", minX + 8, minY + 4);
+
+        wRaf = requestAnimationFrame(drawWave);
+      }
+
+      function startWave() {
+        if (!wRaf) drawWave();
+      }
+      function stopWave() {
+        if (wRaf) {
+          cancelAnimationFrame(wRaf);
+          wRaf = null;
+        }
+      }
+
+      document
+        .getElementById("sl-wfreq")
+        .addEventListener("input", function () {
+          document.getElementById("wfreq-lbl").textContent =
+            parseFloat(this.value).toFixed(1) + " Hz";
+        });
+      document.getElementById("sl-wamp").addEventListener("input", function () {
+        document.getElementById("wamp-lbl").textContent = (
+          parseFloat(this.value) / 100
+        ).toFixed(2);
+      });
+      startWave();
+
+      // ══════════════════════════════════════════════════════
+      // 2. SAMPLES & BUFFER
+      // ══════════════════════════════════════════════════════
+      function getSampVals(n) {
+        return Array.from({ length: n }, (_, i) => {
+          const t = i / (n - 1);
+          return Math.round(Math.sin(2 * Math.PI * 1.5 * t) * 100) / 100;
+        });
+      }
+
+      function drawSamples() {
+        const cv = document.getElementById("cv-samples");
+        if (!cv) return;
+        const ctx = cv.getContext("2d");
+        const W = cv.width,
+          H = cv.height;
+        const n = parseInt(document.getElementById("sl-nsamp").value);
+        const vals = getSampVals(n);
+
+        ctx.clearRect(0, 0, W, H);
+
+        const wZone = H * 0.62;
+        const midY = wZone / 2 + 10;
+        const aH = midY - 18;
+        const bufTop = H - 44;
+
+        // Zero line
+        ctx.strokeStyle = "#3a5f7a";
+        ctx.lineWidth = 1;
+        ctx.setLineDash([4, 3]);
+        ctx.beginPath();
+        ctx.moveTo(0, midY);
+        ctx.lineTo(W, midY);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Reference wave (faint)
+        ctx.beginPath();
+        ctx.strokeStyle = "rgba(93,202,165,0.18)";
+        ctx.lineWidth = 2;
+        for (let x = 0; x <= W; x++) {
+          const t = x / W;
+          const y = midY - aH * Math.sin(2 * Math.PI * 1.5 * t);
+          if (x === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+
+        // Reconstructed wave
+        ctx.beginPath();
+        ctx.strokeStyle = "#5dcaa5";
+        ctx.lineWidth = 1.5;
+        vals.forEach((v, i) => {
+          const x = (i / (n - 1)) * (W - 16) + 8;
+          const y = midY - aH * v;
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        });
+        ctx.stroke();
+
+        const bw = Math.min(38, Math.floor((W - 16) / n) - 2);
+
+        vals.forEach((v, i) => {
+          const x = (i / (n - 1)) * (W - 16) + 8;
+          const sY = midY - aH * v;
+
+          // Drop line
+          ctx.strokeStyle = "rgba(186,117,23,0.2)";
+          ctx.lineWidth = 1;
+          ctx.setLineDash([2, 3]);
+          ctx.beginPath();
+          ctx.moveTo(x, sY + 6);
+          ctx.lineTo(x, bufTop - 4);
+          ctx.stroke();
+          ctx.setLineDash([]);
+
+          // Sample dot
+          ctx.beginPath();
+          ctx.arc(x, sY, 4.5, 0, Math.PI * 2);
+          ctx.fillStyle = "#ba7517";
+          ctx.fill();
+          ctx.beginPath();
+          ctx.arc(x, sY, 2.5, 0, Math.PI * 2);
+          ctx.fillStyle = "#fac775";
+          ctx.fill();
+
+          // Buffer cell
+          const cellX = x - bw / 2;
+          const alpha = 0.5 + Math.abs(v) * 0.5;
+          ctx.fillStyle = `rgba(44,26,0,${alpha})`;
+          ctx.strokeStyle = "#ba7517";
+          ctx.lineWidth = 0.5;
+          ctx.beginPath();
+          ctx.roundRect(cellX, bufTop, bw, 36, 4);
+          ctx.fill();
+          ctx.stroke();
+          ctx.font = '8px "JetBrains Mono",monospace';
+          ctx.fillStyle = "#fac775";
+          ctx.textAlign = "center";
+          ctx.fillText(v.toFixed(2), x, bufTop + 22);
+        });
+        ctx.textAlign = "left";
+
+        // Section labels
+        ctx.font = '10px "Lexend", sans-serif';
+        ctx.fillStyle = "#57514b";
+        ctx.fillText("onde", 4, 14);
+        ctx.fillStyle = "#7a5000";
+        ctx.fillText("buffer", 4, H - 8);
+      }
+
+      function buildSampBuf() {
+        const n = parseInt(document.getElementById("sl-nsamp").value);
+        const vals = getSampVals(n);
+        const row = document.getElementById("buf-samp-row");
+        if (!row) return;
+        row.innerHTML = "";
+        vals.forEach((v, i) => {
+          const c = document.createElement("div");
+          c.className = "buf-cell";
+          c.id = "bsc-" + i;
+          c.textContent = "?";
+          row.appendChild(c);
+        });
+      }
+
+      let sampBufTimer = null;
+      function animSampBuf() {
+        const n = parseInt(document.getElementById("sl-nsamp").value);
+        const vals = getSampVals(n);
+        if (sampBufTimer) clearTimeout(sampBufTimer);
+        for (let i = 0; i < n; i++) {
+          const c = document.getElementById("bsc-" + i);
+          if (c) {
+            c.className = "buf-cell";
+            c.textContent = "?";
+          }
+        }
+        (function step(i) {
+          if (i >= n) return;
+          const c = document.getElementById("bsc-" + i);
+          if (c) {
+            c.className = "buf-cell lit-S";
+            c.textContent = vals[i].toFixed(2);
+          }
+          sampBufTimer = setTimeout(() => step(i + 1), 110);
+        })(0);
+      }
+
+      document
+        .getElementById("sl-nsamp")
+        .addEventListener("input", function () {
+          document.getElementById("nsamp-lbl").textContent = this.value;
+          drawSamples();
+          buildSampBuf();
+        });
+
+      // ══════════════════════════════════════════════════════
+      // 3. FRÉQUENCE
+      // ══════════════════════════════════════════════════════
+      function drawSRCanvas(id, n) {
+        const cv = document.getElementById(id);
+        if (!cv) return;
+        const ctx = cv.getContext("2d");
+        const W = cv.width,
+          H = cv.height;
+        ctx.clearRect(0, 0, W, H);
+        const midY = H / 2,
+          aH = H / 2 - 16;
+
+        // Zero line
+        ctx.strokeStyle = "#2a3a2a";
+        ctx.lineWidth = 1;
+        ctx.setLineDash([4, 3]);
+        ctx.beginPath();
+        ctx.moveTo(0, midY);
+        ctx.lineTo(W, midY);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Reference (faint)
+        ctx.beginPath();
+        ctx.strokeStyle = "rgba(93,202,165,0.15)";
+        ctx.lineWidth = 1.5;
+        for (let x = 0; x <= W; x++) {
+          const y = midY - aH * Math.sin((2 * Math.PI * 2 * x) / W);
+          if (x === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+
+        const pts = Array.from({ length: n }, (_, i) => {
+          const t = i / (n - 1);
+          return {
+            x: t * (W - 10) + 5,
+            y: midY - aH * Math.sin(2 * Math.PI * 2 * t),
+          };
+        });
+
+        // Color based on fidelity
+        const color = n <= 7 ? "#e24b4a" : n <= 18 ? "#fac775" : "#5dcaa5";
+
+        // Reconstructed
+        ctx.beginPath();
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2;
+        pts.forEach((p, i) =>
+          i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y),
+        );
+        ctx.stroke();
+
+        // Dots
+        pts.forEach((p) => {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+          ctx.fillStyle = "#ba7517";
+          ctx.fill();
+        });
+
+        // Label
+        ctx.font = '11px "JetBrains Mono",monospace';
+        ctx.fillStyle = color;
+        ctx.fillText(n + " pts", 6, 14);
+        const ql =
+          n <= 7 ? "😵 Mauvais" : n <= 18 ? "😐 Passable" : "✅ Excellent";
+        ctx.fillStyle = "#888780";
+        ctx.font = '10px "Lexend",sans-serif';
+        ctx.fillText(ql, 6, 28);
+      }
+
+      function drawFreq() {
+        const v = parseInt(document.getElementById("sl-sr")?.value || 12);
+        drawSRCanvas("cv-sr-low", Math.max(4, Math.floor(v / 3)));
+        drawSRCanvas("cv-sr-high", Math.min(60, v * 4));
+        const q =
+          v <= 10
+            ? "⚠ Peu de samples → reconstruction très grossière"
+            : v <= 25
+              ? "👍 Qualité correcte"
+              : "🔥 Excellente fidélité !";
+        const el = document.getElementById("sr-qual");
+        if (el) el.textContent = q;
+      }
+
+      document.getElementById("sl-sr")?.addEventListener("input", function () {
+        document.getElementById("sr-lbl").textContent = this.value + " pts";
+        drawFreq();
+      });
+
+      // ══════════════════════════════════════════════════════
+      // 4. STÉRÉO & FRAMES
+      // ══════════════════════════════════════════════════════
+      const stereoData = [
+        [0.2, 0.1],
+        [0.5, 0.3],
+        [-0.3, -0.2],
+        [0.8, 0.7],
+        [0.0, 0.1],
+        [-0.5, -0.6],
+        [0.3, 0.4],
+        [-0.1, -0.15],
+      ];
+      let stereoIdx = 0;
+
+      function initStereo() {
+        stereoIdx = 0;
+        const row = document.getElementById("stereo-buf");
+        if (!row) return;
+        row.innerHTML = "";
+        for (let i = 0; i < 16; i++) {
+          const c = document.createElement("div");
+          c.className = "buf-cell";
+          c.id = "stc-" + i;
+          c.textContent = i % 2 === 0 ? "L" : "R";
+          row.appendChild(c);
+        }
+        document.getElementById("ear-L").textContent = "—";
+        document.getElementById("ear-R").textContent = "—";
+        document.getElementById("stereo-msg").innerHTML =
+          'Clique "Avancer 1 frame" pour voir comment le buffer se remplit.';
+      }
+
+      function stepStereo() {
+        const fr = Math.floor(stereoIdx / 2);
+        if (fr >= stereoData.length) {
+          document.getElementById("stereo-msg").innerHTML =
+            '🔁 Buffer complet ! Clique "Recommencer" pour tout revoir.';
+          return;
+        }
+        const [L, R] = stereoData[fr];
+        const lc = document.getElementById("stc-" + stereoIdx);
+        const rc = document.getElementById("stc-" + (stereoIdx + 1));
+        if (lc) {
+          lc.className = "buf-cell lit-L";
+          lc.textContent = L.toFixed(2);
+        }
+        if (rc) {
+          rc.className = "buf-cell lit-R";
+          rc.textContent = R.toFixed(2);
+        }
+        document.getElementById("ear-L").textContent = L.toFixed(2);
+        document.getElementById("ear-R").textContent = R.toFixed(2);
+        document.getElementById("stereo-msg").innerHTML =
+          `Frame ${fr + 1}/8 : <code>L = ${L.toFixed(2)}</code>, <code>R = ${R.toFixed(2)}</code> — 2 samples ajoutés (index ${stereoIdx} et ${stereoIdx + 1})`;
+        stereoIdx += 2;
+      }
+
+      function resetStereo() {
+        initStereo();
+      }
+
+      // ══════════════════════════════════════════════════════
+      // 5. FICHIER .WAV
+      // ══════════════════════════════════════════════════════
+      let wavStep = 0;
+      const wavSteps = [
+        {
+          btn: "▶ Étape 2 : lire le header",
+          msg: "📂 Fichier <code>kick.wav</code> ouvert en mémoire.",
+          sr: "?",
+          ch: "?",
+          bd: "?",
+          vals: [],
+        },
+        {
+          btn: "▶ Étape 3 : extraire les samples",
+          msg: "🔍 Header lu : <code>sample_rate = 44100</code>, <code>channels = 2</code>, <code>bit_depth = 16</code>.",
+          sr: "44100",
+          ch: "2",
+          bd: "16",
+          vals: [],
+        },
+        {
+          btn: "▶ Étape 4 : buffer prêt",
+          msg: "📦 Samples extraits de la section DATA...",
+          sr: "44100",
+          ch: "2",
+          bd: "16",
+          vals: [0.2, 0.1, 0.5, 0.3, -0.3, -0.2],
+        },
+        {
+          btn: "↺ Recommencer",
+          msg: "✅ Buffer prêt ! 12 samples chargés en mémoire. Prêt à jouer, looper, modifier.",
+          sr: "44100",
+          ch: "2",
+          bd: "16",
+          vals: [
+            0.2, 0.1, 0.5, 0.3, -0.3, -0.2, 0.8, 0.7, 0.0, 0.1, -0.5, -0.6,
+          ],
+        },
+      ];
+
+      function initWav() {
+        wavStep = 0;
+        document.getElementById("wav-sr").textContent = "?";
+        document.getElementById("wav-ch").textContent = "?";
+        document.getElementById("wav-bd").textContent = "?";
+        document.getElementById("wav-data").innerHTML = "";
+        document.getElementById("wav-msg").innerHTML =
+          "Clique pour simuler le chargement de <code>kick.wav</code> en mémoire.";
+        document.getElementById("wav-btn").textContent =
+          "▶ Étape 1 : ouvrir le fichier";
+      }
+
+      function stepWav() {
+        if (wavStep >= wavSteps.length) {
+          initWav();
+          return;
+        }
+        const s = wavSteps[wavStep];
+        document.getElementById("wav-sr").textContent = s.sr;
+        document.getElementById("wav-ch").textContent = s.ch;
+        document.getElementById("wav-bd").textContent = s.bd;
+        document.getElementById("wav-msg").innerHTML = s.msg;
+        document.getElementById("wav-btn").textContent = s.btn;
+
+        const dv = document.getElementById("wav-data");
+        dv.innerHTML = "";
+        s.vals.forEach((v) => {
+          const c = document.createElement("div");
+          c.className = "buf-cell lit-S";
+          c.textContent = v.toFixed(2);
+          dv.appendChild(c);
+        });
+        wavStep++;
+      }
+
+      // ══════════════════════════════════════════════════════
+      // 6. SÉQUENCEUR
+      // ══════════════════════════════════════════════════════
+      const S_TRACKS = 4,
+        S_STEPS = 16;
+      const TRK_NAMES = ["Kick", "Snare", "Hi-Hat", "Clap"];
+      let sGrid = Array.from({ length: S_TRACKS }, () =>
+        Array(S_STEPS).fill(false),
+      );
+      let sCursor = -1,
+        sInterval = null,
+        sRunning = false,
+        seqBuilt = false;
+
+      function initSeq() {
+        if (!seqBuilt) {
+          const nums = document.getElementById("seq-nums");
+          if (!nums) return;
+          nums.innerHTML = "";
+          for (let s = 0; s < S_STEPS; s++) {
+            const n = document.createElement("div");
+            n.className = "seq-step-num";
+            n.textContent = s + 1;
+            nums.appendChild(n);
+          }
+          const gEl = document.getElementById("seq-grid");
+          gEl.innerHTML = "";
+          for (let t = 0; t < S_TRACKS; t++) {
+            const row = document.createElement("div");
+            row.className = "seq-row";
+            const lbl = document.createElement("div");
+            lbl.className = "seq-lbl";
+            lbl.textContent = TRK_NAMES[t];
+            row.appendChild(lbl);
+            for (let s = 0; s < S_STEPS; s++) {
+              const c = document.createElement("div");
+              c.className = "seq-cell";
+              c.dataset.t = t;
+              c.dataset.s = s;
+              c.addEventListener("click", function () {
+                const tt = +this.dataset.t,
+                  ss = +this.dataset.s;
+                sGrid[tt][ss] = !sGrid[tt][ss];
+                renderCell(tt, ss);
+              });
+              row.appendChild(c);
+            }
+            gEl.appendChild(row);
+          }
+          document
+            .getElementById("sl-bpm")
+            .addEventListener("input", function () {
+              document.getElementById("bpm-lbl").textContent =
+                this.value + " BPM";
+              updateBpmCalc();
+              if (sRunning) {
+                sStop();
+                sPlay();
+              }
+            });
+          seqBuilt = true;
+        }
+        updateBpmCalc();
+      }
+
+      function renderCell(t, s) {
+        const c = document.querySelector(`[data-t="${t}"][data-s="${s}"]`);
+        if (!c) return;
+        const on = sGrid[t][s],
+          cur = s === sCursor;
+        c.className = "seq-cell" + (on ? " on" + t : "") + (cur ? " cur" : "");
+      }
+
+      function sAdvance() {
+        const prev = sCursor;
+        sCursor = (sCursor + 1) % S_STEPS;
+        for (let t = 0; t < S_TRACKS; t++) {
+          if (prev >= 0) renderCell(t, prev);
+          renderCell(t, sCursor);
+        }
+      }
+
+      function sPlay() {
+        const bpm = parseInt(document.getElementById("sl-bpm").value);
+        sInterval = setInterval(sAdvance, (60 / bpm / 4) * 1000);
+        sRunning = true;
+        document.getElementById("seq-play-btn").textContent = "⏹ Stop";
+      }
+
+      function sStop() {
+        if (sInterval) {
+          clearInterval(sInterval);
+          sInterval = null;
+        }
+        sRunning = false;
+        document.getElementById("seq-play-btn").textContent = "▶ Play";
+        const prev = sCursor;
+        sCursor = -1;
+        if (prev >= 0) for (let t = 0; t < S_TRACKS; t++) renderCell(t, prev);
+      }
+
+      function seqToggle() {
+        sRunning ? sStop() : sPlay();
+      }
+
+      function seqReset() {
+        sStop();
+        sGrid = Array.from({ length: S_TRACKS }, () =>
+          Array(S_STEPS).fill(false),
+        );
+        for (let t = 0; t < S_TRACKS; t++)
+          for (let s = 0; s < S_STEPS; s++) renderCell(t, s);
+      }
+
+      function seqPreset(name) {
+        sStop();
+        sGrid = Array.from({ length: S_TRACKS }, () =>
+          Array(S_STEPS).fill(false),
+        );
+        if (name === "basic") {
+          [0, 4, 8, 12].forEach((s) => (sGrid[0][s] = true));
+          [4, 12].forEach((s) => (sGrid[1][s] = true));
+          [0, 2, 4, 6, 8, 10, 12, 14].forEach((s) => (sGrid[2][s] = true));
+        } else if (name === "techno") {
+          Array.from({ length: 16 }, (_, i) => i).forEach(
+            (s) => (sGrid[0][s] = true),
+          );
+          [4, 12].forEach((s) => (sGrid[1][s] = true));
+          [1, 3, 5, 7, 9, 11, 13, 15].forEach((s) => (sGrid[2][s] = true));
+          [4, 8, 12].forEach((s) => (sGrid[3][s] = true));
+        }
+        for (let t = 0; t < S_TRACKS; t++)
+          for (let s = 0; s < S_STEPS; s++) renderCell(t, s);
+        sPlay();
+      }
+
+      function updateBpmCalc() {
+        const bpm = parseInt(document.getElementById("sl-bpm")?.value || 120);
+        const el = document.getElementById("bpm-calc");
+        if (!el) return;
+        const beatMs = ((60 / bpm) * 1000).toFixed(0);
+        const stepMs = ((60 / bpm / 4) * 1000).toFixed(0);
+        el.textContent = `${bpm} BPM → 1 beat = ${beatMs}ms → 1 step = ${stepMs}ms`;
+      }
+
+      // ══════════════════════════════════════════════════════
+      // 7. PIPELINE
+      // ══════════════════════════════════════════════════════
+      const pipeData = {
+        seq: {
+          cls: "seq",
+          label: "Step Sequencer",
+          title: "Step Sequencer",
+          color: "#8fd3ff",
+          desc: "Le chef d'orchestre. Avance de step en step selon le BPM. À chaque step, il regarde quelles cases sont activées et commande les Audio Players correspondants.",
+        },
+        p1: {
+          cls: "play",
+          label:
+            'Player 1<br><span style="font-size:9px;opacity:.7">Kick</span>',
+          title: "Audio Player 1 — Kick",
+          color: "#9fe1cb",
+          desc: "Petit lecteur dédié à la Track 1. Stocke les samples de kick.wav en mémoire. Quand le séquenceur l'active, il lit ses données depuis le début.",
+        },
+        p2: {
+          cls: "play",
+          label:
+            'Player 2<br><span style="font-size:9px;opacity:.7">Snare</span>',
+          title: "Audio Player 2 — Snare",
+          color: "#9fe1cb",
+          desc: "Idem pour la Track 2. Lit snare.wav quand le séquenceur l'active.",
+        },
+        p3: {
+          cls: "play",
+          label:
+            'Player 3<br><span style="font-size:9px;opacity:.7">Hi-Hat</span>',
+          title: "Audio Player 3 — Hi-Hat",
+          color: "#9fe1cb",
+          desc: "Idem pour la Track 3. Lit hihat.wav quand le séquenceur l'active.",
+        },
+        p4: {
+          cls: "play",
+          label:
+            'Player 4<br><span style="font-size:9px;opacity:.7">Clap</span>',
+          title: "Audio Player 4 — Clap",
+          color: "#9fe1cb",
+          desc: "Idem pour la Track 4. Lit clap.wav quand le séquenceur l'active.",
+        },
+        d1: {
+          cls: "dly",
+          label: "Delay 1",
+          title: "Delay 1",
+          color: "#fac775",
+          desc: "Effet d'écho pour la Track 1. Prend le signal et additionne une copie décalée dans le temps. Contrôlé par delay_time (espacement) et delay_mix (intensité). Peut être désactivé.",
+        },
+        d2: {
+          cls: "dly",
+          label: "Delay 2",
+          title: "Delay 2",
+          color: "#fac775",
+          desc: "Effet d'écho pour la Track 2. Indépendant du Delay 1.",
+        },
+        d3: {
+          cls: "dly",
+          label: "Delay 3",
+          title: "Delay 3",
+          color: "#fac775",
+          desc: "Effet d'écho pour la Track 3.",
+        },
+        d4: {
+          cls: "dly",
+          label: "Delay 4",
+          title: "Delay 4",
+          color: "#fac775",
+          desc: "Effet d'écho pour la Track 4.",
+        },
+        mix: {
+          cls: "mix",
+          label: "Mixer",
+          title: "Mixer",
+          color: "#d8b4fe",
+          desc: "Mélangeur final. Reçoit les 4 signaux (après delay) et les additionne en appliquant le volume de chaque piste. Produit un signal stéréo final.",
+        },
+        out: {
+          cls: "out",
+          label: "Audio Out 🔊",
+          title: "Audio Out",
+          color: "#fca5a5",
+          desc: "Sortie audio du système. Envoie le signal final vers la carte son → haut-parleurs ou casque. C'est ce que tes oreilles entendent !",
+        },
+      };
+
+      function buildPipe() {
+        const el = document.getElementById("pipe-vis");
+        if (!el) return;
+        el.innerHTML = `
+          <div style="display:flex;gap:6px;align-items:stretch;flex-wrap:wrap;">
+
+            <div style="display:flex;flex-direction:column;justify-content:center;">
+              <div class="pipe-blk seq" data-key="seq" style="padding:12px 16px;font-size:13px;">Step<br>Sequencer</div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;justify-content:center;gap:4px;">
+              ${[1, 2, 3, 4].map((i) => `<div style="color:var(--t3);font-size:12px;text-align:center;">→</div>`).join("")}
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:4px;">
+              ${[1, 2, 3, 4]
+                .map(
+                  (i) => `
+                <div style="display:flex;gap:4px;align-items:center;">
+                  <div class="pipe-blk play" data-key="p${i}">Player ${i}</div>
+                  <div style="color:var(--t3);font-size:11px;">→</div>
+                  <div class="pipe-blk dly"  data-key="d${i}">Delay ${i}</div>
+                  <div style="color:var(--t3);font-size:11px;">→</div>
+                </div>`,
+                )
+                .join("")}
+            </div>
+
+            <div style="display:flex;flex-direction:column;justify-content:center;">
+              <div class="pipe-blk mix" data-key="mix" style="padding:14px 16px;font-size:13px;">Mixer</div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;justify-content:center;">
+              <div style="color:var(--t3);font-size:16px;padding:0 4px;">→</div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;justify-content:center;">
+              <div class="pipe-blk out" data-key="out" style="padding:12px 16px;font-size:13px;">Audio Out<br>🔊</div>
+            </div>
+
+          </div>`;
+
+        el.querySelectorAll(".pipe-blk").forEach((b) => {
+          b.addEventListener("click", function () {
+            el.querySelectorAll(".pipe-blk").forEach((x) => {
+              x.style.outline = "none";
+              x.style.filter = "";
+            });
+            const d = pipeData[this.dataset.key];
+            if (!d) return;
+            this.style.outline = `2px solid ${d.color}`;
+            this.style.outlineOffset = "2px";
+            this.style.filter = "brightness(1.3)";
+            const det = document.getElementById("pipe-detail");
+            det.innerHTML = `<strong style="color:${d.color}">${d.title}</strong><br>${d.desc}`;
+          });
+        });
+      }
+    </script>
+  </body>
+</html>
