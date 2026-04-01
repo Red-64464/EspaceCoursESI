@@ -1,0 +1,1540 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ALG4 — Guide Interactif IA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- ═══════════════════════════════════════ SIDEBAR ═══ -->
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <span class="brand-emoji">🧠</span>
+        <div>
+          <div class="brand-title">ALG4</div>
+          <div class="brand-sub">Guide Interactif</div>
+        </div>
+      </div>
+
+      <div class="progress-wrap">
+        <svg width="54" height="54" viewBox="0 0 54 54">
+          <circle class="prog-bg" cx="27" cy="27" r="22" />
+          <circle class="prog-fill" cx="27" cy="27" r="22" id="prog-circle" />
+        </svg>
+        <span class="prog-label" id="prog-pct">0%</span>
+      </div>
+
+      <ul class="nav-list">
+        <li>
+          <a href="#s0" class="nav-link" data-s="s0"
+            ><span class="nn">00</span>Accueil</a
+          >
+        </li>
+        <li>
+          <a href="#s1" class="nav-link" data-s="s1"
+            ><span class="nn">01</span>Les bases</a
+          >
+        </li>
+        <li>
+          <a href="#s2" class="nav-link" data-s="s2"
+            ><span class="nn">02</span>Minimax</a
+          >
+        </li>
+        <li>
+          <a href="#s3" class="nav-link" data-s="s3"
+            ><span class="nn">03</span>Alpha-Beta</a
+          >
+        </li>
+        <li>
+          <a href="#s4" class="nav-link" data-s="s4"
+            ><span class="nn">04</span>Évaluation</a
+          >
+        </li>
+        <li>
+          <a href="#s5" class="nav-link" data-s="s5"
+            ><span class="nn">05</span>Q-Learning</a
+          >
+        </li>
+        <li>
+          <a href="#s6" class="nav-link" data-s="s6"
+            ><span class="nn">06</span>TD-Learning</a
+          >
+        </li>
+        <li>
+          <a href="#s7" class="nav-link" data-s="s7"
+            ><span class="nn">07</span>Projet</a
+          >
+        </li>
+        <li>
+          <a href="#s8" class="nav-link" data-s="s8"
+            ><span class="nn">08</span>Notions +</a
+          >
+        </li>
+        <li>
+          <a href="#s9" class="nav-link" data-s="s9"
+            ><span class="nn">09</span>Antisèche</a
+          >
+        </li>
+      </ul>
+
+      <button class="menu-toggle" id="menu-toggle">☰</button>
+    </nav>
+
+    <!-- ═══════════════════════════════════════ MAIN ══════ -->
+    <main class="main" id="main">
+      <!-- ── 00 · HERO ─────────────────────────────────── -->
+      <section id="s0" class="section hero-section reveal">
+        <div class="hero-left">
+          <div class="hero-badge">🎓 Cours ALG4 · ESI Bruxelles</div>
+          <h1 class="hero-title">
+            Guide Complet<br /><span class="gradient-text"
+              >Intelligence Artificielle</span
+            >
+          </h1>
+          <p class="hero-sub">
+            Minimax · Alpha-Beta · Q-Learning · TD-Learning · Projet RLMinimax
+          </p>
+          <div class="hero-pills">
+            <span class="pill blue">🎮 Lab 1 — Minimax</span>
+            <span class="pill purple">🧠 Lab 2 — Q-Learning</span>
+            <span class="pill cyan">🚀 Projet — RLMinimax</span>
+          </div>
+          <a href="#s1" class="cta-btn">Commencer l'apprentissage →</a>
+
+          <div class="theme-switcher">
+            <span class="theme-label">🎨 Thème</span>
+            <button
+              class="theme-btn active"
+              data-theme="default"
+              title="Violet (défaut)"
+            >
+              <span class="theme-dot" style="background: #7c6fff"></span>
+            </button>
+            <button class="theme-btn" data-theme="rose" title="Rose pastel">
+              <span class="theme-dot" style="background: #f4a0b5"></span>
+            </button>
+            <button class="theme-btn" data-theme="orange" title="Orange pastel">
+              <span class="theme-dot" style="background: #f0a878"></span>
+            </button>
+          </div>
+        </div>
+        <div class="hero-right">
+          <div class="pacman-arena" id="hero-arena">
+            <div class="maze-grid" id="maze-grid"></div>
+            <div class="hero-pacman" id="hero-pac">ᗧ</div>
+            <div class="hero-ghost" id="ghost1" style="--gcolor: #ff6b6b">
+              👻
+            </div>
+            <div class="hero-ghost" id="ghost2" style="--gcolor: #c474ed">
+              👻
+            </div>
+            <div class="score-hud">Score: <span id="hero-score">0</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 01 · BASES ─────────────────────────────────── -->
+      <section id="s1" class="section reveal">
+        <div class="sec-header">
+          <span class="sec-num">01</span>
+          <div>
+            <h2>Les bases absolues</h2>
+            <p class="sec-sub">Algorithme · IA · Agent</p>
+          </div>
+        </div>
+
+        <div class="grid-3">
+          <div class="concept-card" data-expand="d-algo">
+            <div class="cc-icon">⚙️</div>
+            <h3>Algorithme</h3>
+            <p>Une recette de cuisine pour l'ordinateur</p>
+            <span class="cc-hint">▼ Cliquer pour développer</span>
+          </div>
+          <div class="concept-card" data-expand="d-ia">
+            <div class="cc-icon">🤖</div>
+            <h3>Intelligence Artificielle</h3>
+            <p>Un programme qui prend des décisions intelligentes</p>
+            <span class="cc-hint">▼ Cliquer pour développer</span>
+          </div>
+          <div class="concept-card" data-expand="d-agent">
+            <div class="cc-icon">🕹️</div>
+            <h3>Agent</h3>
+            <p>L'entité qui observe, réfléchit et agit</p>
+            <span class="cc-hint">▼ Cliquer pour développer</span>
+          </div>
+        </div>
+
+        <div class="expand-panel" id="d-algo">
+          <h4>⚙️ C'est quoi un algorithme ?</h4>
+          <p>
+            Un <strong>algorithme</strong>, c'est une recette de cuisine pour un
+            ordinateur — une liste d'étapes précises qu'on suit dans l'ordre.
+          </p>
+          <div class="step-list">
+            <div class="step"><span class="sn">1</span>Regarde à gauche</div>
+            <div class="step"><span class="sn">2</span>Regarde à droite</div>
+            <div class="step">
+              <span class="sn">3</span>Si aucune voiture → traverse
+            </div>
+            <div class="step">
+              <span class="sn">4</span>Sinon → attends et retourne à l'étape 1
+            </div>
+          </div>
+          <p class="subtle">
+            Exemple : traverser une route. C'est un algorithme !
+          </p>
+        </div>
+
+        <div class="expand-panel" id="d-ia">
+          <h4>🤖 C'est quoi une IA ?</h4>
+          <p>
+            Dans ce projet,
+            <strong
+              >IA = un programme qui prend des décisions intelligentes</strong
+            >.
+          </p>
+          <div class="callout callout-blue">
+            🔑 <strong>En simple :</strong> l'IA ici, c'est un
+            <u>joueur automatique</u>. Il joue à Pac-Man à ta place et il essaie
+            de gagner.
+          </div>
+          <ul class="fl">
+            <li>
+              <strong>Observe</strong> — où est Pac-Man ? où sont les fantômes ?
+            </li>
+            <li><strong>Réfléchit</strong> — quel est le meilleur coup ?</li>
+            <li><strong>Agit</strong> — se déplace dans une direction</li>
+          </ul>
+        </div>
+
+        <div class="expand-panel" id="d-agent">
+          <h4>🕹️ C'est quoi un agent ?</h4>
+          <p>
+            Un <strong>agent</strong>, c'est "l'entité qui agit" dans le jeu
+          </p>
+          <ul class="fl">
+            <li>
+              <strong>Pac-Man</strong> = l'agent principal (celui qu'on
+              programme)
+            </li>
+            <li><strong>Les fantômes</strong> = des agents adversaires</li>
+          </ul>
+          <div class="codeblock">
+            <span class="c-kw">def</span>
+            <span class="c-fn">get_action</span>(<span class="c-var">self</span
+            >, game_state):<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="c-cm"
+              ># retourne : Nord, Sud, Est, Ouest ou Stop</span
+            >
+          </div>
+          <p class="fileref">
+            📄 <code>rlMinimaxAgents.py</code> → classe
+            <code>RLMinimaxAgent</code>
+          </p>
+        </div>
+
+        <!-- Cycle animé -->
+        <div class="demo-box">
+          <div class="demo-title">
+            <span class="demo-badge">🎯 Animation</span> Le cycle de l'agent
+          </div>
+          <div class="agent-cycle">
+            <div class="cyc-node cyc-obs" id="cyc1">
+              <div class="cyc-icon">👁️</div>
+              <strong>OBSERVER</strong>
+              <small>l'état du jeu</small>
+            </div>
+            <div class="cyc-arrow" id="ca1">→</div>
+            <div class="cyc-node cyc-think" id="cyc2">
+              <div class="cyc-icon">💭</div>
+              <strong>RÉFLÉCHIR</strong>
+              <small>meilleur coup ?</small>
+            </div>
+            <div class="cyc-arrow" id="ca2">→</div>
+            <div class="cyc-node cyc-act" id="cyc3">
+              <div class="cyc-icon">⚡</div>
+              <strong>AGIR</strong>
+              <small>Nord/Sud/Est/Ouest</small>
+            </div>
+            <div class="cyc-back">↺ recommencer à chaque tour</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 02 · MINIMAX ───────────────────────────────── -->
+      <section id="s2" class="section reveal">
+        <div class="sec-header">
+          <span class="sec-num">02</span>
+          <div>
+            <h2>Minimax</h2>
+            <p class="sec-sub">Penser comme un adversaire</p>
+          </div>
+        </div>
+
+        <div class="two-col">
+          <div class="info-card green-card">
+            <div class="ic-icon">📈</div>
+            <h4>MAX (Pac-Man)</h4>
+            <p>Choisit le coup qui donne le <strong>PLUS GROS</strong> score</p>
+          </div>
+          <div class="info-card red-card">
+            <div class="ic-icon">📉</div>
+            <h4>MIN (Fantômes)</h4>
+            <p>
+              Choisit le coup qui donne à Pac-Man le
+              <strong>PLUS PETIT</strong> score
+            </p>
+          </div>
+        </div>
+
+        <div class="callout callout-amber">
+          🎲 <strong>Analogie :</strong> tu joues contre un ami méchant. Tu
+          choisis un nombre entre 1 et 3, lui aussi. Tu gagnes la différence. Sa
+          stratégie : choisir 3 pour minimiser ta différence.
+          <strong>Résultat Minimax : 3 − 3 = 0.</strong>
+        </div>
+
+        <!-- MINIMAX TREE DEMO -->
+        <div class="demo-box">
+          <div class="demo-title">
+            <span class="demo-badge">🎮 Démo interactive</span> Arbre de jeu
+            Minimax
+          </div>
+          <div class="tree-controls">
+            <button class="btn btn-primary" id="mm-play">▶ Simuler</button>
+            <button class="btn btn-ghost" id="mm-reset">↺ Reset</button>
+            <div class="legend">
+              <span><span class="leg-dot ld-blue"></span>MAX (Pac-Man)</span>
+              <span><span class="leg-dot ld-red"></span>MIN (Fantôme)</span>
+              <span><span class="leg-dot ld-gray"></span>Feuilles</span>
+              <span><span class="leg-dot ld-gold"></span>Chemin optimal</span>
+            </div>
+          </div>
+          <div class="svg-wrap">
+            <svg
+              id="mm-svg"
+              viewBox="0 0 800 340"
+              preserveAspectRatio="xMidYMid meet"
+            ></svg>
+          </div>
+          <div class="tree-msg" id="mm-msg"></div>
+        </div>
+
+        <div class="depth-visual">
+          <h4>La profondeur d'exploration</h4>
+          <div class="dv-row">
+            <span class="dv-d">Profondeur 0</span
+            ><span>→ regarde juste l'état actuel</span>
+          </div>
+          <div class="dv-row">
+            <span class="dv-d">Profondeur 1</span
+            ><span>→ 1 coup en avance</span>
+          </div>
+          <div class="dv-row dv-hl">
+            <span class="dv-d">Profondeur 2</span
+            ><span
+              >→ 1 coup Pac-Man + 1 coup Fantôme ✓ utilisé dans le projet</span
+            >
+          </div>
+          <div class="dv-row">
+            <span class="dv-d">Profondeur 3+</span
+            ><span>→ plus intelligent, mais plus lent…</span>
+          </div>
+        </div>
+        <p class="fileref">
+          📄 <code>rlMinimaxAgents.py</code> → méthode
+          <code>alpha_beta()</code> · <code>self.depth</code> = profondeur
+        </p>
+      </section>
+
+      <!-- ── 03 · ALPHA-BETA ────────────────────────────── -->
+      <section id="s3" class="section reveal">
+        <div class="sec-header">
+          <span class="sec-num">03</span>
+          <div>
+            <h2>L'élagage Alpha-Beta</h2>
+            <p class="sec-sub">Couper les branches inutiles</p>
+          </div>
+        </div>
+
+        <div class="callout callout-purple">
+          � <strong>Analogie :</strong> tu cherches le vol le moins cher pour
+          les vacances. Tu trouves le vol A → <strong>250€</strong>. Top ! C'est
+          ton point de référence (<strong>α = 250€</strong>). Tu commences à
+          regarder le vol B → le premier segment coûte déjà
+          <strong>300€</strong>. Même si le reste est gratuit, il sera plus cher
+          que A.
+          <strong
+            >Tu coupes ! Tu n'as pas besoin de regarder la suite de ce
+            vol.</strong
+          >
+          Alpha-Beta fait exactement pareil dans l'arbre de jeu Minimax.
+        </div>
+
+        <div class="two-col">
+          <div class="info-card blue-card">
+            <h4>α (alpha) — La garantie de Pac-Man</h4>
+            <p>
+              α =
+              <strong>le meilleur score que MAX (Pac-Man) peut garantir</strong>
+              grâce aux branches déjà explorées.
+            </p>
+            <p>
+              Au départ : α = <code>−∞</code> (on n'a encore rien exploré, donc
+              aucune garantie). Chaque fois que Pac-Man trouve une branche
+              valant X et que X &gt; α, on fait <code>α = X</code>. Alpha ne
+              peut que monter.
+            </p>
+            <p class="subtle-ex">
+              ✏️ Exemple : après avoir exploré la branche Nord (valeur 3), on
+              sait que Pac-Man peut au minimum obtenir 3 points →
+              <strong>α = 3</strong>.
+            </p>
+          </div>
+          <div class="info-card purple-card">
+            <h4>β (beta) — La limite imposée par l'ennemi</h4>
+            <p>
+              β =
+              <strong>le meilleur score que MIN (fantôme) peut forcer</strong>
+              Pac-Man à recevoir dans les branches déjà vues.
+            </p>
+            <p>
+              Au départ : β = <code>+∞</code> (aucune limite connue). Chaque
+              fois que le fantôme voit qu'il peut forcer une valeur Y et que Y
+              &lt; β, on fait <code>β = Y</code>. Beta ne peut que descendre.
+            </p>
+            <p class="subtle-ex">
+              ✏️ Exemple : si dans la branche Est, le fantôme peut forcer la
+              valeur à 2, alors <strong>β = 2</strong>.
+            </p>
+          </div>
+        </div>
+
+        <div class="rule-box">
+          📏
+          <strong
+            >Règle de coupure : si α ≥ β → on coupe cette branche !</strong
+          >
+          <div class="rule-detail">
+            <p>
+              <strong>Pourquoi couper ?</strong> α est ce que MAX peut garantir
+              ailleurs. β est ce que MIN peut imposer dans la branche actuelle.
+              Si α ≥ β, la branche actuelle donnera à MAX au maximum β, qui est
+              ≤ α. Pac-Man ne viendra jamais ici car il a mieux ailleurs →
+              <strong>inutile de continuer à explorer cette branche !</strong>
+            </p>
+            <p>
+              <strong>Exemple chiffré :</strong> α = 3 (branche Nord). On
+              explore Est → le fantôme peut forcer 2 (β = 2). Or 3 ≥ 2 → ✂️
+              COUPE ! On n'explore pas la suite de la branche Est. Même résultat
+              que Minimax, mais beaucoup plus rapide.
+            </p>
+          </div>
+        </div>
+
+        <!-- ALPHA-BETA DEMO -->
+        <div class="demo-box">
+          <div class="demo-title">
+            <span class="demo-badge">✂️ Démo interactive</span> Élagage
+            Alpha-Beta
+          </div>
+          <div class="tree-controls">
+            <button class="btn btn-primary" id="ab-play">
+              ▶ Animer les coupes
+            </button>
+            <button class="btn btn-ghost" id="ab-reset">↺ Reset</button>
+            <div class="ab-status">
+              <span>α = <strong id="ab-a">-∞</strong></span
+              ><span>β = <strong id="ab-b">+∞</strong></span>
+            </div>
+          </div>
+          <div class="svg-wrap">
+            <svg
+              id="ab-svg"
+              viewBox="0 0 800 340"
+              preserveAspectRatio="xMidYMid meet"
+            ></svg>
+          </div>
+          <div class="ab-log" id="ab-log"></div>
+        </div>
+
+        <div class="comparison-row">
+          <div class="comp-card bad-comp">
+            <div class="comp-num">27</div>
+            <div>Minimax pur<br /><small>feuilles explorées</small></div>
+          </div>
+          <div class="comp-vs">VS</div>
+          <div class="comp-card good-comp">
+            <div class="comp-num">~10</div>
+            <div>Alpha-Beta<br /><small>même résultat !</small></div>
+          </div>
+        </div>
+
+        <div class="codeblock">
+          <span class="c-cm"># rlMinimaxAgents.py — alpha_beta()</span><br />
+          <span class="c-kw">if</span> alpha &gt;= beta:<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="c-kw">break</span>
+          <span class="c-cm"># ← COUPURE ! On arrête d'explorer</span>
+        </div>
+        <p class="fileref">
+          📄 <code>rlMinimaxAgents.py</code> → méthode <code>alpha_beta()</code>
+        </p>
+      </section>
+
+      <!-- ── 04 · FONCTION D'ÉVALUATION ────────────────── -->
+      <section id="s4" class="section reveal">
+        <div class="sec-header">
+          <span class="sec-num">04</span>
+          <div>
+            <h2>La fonction d'évaluation</h2>
+            <p class="sec-sub">Donner un score à une situation</p>
+          </div>
+        </div>
+
+        <div class="callout callout-blue">
+          💡 Quand Minimax atteint sa profondeur max, la partie n'est pas finie.
+          On est "au milieu" du jeu. La fonction d'évaluation retourne un
+          <strong>score</strong> pour cette situation intermédiaire.
+        </div>
+
+        <div class="two-col">
+          <div class="info-card green-card">
+            😊 Score élevé → situation favorable pour Pac-Man
+          </div>
+          <div class="info-card red-card">
+            ☠️ Score bas → situation dangereuse
+          </div>
+        </div>
+
+        <div class="features-tbl">
+          <div class="ftbl-hdr">
+            <span>Facteur</span><span>Ce que ça mesure</span
+            ><span>Effet sur f(s)</span>
+          </div>
+          <div class="ftbl-row">
+            <span class="fn-badge">x₁</span
+            ><span><code>nearest_food_bfs</code> — Proximité nourriture</span
+            ><span class="pos-eff">✅ Plus proche = +score</span>
+          </div>
+          <div class="ftbl-row">
+            <span class="fn-badge neg-b">x₂</span
+            ><span
+              ><code>ghosts_within_3</code> — Fantômes dangereux ≤3 cases</span
+            ><span class="neg-eff">❌ Plus nombreux = −score</span>
+          </div>
+          <div class="ftbl-row">
+            <span class="fn-badge">x₃</span
+            ><span
+              ><code>scared_ghosts_nearby</code> — Fantômes mangeables
+              proches</span
+            ><span class="pos-eff">✅ Plus nombreux = +score</span>
+          </div>
+          <div class="ftbl-row">
+            <span class="fn-badge neg-b">x₄</span
+            ><span><code>remaining_food</code> — Nourriture restante</span
+            ><span class="pos-eff">✅ Moins il en reste = +score</span>
+          </div>
+          <div class="ftbl-row">
+            <span class="fn-badge">x₅</span
+            ><span><code>nearest_capsule_bfs</code> — Proximité capsule</span
+            ><span class="pos-eff">✅ Plus proche = +score</span>
+          </div>
+          <div class="ftbl-row">
+            <span class="fn-badge">x₆</span
+            ><span><code>current_score</code> — Score actuel du jeu</span
+            ><span class="pos-eff">✅ Plus haut = +score</span>
+          </div>
+          <div class="ftbl-row">
+            <span class="fn-badge neg-b">x₇</span
+            ><span
+              ><code>nearest_ghost_bfs</code> — Proximité fantôme le plus
+              proche</span
+            ><span class="neg-eff">❌ Plus proche = −score</span>
+          </div>
+        </div>
+
+        <div class="formula-hero">
+          f(s) = a₁·x₁ + a₂·x₂ + a₃·x₃ + a₄·x₄ + a₅·x₅ + a₆·x₆ + a₇·x₇ + C
+        </div>
+
+        <!-- CALCULATOR -->
+        <div class="demo-box">
+          <div class="demo-title">
+            <span class="demo-badge">🧮 Calculatrice interactive</span> Calcule
+            f(s) en temps réel
+          </div>
+          <div class="calc-wrap">
+            <div class="sliders-col" id="sliders-col"></div>
+            <div class="result-col">
+              <div class="bars-chart" id="bars-chart"></div>
+              <div class="total-score-wrap">
+                <span class="ts-label">f(s) =</span>
+                <span class="ts-val" id="ts-val">0.00</span>
+              </div>
+              <div class="score-verdict" id="score-verdict"></div>
+            </div>
+          </div>
+        </div>
+        <p class="fileref">
+          📄 <code>features.py</code> →
+          <code>extract_features()</code> &nbsp;·&nbsp;
+          <code>rlMinimaxAgents.py</code> →
+          <code>rl_evaluation_function()</code>
+        </p>
+      </section>
+
+      <!-- ── 05 · Q-LEARNING ────────────────────────────── -->
+      <section id="s5" class="section reveal">
+        <div class="sec-header">
+          <span class="sec-num">05</span>
+          <div>
+            <h2>Q-Learning</h2>
+            <p class="sec-sub">Apprendre par essai-erreur</p>
+          </div>
+        </div>
+
+        <div class="callout callout-amber">
+          🎮 <strong>C'est quoi le Q-Learning ?</strong> Imagine que tu apprends
+          à jouer à Pac-Man <em>sans jamais lire les règles</em>. Tu appuies sur
+          "Nord" → tu manges une gomme → super ! Tu notes mentalement : "aller
+          au Nord depuis ici = bien". Plus tard, tu appuies encore sur "Nord"
+          dans un autre couloir → un fantôme t'attrape → aïe ! Tu notes : "aller
+          au Nord là = danger". Après des milliers d'essais, tu as mémorisé
+          quelle action est bonne ou mauvaise dans chaque situation. C'est
+          exactement ça, le Q-Learning.
+        </div>
+
+        <div class="what-is-q">
+          <h4>La notation Q(s, a) — que signifie-t-elle ?</h4>
+          <p>
+            <strong>Q</strong> = qualité (de l'anglais "Quality") — un score de
+            0 au départ, qui monte ou descend avec l'expérience.<br />
+            <strong>s</strong> = l'état = une description complète de la
+            situation (où est Pac-Man ? où sont les fantômes ? combien de gommes
+            restent ?).<br />
+            <strong>a</strong> = l'action choisie dans cet état (Nord, Sud, Est,
+            Ouest).
+          </p>
+          <div class="q-example-row">
+            <div class="qe-card qe-bad">
+              <div class="qe-title">❌ Mauvaise action apprise</div>
+              Q(<em>adjacent à un fantôme</em>, <em>aller vers lui</em>) =
+              <strong>−100</strong>
+              <div class="qe-reason">
+                → Après s'être fait attraper plusieurs fois, l'agent a appris
+                que c'est très dangereux.
+              </div>
+            </div>
+            <div class="qe-card qe-good">
+              <div class="qe-title">✅ Bonne action apprise</div>
+              Q(<em>adjacent à une gomme</em>, <em>la manger</em>) =
+              <strong>+50</strong>
+              <div class="qe-reason">
+                → Après avoir mangé cette gomme de nombreuses fois, l'agent sait
+                que c'est bien.
+              </div>
+            </div>
+            <div class="qe-card qe-neutral">
+              <div class="qe-title">😐 Situation inconnue</div>
+              Q(<em>couloir vide</em>, <em>aller à droite</em>) =
+              <strong>0</strong>
+              <div class="qe-reason">
+                → L'agent n'a pas encore d'expérience pour ce cas précis. Il
+                doit explorer.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-blue" style="margin-top: 1.5rem">
+          📋 <strong>La Q-table — la "mémoire" de l'agent :</strong> c'est un
+          tableau avec une ligne par situation (état) et une colonne par action.
+          Chaque case stocke la valeur Q(état, action) = la qualité estimée de
+          faire cette action dans cette situation. Au départ, tout vaut 0
+          (l'agent ne sait rien). Au fil des parties, les valeurs se mettent à
+          jour, et le tableau devient la "carte d'expérience" de l'agent.
+        </div>
+
+        <!-- Q-TABLE DEMO -->
+        <div class="demo-box">
+          <div class="demo-title">
+            <span class="demo-badge">📊 Q-Table interactive</span> Voir la
+            Q-table s'enrichir
+          </div>
+          <div class="qt-controls">
+            <button class="btn btn-primary" id="qt-episode">
+              ▶ Jouer un épisode
+            </button>
+            <button class="btn btn-ghost" id="qt-reset">↺ Reset</button>
+            <label class="param-label"
+              >α = <strong id="qt-a-val">0.3</strong>
+              <input
+                type="range"
+                id="qt-alpha"
+                min="1"
+                max="9"
+                value="3"
+                step="1"
+            /></label>
+            <label class="param-label"
+              >ε = <strong id="qt-e-val">0.3</strong>
+              <input
+                type="range"
+                id="qt-eps"
+                min="0"
+                max="10"
+                value="3"
+                step="1"
+            /></label>
+          </div>
+          <div class="qtable-wrap" id="qtable-wrap"></div>
+          <div class="qtable-legend">
+            <strong>📖 Comment lire ce tableau ?</strong><br />
+            Chaque <strong>ligne = un état</strong> (type de situation). Chaque
+            <strong>colonne = une action</strong>. La valeur dans chaque case =
+            la qualité estimée de cette action dans cet état. La case
+            <span
+              style="
+                outline: 2px solid #fbbf24;
+                padding: 1px 4px;
+                border-radius: 3px;
+              "
+              >encadrée en or</span
+            >
+            = la meilleure action connue actuellement pour cet état. Les cases
+            <span
+              style="
+                background: rgba(52, 211, 153, 0.25);
+                padding: 1px 4px;
+                border-radius: 3px;
+              "
+              >vertes</span
+            >
+            = bonnes actions,
+            <span
+              style="
+                background: rgba(248, 113, 113, 0.25);
+                padding: 1px 4px;
+                border-radius: 3px;
+              "
+              >rouges</span
+            >
+            = mauvaises actions. Clique sur "Jouer un épisode" pour voir les
+            valeurs évoluer !
+          </div>
+          <div class="tree-msg" id="qt-msg"></div>
+        </div>
+
+        <div class="formula-hero formula-sm">
+          Q(s,a) ← Q(s,a) + α·[ r + γ·max<sub>a'</sub>Q(s',a') − Q(s,a) ]
+        </div>
+
+        <div class="formula-breakdown">
+          <div class="fb-row">
+            <span class="fb-sym">r</span
+            ><span
+              >récompense reçue immédiatement (ex: +10 manger une gomme)</span
+            >
+          </div>
+          <div class="fb-row">
+            <span class="fb-sym">γ</span
+            ><span
+              >facteur d'actualisation — importance du futur (entre 0 et
+              1)</span
+            >
+          </div>
+          <div class="fb-row">
+            <span class="fb-sym">max Q</span
+            ><span>meilleure Q-value possible dans l'état suivant</span>
+          </div>
+          <div class="fb-row">
+            <span class="fb-sym">erreur</span
+            ><span>ce qu'on AURAIT DÛ prédire − ce qu'on AVAIT prédit</span>
+          </div>
+        </div>
+
+        <!-- EPSILON SLIDER -->
+        <div class="demo-box">
+          <div class="demo-title">
+            <span class="demo-badge">⚖️ Dilemme</span> Exploration vs
+            Exploitation
+          </div>
+          <div class="eps-demo">
+            <div class="eps-bar-wrap">
+              <div class="eps-seg eps-explore" id="eps-seg-explore">
+                <span
+                  >🎲 Exploration<br /><small id="eps-explore-pct"
+                    >30%</small
+                  ></span
+                >
+              </div>
+              <div class="eps-seg eps-exploit" id="eps-seg-exploit">
+                <span
+                  >🎯 Exploitation<br /><small id="eps-exploit-pct"
+                    >70%</small
+                  ></span
+                >
+              </div>
+            </div>
+            <div class="eps-ctrl">
+              <span>ε=0<br /><small>100% exploit</small></span>
+              <input
+                type="range"
+                id="eps-global"
+                min="0"
+                max="100"
+                value="30"
+                class="eps-slider"
+              />
+              <span>ε=1<br /><small>100% explore</small></span>
+            </div>
+            <p class="eps-desc" id="eps-desc">
+              ε = 0.30 · Avec probabilité 30% on explore (action aléatoire),
+              sinon on exploite (meilleure action connue)
+            </p>
+          </div>
+        </div>
+        <p class="fileref">
+          📄 <code>qlearningAgents.py</code> → <code>getQValue</code>,
+          <code>getAction</code>, <code>update</code>
+        </p>
+      </section>
+
+      <!-- ── 06 · TD-LEARNING ───────────────────────────── -->
+      <section id="s6" class="section reveal">
+        <div class="sec-header">
+          <span class="sec-num">06</span>
+          <div>
+            <h2>TD-Learning</h2>
+            <p class="sec-sub">Apprendre en cours de route</p>
+          </div>
+        </div>
+
+        <div class="two-col">
+          <div class="info-card">
+            <h4>Monte Carlo</h4>
+            <p>Attendre la <strong>fin</strong> de la partie pour apprendre</p>
+          </div>
+          <div class="info-card blue-card">
+            <h4>TD(0) — notre projet ✓</h4>
+            <p>
+              Apprendre <strong>pendant</strong> le jeu, à chaque transition
+            </p>
+          </div>
+        </div>
+
+        <div class="vocab-box">
+          <h4>📖 Vocabulaire clé — à connaître avant de continuer</h4>
+          <div class="vocab-grid">
+            <div class="vocab-item">
+              <span class="vocab-term">Poids (w)</span>
+              <span class="vocab-def"
+                >Un nombre qui dit combien une feature compte dans le score.
+                Exemple : w₁ = 1.12 pour la nourriture → la nourriture est
+                importante. Un poids négatif = cette feature est mauvaise à
+                augmenter.</span
+              >
+            </div>
+            <div class="vocab-item">
+              <span class="vocab-term">État (s)</span>
+              <span class="vocab-def"
+                >Une "photo" complète du jeu à un instant T : position de
+                Pac-Man, positions des fantômes, score actuel, gommes
+                restantes...</span
+              >
+            </div>
+            <div class="vocab-item">
+              <span class="vocab-term">V(s)</span>
+              <span class="vocab-def"
+                >La valeur estimée d'un état = f(s) = somme des (poids ×
+                features). C'est le score que l'agent prédit pour cette
+                situation. Plus V(s) est élevé, plus l'agent pense que la
+                situation est bonne.</span
+              >
+            </div>
+            <div class="vocab-item">
+              <span class="vocab-term">Erreur TD (δ)</span>
+              <span class="vocab-def"
+                >La différence entre ce qu'on <em>aurait dû</em> prédire (cible)
+                et ce qu'on <em>avait</em> prédit. Si δ > 0 → on sous-estimait
+                (les poids doivent monter). Si δ < 0 → on surestimait (les poids
+                doivent descendre).</span
+              >
+            </div>
+            <div class="vocab-item">
+              <span class="vocab-term">Transition (s → s')</span>
+              <span class="vocab-def"
+                >Un déplacement : on est dans l'état s, on fait une action, on
+                arrive dans l'état s'. À chaque transition, l'agent reçoit une
+                récompense et met ses poids à jour.</span
+              >
+            </div>
+            <div class="vocab-item">
+              <span class="vocab-term">α (alpha)</span>
+              <span class="vocab-def"
+                >Le taux d'apprentissage. Contrôle la vitesse des ajustements.
+                Trop grand → instable. Trop petit → l'agent apprend trop
+                lentement. Idéal dans ce projet : 0.01.</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- TD STEPS DEMO -->
+        <div class="demo-box">
+          <div class="demo-title">
+            <span class="demo-badge">📈 Étape par étape</span> Comment
+            TD-Learning met à jour les poids
+          </div>
+          <div class="td-steps-wrap" id="td-steps-wrap"></div>
+          <div class="td-nav">
+            <button class="btn btn-ghost" id="td-prev" disabled>
+              ← Précédent
+            </button>
+            <span class="td-counter" id="td-counter">1 / 6</span>
+            <button class="btn btn-primary" id="td-next">Suivant →</button>
+          </div>
+        </div>
+
+        <div class="formula-hero formula-sm">
+          Erreur TD : δ = (r + γ·V(s')) − V(s)
+        </div>
+        <div class="formula-hero formula-sm" style="margin-top: 0.5rem">
+          Mise à jour : wᵢ ← wᵢ + α·δ·xᵢ(s)
+        </div>
+
+        <div class="callout callout-amber">
+          🏴‍☠️ <strong>Analogie :</strong> tu marches vers un trésor. À chaque
+          pas, tu vérifies si tu te rapproches. Si oui → continue. Si non →
+          change de direction. Tu n'attends pas d'arriver pour corriger.
+        </div>
+
+        <div class="comparison-table">
+          <div class="ct-hdr">
+            <span>Q-Learning</span><span>TD-Learning (projet)</span>
+          </div>
+          <div class="ct-row">
+            <span>Apprend Q(s,a) pour chaque (état, action)</span
+            ><span>Apprend des POIDS pour f(s)</span>
+          </div>
+          <div class="ct-row">
+            <span>Stocke un <strong>tableau</strong></span
+            ><span>Stocke une <strong>formule</strong></span>
+          </div>
+          <div class="ct-row">
+            <span>"dans cet état, cette action vaut X"</span
+            ><span>"cet état vaut X parce que food=0.5..."</span>
+          </div>
+        </div>
+        <p class="fileref">
+          📄 <code>train.py</code> → boucle d'entraînement (TD-Learning)
+        </p>
+      </section>
+
+      <!-- ── 07 · PROJET ────────────────────────────────── -->
+      <section id="s7" class="section reveal">
+        <div class="sec-header">
+          <span class="sec-num">07</span>
+          <div>
+            <h2>Le Projet RLMinimax</h2>
+            <p class="sec-sub">Tout assembler</p>
+          </div>
+        </div>
+
+        <div class="labs-row">
+          <div class="lab-box">
+            <h4>LAB 1</h4>
+            <ul>
+              <li>Minimax</li>
+              <li>Alpha-Beta</li>
+              <li>Fonction d'évaluation</li>
+            </ul>
+          </div>
+          <div class="lab-plus">+</div>
+          <div class="lab-box lab-project">
+            <h4>PROJET</h4>
+            <strong>RLMinimax<br />= Minimax + RL</strong>
+          </div>
+          <div class="lab-plus">+</div>
+          <div class="lab-box">
+            <h4>LAB 2</h4>
+            <ul>
+              <li>Q-Learning</li>
+              <li>TD-Learning</li>
+              <li>Poids appris</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="callout callout-blue">
+          🔑 <strong>L'idée clé :</strong> au lieu de coder la fonction
+          d'évaluation à la main (Lab 1), on laisse l'ordinateur
+          <strong>apprendre</strong> les poids automatiquement (Lab 2).
+        </div>
+
+        <!-- PIPELINE INTERACTIF -->
+        <div class="demo-box">
+          <div class="demo-title">
+            <span class="demo-badge">🚀 Pipeline interactif</span> Cliquer sur
+            une étape pour en savoir plus
+          </div>
+          <div class="pipeline-row" id="pipeline-row">
+            <div class="pipe-step pipe-active" data-step="1">
+              <div class="pipe-icon">🎯</div>
+              <div class="pipe-label">Étape 1</div>
+              <div class="pipe-name">Features</div>
+              <small>features.py</small>
+            </div>
+            <div class="pipe-arr">→</div>
+            <div class="pipe-step" data-step="2">
+              <div class="pipe-icon">🏋️</div>
+              <div class="pipe-label">Étape 2</div>
+              <div class="pipe-name">Entraînement</div>
+              <small>train.py</small>
+            </div>
+            <div class="pipe-arr">→</div>
+            <div class="pipe-step" data-step="3">
+              <div class="pipe-icon">🎮</div>
+              <div class="pipe-label">Étape 3</div>
+              <div class="pipe-name">Jouer</div>
+              <small>rlMinimaxAgents.py</small>
+            </div>
+            <div class="pipe-arr">→</div>
+            <div class="pipe-step" data-step="4">
+              <div class="pipe-icon">📊</div>
+              <div class="pipe-label">Étape 4</div>
+              <div class="pipe-name">Comparer</div>
+              <small>compare.py</small>
+            </div>
+          </div>
+          <div class="pipe-detail" id="pipe-detail"></div>
+        </div>
+
+        <!-- FILE TREE -->
+        <h3 style="margin-top: 2rem">Les fichiers du projet</h3>
+        <div class="file-tree">
+          <div class="ft-root">📁 Projet/</div>
+          <div class="ft-item ft-key">
+            ├── 🎯 <code>features.py</code>
+            <span>— définit les 7 facteurs x₁…x₇</span>
+          </div>
+          <div class="ft-item ft-key">
+            ├── 🤖 <code>rlMinimaxAgents.py</code>
+            <span>— agent Alpha-Beta + poids appris</span>
+          </div>
+          <div class="ft-item ft-key">
+            ├── 🏋️ <code>train.py</code>
+            <span>— script d'entraînement TD-Learning</span>
+          </div>
+          <div class="ft-item ft-key">
+            ├── 📊 <code>compare.py</code>
+            <span>— compare RLMinimax vs Lab 1</span>
+          </div>
+          <div class="ft-item ft-key">
+            ├── ⚙️ <code>weights.json</code>
+            <span>— poids appris [a₁…a₇, C]</span>
+          </div>
+          <div class="ft-item">
+            ├── 🎮 <code>pacman.py</code> <span>— moteur de jeu (fourni)</span>
+          </div>
+          <div class="ft-item">
+            ├── 🕹️ <code>game.py</code> <span>— classes de base (fourni)</span>
+          </div>
+          <div class="ft-item">
+            ├── 👻 <code>ghostAgents.py</code>
+            <span>— les fantômes (fourni)</span>
+          </div>
+          <div class="ft-item">
+            ├── 🔧 <code>util.py</code>
+            <span>— Queue, Counter... (fourni)</span>
+          </div>
+          <div class="ft-item">
+            └── 📐 <code>layouts/</code> <span>— niveaux du jeu</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 08 · NOTIONS SUPPLÉMENTAIRES ──────────────── -->
+      <section id="s8" class="section reveal">
+        <div class="sec-header">
+          <span class="sec-num">08</span>
+          <div>
+            <h2>Notions supplémentaires</h2>
+            <p class="sec-sub">Tout ce qu'il faut aussi savoir</p>
+          </div>
+        </div>
+
+        <div class="accordion" id="acc">
+          <div class="acc-item">
+            <div class="acc-hdr" data-acc="acc1">
+              <span>8.1 · Les poids (weights)</span
+              ><span class="acc-ico">＋</span>
+            </div>
+            <div class="acc-body" id="acc1">
+              <p>
+                Les <strong>poids</strong> sont des nombres qui disent
+                <strong
+                  >à quel point chaque feature influence le score final</strong
+                >.
+              </p>
+              <div class="callout callout-amber" style="margin: 0.75rem 0">
+                🔑 <strong>Exemple simple :</strong> Imaginons 2 poids.
+                w(nourriture) = <strong>+5</strong> → être proche de la
+                nourriture est bien → le score monte. w(fantôme) =
+                <strong>−8</strong> → être proche d'un fantôme est mauvais → le
+                score descend. L'agent apprend ces valeurs automatiquement en
+                jouant des centaines de parties.
+              </div>
+              <p>
+                Le graphique ci-dessous montre les vrais poids appris par notre
+                agent (stockés dans <code>weights.json</code>) :
+              </p>
+              <div class="weights-chart" id="weights-chart"></div>
+              <div class="wt-legend">
+                <span
+                  ><em style="color: var(--success)">■</em> Poids positif →
+                  feature bonne (on veut la maximiser)</span
+                ><br /><span
+                  ><em style="color: var(--danger)">■</em> Poids négatif →
+                  feature mauvaise (on veut la minimiser)</span
+                >
+              </div>
+              <p class="fileref">📄 <code>weights.json</code></p>
+            </div>
+          </div>
+
+          <div class="acc-item">
+            <div class="acc-hdr" data-acc="acc2">
+              <span>8.2 · Le biais (bias)</span><span class="acc-ico">＋</span>
+            </div>
+            <div class="acc-body" id="acc2">
+              <p>
+                Le <strong>biais C</strong> est une constante ajoutée au score
+                final de la fonction d'évaluation.
+              </p>
+              <div class="callout callout-blue">
+                💡 <strong>Analogie :</strong> c'est comme avoir un "niveau de
+                base" dans ta note. Si toutes les features valent 0 (situation
+                parfaitement neutre), le score vaut quand même C au lieu de 0.
+                Ça permet de calibrer l'échelle globale.
+              </div>
+              <p>
+                <strong>Exemple numérique :</strong> dans notre projet, biais =
+                <code>−0.644</code>. Cela signifie que même dans une situation
+                parfaitement neutre (toutes les features à 0), Pac-Man part avec
+                un score légèrement négatif. Cette valeur a été apprise
+                automatiquement pendant l'entraînement pour rendre les
+                prédictions plus précises.
+              </p>
+              <p class="fileref">
+                📄 <code>weights.json</code> → clé <code>"bias"</code>
+              </p>
+            </div>
+          </div>
+
+          <div class="acc-item">
+            <div class="acc-hdr" data-acc="acc3">
+              <span>8.3 · Taux d'apprentissage α (alpha)</span
+              ><span class="acc-ico">＋</span>
+            </div>
+            <div class="acc-body" id="acc3">
+              <p>α = la <strong>vitesse</strong> à laquelle l'agent apprend.</p>
+              <div class="thermo-demo">
+                <div class="thermo-btns">
+                  <button class="thermo-btn" data-a="1.0">
+                    α = 1.0 &nbsp;💥 trop vite !
+                  </button>
+                  <button class="thermo-btn thermo-active" data-a="0.01">
+                    α = 0.01 &nbsp;✅ idéal
+                  </button>
+                  <button class="thermo-btn" data-a="0.0001">
+                    α = 0.0001 &nbsp;🐌 trop lent
+                  </button>
+                </div>
+                <div class="thermo-vis">
+                  <div class="thermo-target">🎯 Cible : 20°C</div>
+                  <canvas id="thermo-canvas" width="400" height="120"></canvas>
+                  <div class="thermo-result" id="thermo-result"></div>
+                </div>
+              </div>
+              <p>
+                <strong>Alpha Decay</strong> : on diminue alpha progressivement.
+                Début → gros ajustements. Fin → petits ajustements (peaufinage).
+              </p>
+            </div>
+          </div>
+
+          <div class="acc-item">
+            <div class="acc-hdr" data-acc="acc4">
+              <span>8.4 · Facteur d'actualisation γ (gamma)</span
+              ><span class="acc-ico">＋</span>
+            </div>
+            <div class="acc-body" id="acc4">
+              <p>
+                γ = quelle importance on donne au <strong>futur</strong> par
+                rapport au <strong>présent</strong>.
+              </p>
+              <div class="gamma-demo">
+                <div class="gamma-ctrl">
+                  <span>γ=0 (présent uniquement)</span>
+                  <input
+                    type="range"
+                    id="gamma-sl"
+                    min="0"
+                    max="100"
+                    value="90"
+                  />
+                  <span>γ=1 (futur = présent)</span>
+                </div>
+                <div class="gamma-result" id="gamma-result"></div>
+              </div>
+              <div class="gamma-tbl">
+                <div class="gt-hdr">
+                  <span>Délai</span><span>Valeur perçue avec γ=0.9</span>
+                </div>
+                <div class="gt-row">
+                  <span>1 tour</span><span>0.9¹ × R = 0.90·R</span>
+                </div>
+                <div class="gt-row">
+                  <span>2 tours</span><span>0.9² × R = 0.81·R</span>
+                </div>
+                <div class="gt-row">
+                  <span>5 tours</span><span>0.9⁵ × R = 0.59·R</span>
+                </div>
+                <div class="gt-row">
+                  <span>10 tours</span><span>0.9¹⁰ × R = 0.35·R</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="acc-item">
+            <div class="acc-hdr" data-acc="acc5">
+              <span>8.5 · États et actions</span><span class="acc-ico">＋</span>
+            </div>
+            <div class="acc-body" id="acc5">
+              <p>
+                Un <strong>état</strong> = une "photo" complète de la situation
+                à un instant t.
+              </p>
+              <ul class="fl">
+                <li>Position de Pac-Man</li>
+                <li>Position de chaque fantôme</li>
+                <li>Quels fantômes sont effrayés (et combien de temps)</li>
+                <li>Quelles gommes restent sur le plateau</li>
+                <li>Le score actuel</li>
+              </ul>
+              <p>
+                Une <strong>action</strong> = un mouvement :
+                <code>{Nord, Sud, Est, Ouest, Stop}</code>
+              </p>
+              <div class="codeblock">
+                successor = state.generateSuccessor(agent_index, action)<br /><span
+                  class="c-cm"
+                  ># "Si cet agent fait cette action → quel est le nouvel état
+                  ?"</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="acc-item">
+            <div class="acc-hdr" data-acc="acc6">
+              <span>8.6 · Récompense (reward)</span
+              ><span class="acc-ico">＋</span>
+            </div>
+            <div class="acc-body" id="acc6">
+              <p>
+                La <strong>récompense</strong> = un signal qui dit "c'était
+                bien" ou "c'était mal".
+              </p>
+              <div class="rew-list">
+                <div class="rew good">
+                  🍒 Manger une gomme → récompense positive
+                </div>
+                <div class="rew bad">
+                  👻 Se faire manger → récompense négative
+                </div>
+                <div class="rew great">
+                  🏆 Gagner la partie → grosse récompense (+500)
+                </div>
+                <div class="rew terrible">
+                  💀 Perdre la partie → grosse pénalité (−500)
+                </div>
+                <div class="rew neutral">
+                  ➡️ Transition normale → différence de score
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="acc-item">
+            <div class="acc-hdr" data-acc="acc7">
+              <span>8.7 · BFS — Distance réelle dans le labyrinthe</span
+              ><span class="acc-ico">＋</span>
+            </div>
+            <div class="acc-body" id="acc7">
+              <p>
+                Pour calculer les distances, on utilise
+                <strong>BFS</strong> (Breadth-First Search = Parcours en
+                largeur).
+              </p>
+              <div class="callout callout-amber">
+                ⚠️ Pourquoi pas la distance directe ? Parce qu'il y a des
+                <strong>murs</strong> ! BFS calcule la vraie distance dans le
+                labyrinthe.
+              </div>
+              <div class="bfs-demo">
+                <div class="bfs-controls">
+                  <button class="btn btn-primary btn-sm" id="bfs-run">
+                    ▶ Lancer BFS
+                  </button>
+                  <button class="btn btn-ghost btn-sm" id="bfs-reset">
+                    ↺ Reset
+                  </button>
+                  <span class="bfs-dist-disp"
+                    >Distance BFS : <strong id="bfs-dist">?</strong></span
+                  >
+                </div>
+                <div class="bfs-grid" id="bfs-grid"></div>
+                <div class="bfs-legend">
+                  <span class="bleg p-cell">P</span>Pac-Man &nbsp;
+                  <span class="bleg f-cell">·</span>Nourriture &nbsp;
+                  <span class="bleg w-cell">#</span>Mur &nbsp;
+                  <span class="bleg v-cell">&nbsp;</span>Exploré
+                </div>
+              </div>
+              <p class="fileref">
+                📄 <code>features.py</code> → <code>_bfs_distance()</code>
+              </p>
+            </div>
+          </div>
+
+          <div class="acc-item">
+            <div class="acc-hdr" data-acc="acc8">
+              <span>8.8 · Gradient &amp; Gradient Clipping</span
+              ><span class="acc-ico">＋</span>
+            </div>
+            <div class="acc-body" id="acc8">
+              <p>
+                Le <strong>gradient</strong> = la direction dans laquelle les
+                poids doivent changer pour réduire l'erreur.
+              </p>
+              <div class="callout callout-purple">
+                ⛰️ <strong>Analogie :</strong> descendre une montagne les yeux
+                fermés. Le gradient te dit "la pente descend vers la GAUCHE". Un
+                pas → tu descends. Tu recalcules → recommences. Jusqu'au fond de
+                la vallée = erreur minimale.
+              </div>
+              <p>
+                Le <strong>gradient clipping</strong> limite la taille des
+                ajustements (ex: max 5.0). Évite les "explosions" de gradient.
+              </p>
+              <div class="codeblock">
+                grad_clip = 5.0<br />weight_grad[i] = max(-grad_clip,
+                min(grad_clip, weight_grad[i]))
+              </div>
+              <p class="fileref">📄 <code>train.py</code></p>
+            </div>
+          </div>
+
+          <div class="acc-item">
+            <div class="acc-hdr" data-acc="acc9">
+              <span>8.9 · Récompense terminale</span
+              ><span class="acc-ico">＋</span>
+            </div>
+            <div class="acc-body" id="acc9">
+              <p>
+                En plus des récompenses normales, on donne une
+                <strong>grosse prime/pénalité</strong> à la fin de la partie :
+              </p>
+              <div class="rew-list">
+                <div class="rew great">🏆 Gagner → +500 points</div>
+                <div class="rew terrible">💀 Perdre → −500 points</div>
+              </div>
+              <p>
+                Ça aide l'agent à comprendre que
+                <strong>gagner est beaucoup plus important</strong> que
+                n'importe quelle gomme individuelle.
+              </p>
+              <div class="codeblock">
+                terminal_reward = 500.0 <span class="c-kw">if</span> won
+                <span class="c-kw">else</span> -500.0
+              </div>
+              <p class="fileref">📄 <code>train.py</code></p>
+            </div>
+          </div>
+
+          <div class="acc-item">
+            <div class="acc-hdr" data-acc="acc10">
+              <span>8.10 · Normalisation des features</span
+              ><span class="acc-ico">＋</span>
+            </div>
+            <div class="acc-body" id="acc10">
+              <p>
+                Les features sont <strong>normalisées</strong> pour avoir toutes
+                la même échelle.
+              </p>
+              <div class="norm-tbl">
+                <div class="norm-row">
+                  <code>nearest_food_bfs</code><span>→ 1/(1+d) ∈ [0, 1]</span>
+                </div>
+                <div class="norm-row">
+                  <code>current_score</code><span>→ score/1000 ≈ [0, 1]</span>
+                </div>
+                <div class="norm-row">
+                  <code>remaining_food</code
+                  ><span>→ divisé par surface ∈ [0, 1]</span>
+                </div>
+              </div>
+              <div class="callout callout-amber">
+                ⚠️ Si une feature vaut 500 et une autre 0.01, l'entraînement
+                sera instable. En normalisant, toutes ont la même magnitude.
+              </div>
+            </div>
+          </div>
+
+          <div class="acc-item">
+            <div class="acc-hdr" data-acc="acc11">
+              <span>8.11 · Sauvegarde atomique</span
+              ><span class="acc-ico">＋</span>
+            </div>
+            <div class="acc-body" id="acc11">
+              <p>
+                Pour sauvegarder les poids de manière <strong>sûre</strong> :
+              </p>
+              <div class="step-list">
+                <div class="step">
+                  <span class="sn">1</span>Écrire dans un fichier
+                  <strong>temporaire</strong> (temp_xxx.json)
+                </div>
+                <div class="step">
+                  <span class="sn">2</span
+                  ><strong>Remplacer atomiquement</strong> weights.json par ce
+                  fichier
+                </div>
+              </div>
+              <div class="callout callout-blue">
+                🛡️ Si le programme crash <em>pendant</em> l'écriture,
+                weights.json reste intact (ancienne version préservée).
+              </div>
+              <p class="fileref">
+                📄 <code>rlMinimaxAgents.py</code> → <code>save_weights()</code>
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- /accordion -->
+      </section>
+
+      <!-- ── 09 · ANTISÈCHE ─────────────────────────────── -->
+      <section id="s9" class="section reveal">
+        <div class="sec-header">
+          <span class="sec-num">09</span>
+          <div>
+            <h2>Antisèche &amp; Résumé</h2>
+            <p class="sec-sub">Tableau récapitulatif · Formules clés</p>
+          </div>
+        </div>
+
+        <!-- RECAP TABLE -->
+        <h3 style="margin-top: 3rem">Tableau récapitulatif</h3>
+        <div class="recap-tbl-wrap">
+          <table class="recap-tbl">
+            <thead>
+              <tr>
+                <th>Concept</th>
+                <th>Explication en 1 phrase</th>
+                <th>Fichier</th>
+              </tr>
+            </thead>
+            <tbody id="recap-tbody"></tbody>
+          </table>
+        </div>
+
+        <!-- FORMULAS -->
+        <h3 style="margin-top: 3rem">Les formules clés</h3>
+        <div class="formulas-grid">
+          <div class="fcard">
+            <div class="fcard-title">Fonction d'évaluation</div>
+            <div class="fcard-f">f(s) = Σ aᵢ·xᵢ(s) + C</div>
+            <div class="fcard-desc">
+              → <strong>À quoi ça sert ?</strong> Donner un score numérique à
+              une situation intermédiaire du jeu (quand Minimax atteint sa
+              profondeur max). On multiplie chaque feature xᵢ (ex : proximité
+              nourriture) par son poids aᵢ (appris), on additionne tout et on
+              ajoute le biais C. Résultat : +50 = bonne situation, −30 = danger.
+            </div>
+          </div>
+          <div class="fcard">
+            <div class="fcard-title">Erreur TD (delta)</div>
+            <div class="fcard-f">δ = (r + γ·V(s')) − V(s)</div>
+            <div class="fcard-desc">
+              → <strong>À quoi ça sert ?</strong> Mesurer à quel point on s'est
+              trompé dans notre prédiction. <em>r</em> = récompense immédiate,
+              <em>γ·V(s')</em> = valeur future actualisée, <em>V(s)</em> = ce
+              qu'on avait prédit. Si δ &gt; 0 → on sous-estimait → on augmente
+              les poids. Si δ &lt; 0 → on surestimait → on les diminue.
+            </div>
+          </div>
+          <div class="fcard">
+            <div class="fcard-title">Mise à jour des poids</div>
+            <div class="fcard-f">wᵢ ← wᵢ + α·δ·xᵢ(s)</div>
+            <div class="fcard-desc">
+              → <strong>À quoi ça sert ?</strong> Corriger chaque poids après
+              avoir calculé l'erreur δ. <em>α</em> = vitesse d'apprentissage
+              (petit pas, stable). <em>δ</em> = erreur (direction de
+              correction). <em>xᵢ(s)</em> = valeur de la feature (plus elle est
+              grande, plus son poids est corrigé fort).
+            </div>
+          </div>
+          <div class="fcard">
+            <div class="fcard-title">Q-Learning</div>
+            <div class="fcard-f">
+              Q(s,a) ← Q(s,a) + α·[r + γ·max Q(s',a') − Q(s,a)]
+            </div>
+            <div class="fcard-desc">
+              → <strong>À quoi ça sert ?</strong> Mettre à jour la qualité d'une
+              action après l'avoir essayée. <em>r</em> = récompense reçue.
+              <em>γ·max Q(s',a')</em> = meilleure valeur future connue. La
+              partie entre crochets = l'erreur = "ce qu'on aurait dû prédire" −
+              "ce qu'on avait prédit".
+            </div>
+          </div>
+          <div class="fcard">
+            <div class="fcard-title">Proximité BFS</div>
+            <div class="fcard-f">proximité = 1 / (1 + distance BFS)</div>
+            <div class="fcard-desc">
+              → <strong>À quoi ça sert ?</strong> Transformer une distance (en
+              nombre de cases) en un score entre 0 et 1. Distance = 0 case (ici
+              même) → proximité = 1. Distance = 9 cases → proximité = 0.1.
+              Distance infinie → proximité ≈ 0. Ainsi les features ont toutes
+              une échelle comparable (0 à 1).
+            </div>
+          </div>
+        </div>
+
+        <!-- FINAL NOTE -->
+        <div class="final-note">
+          <div class="fn-icon">🚀</div>
+          <div>
+            <strong>Rappel final</strong> : le cœur du projet, c'est l'idée que
+            la fonction d'évaluation du Minimax ne doit
+            <strong>pas</strong> être codée à la main, mais
+            <strong>apprise automatiquement</strong> par renforcement. C'est ça
+            qui rend RLMinimax plus fort qu'un simple Minimax !
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- /main -->
+    <script src="script.js"></script>
+  </body>
+</html>

@@ -153,6 +153,12 @@
       .m-cpp {
         --c: var(--purple);
       }
+      .m-dev4-projet {
+        --c: var(--yellow);
+      }
+      .m-algo4-projet {
+        --c: var(--red);
+      }
       .module:hover {
         border-color: color-mix(in srgb, var(--c) 60%, transparent);
       }
@@ -350,6 +356,49 @@
           </div>
           <button class="btn-open" onclick="location.href = 'dev4/dev4.html'">
             Ouvrir la mati&egrave;re <span class="arrow">&rarr;</span>
+          </button>
+        </div>
+      </div>
+
+      <p class="subject-heading" style="margin-top: 40px">Projets</p>
+      <div class="modules">
+        <div class="module m-dev4-projet">
+          <span class="module-icon">🌐</span>
+          <h2>Dev4 Projet</h2>
+          <p>
+            Guide web interactif pour le projet Dev4 &mdash; apprends les bases
+            et les bonnes pratiques pas &agrave; pas.
+          </p>
+          <div class="tag-row">
+            <span class="tag">Web</span>
+            <span class="tag">Guide</span>
+            <span class="tag">Projet</span>
+          </div>
+          <button
+            class="btn-open"
+            onclick="location.href = 'dev4/web-guide/index.html'"
+          >
+            Ouvrir le guide <span class="arrow">&rarr;</span>
+          </button>
+        </div>
+
+        <div class="module m-algo4-projet">
+          <span class="module-icon">📐</span>
+          <h2>Algo4 Projet</h2>
+          <p>
+            Guide web interactif pour le projet Algo4 &mdash; concepts et
+            exercices pour progresser efficacement.
+          </p>
+          <div class="tag-row">
+            <span class="tag">Algorithmes</span>
+            <span class="tag">Guide</span>
+            <span class="tag">Projet</span>
+          </div>
+          <button
+            class="btn-open"
+            onclick="location.href = 'Algo 4 projet/web-guide/index.html'"
+          >
+            Ouvrir le guide <span class="arrow">&rarr;</span>
           </button>
         </div>
       </div>

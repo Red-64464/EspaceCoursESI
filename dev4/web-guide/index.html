@@ -1,0 +1,2374 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DEV4 — Guide Interactif Son &amp; Audio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- ═══════════════════════════════════════ SIDEBAR ═══ -->
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <span class="brand-emoji">🎵</span>
+        <div>
+          <div class="brand-title">DEV4</div>
+          <div class="brand-sub">Son &amp; Audio</div>
+        </div>
+      </div>
+
+      <div class="progress-wrap">
+        <svg width="54" height="54" viewBox="0 0 54 54">
+          <circle class="prog-bg" cx="27" cy="27" r="22" />
+          <circle class="prog-fill" cx="27" cy="27" r="22" id="prog-circle" />
+        </svg>
+        <span class="prog-label" id="prog-pct">0%</span>
+      </div>
+
+      <ul class="nav-list">
+        <li>
+          <a href="#s0" class="nav-link" data-s="s0"
+            ><span class="nn">00</span>Accueil</a
+          >
+        </li>
+        <li>
+          <a href="#s1" class="nav-link" data-s="s1"
+            ><span class="nn">01</span>Son &amp; Onde</a
+          >
+        </li>
+        <li>
+          <a href="#s2" class="nav-link" data-s="s2"
+            ><span class="nn">02</span>Samples</a
+          >
+        </li>
+        <li>
+          <a href="#s3" class="nav-link" data-s="s3"
+            ><span class="nn">03</span>Fréquence</a
+          >
+        </li>
+        <li>
+          <a href="#s4" class="nav-link" data-s="s4"
+            ><span class="nn">04</span>Stéréo</a
+          >
+        </li>
+        <li>
+          <a href="#s5" class="nav-link" data-s="s5"
+            ><span class="nn">05</span>Fichier WAV</a
+          >
+        </li>
+        <li>
+          <a href="#s6" class="nav-link" data-s="s6"
+            ><span class="nn">06</span>Buffer &amp; Delay</a
+          >
+        </li>
+        <li>
+          <a href="#s7" class="nav-link" data-s="s7"
+            ><span class="nn">07</span>Séquenceur</a
+          >
+        </li>
+        <li>
+          <a href="#s8" class="nav-link" data-s="s8"
+            ><span class="nn">08</span>Architecture</a
+          >
+        </li>
+        <li>
+          <a href="#s9" class="nav-link" data-s="s9"
+            ><span class="nn">09</span>Antisèche</a
+          >
+        </li>
+      </ul>
+
+      <button class="menu-toggle" id="menu-toggle">☰</button>
+    </nav>
+
+    <!-- ═══════════════════════════════════════ MAIN ══════ -->
+    <main class="main" id="main">
+      <!-- ── 00 · HERO ─────────────────────────────────── -->
+      <section id="s0" class="section hero-section reveal">
+        <div class="hero-left">
+          <div class="hero-badge">🎓 Cours DEV4 · ESI Bruxelles</div>
+          <h1 class="hero-title">
+            Guide Complet<br /><span class="gradient-text"
+              >Son, Samples &amp; Séquenceur</span
+            >
+          </h1>
+          <p class="hero-sub">
+            Représentation du son · Échantillonnage · Stéréo · Fichier WAV ·
+            Buffer circulaire · Delay · Architecture Drum Machine
+          </p>
+          <div class="hero-pills">
+            <span class="pill teal">🔊 Théorie Audio</span>
+            <span class="pill orange">🥁 Drum Machine</span>
+            <span class="pill purple">⚙️ Projet C++</span>
+          </div>
+          <a href="#s1" class="cta-btn">Commencer l'apprentissage →</a>
+
+          <div class="theme-switcher">
+            <span class="theme-label">🎨 Thème</span>
+            <button
+              class="theme-btn active"
+              data-theme="default"
+              title="Bleu profond (défaut)"
+            >
+              <span class="theme-dot" style="background: #4a9eff"></span>
+            </button>
+            <button class="theme-btn" data-theme="rose" title="Rose pastel">
+              <span class="theme-dot" style="background: #f4a0b5"></span>
+            </button>
+            <button class="theme-btn" data-theme="orange" title="Orange pastel">
+              <span class="theme-dot" style="background: #f0a878"></span>
+            </button>
+          </div>
+        </div>
+        <div class="hero-right">
+          <div class="hero-wave-box" id="hero-wave-box">
+            <canvas id="hero-wave" width="360" height="200"></canvas>
+            <div class="wave-label">Onde sonore en temps réel</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 01 · SON & ONDE ──────────────────────────── -->
+      <section id="s1" class="section reveal">
+        <div class="sec-header">
+          <span class="sec-num">01</span>
+          <div>
+            <h2>C'est quoi un son ?</h2>
+            <p class="sec-sub">Vibration · Onde · Représentation numérique</p>
+          </div>
+        </div>
+
+        <div class="callout callout-teal">
+          🌊 <strong>Le son = une vibration dans l'air.</strong> L'air bouge, ça
+          crée une onde de pression qui voyage jusqu'à ton oreille → tu entends.
+          En informatique, l'ordi ne comprend pas les vagues → il les transforme
+          en <strong>nombres</strong>.
+        </div>
+
+        <div class="two-col">
+          <div class="info-card teal-card">
+            <h4>🌍 Dans la vraie vie</h4>
+            <p>
+              Le son est une <strong>vibration</strong> physique. L'air bouge
+              d'avant en arrière, comme une vague dans la mer. Ton oreille capte
+              ces vibrations et ton cerveau les interprète comme du son.
+            </p>
+            <div class="code-block">
+              Air qui bouge → oreille → tu entends 🎵
+            </div>
+          </div>
+          <div class="info-card orange-card">
+            <h4>💻 En informatique</h4>
+            <p>
+              L'ordi ne comprend pas les vagues — il comprend des
+              <strong>nombres</strong>. Chaque nombre représente la position de
+              la vibration à un instant précis. Plein de nombres mis bout à bout
+              = le son numérique.
+            </p>
+            <div class="code-block">
+              Vague 🎵 → nombres 💻 0.0, 0.4, 0.8, 1.0, 0.7, 0.4, 0.0, -0.4,
+              -0.8, -1.0, ...
+            </div>
+          </div>
+        </div>
+
+        <!-- INTERACTIVE SINE WAVE -->
+        <div class="demo-box">
+          <div class="demo-title">
+            <span class="demo-badge">🌊 Onde sinusoïdale</span> Modifie les
+            sliders pour changer la forme du son
+          </div>
+          <div class="slider-row">
+            <label>Fréquence</label>
+            <input
+              type="range"
+              id="wave-freq"
+              min="0.5"
+              max="8"
+              step="0.1"
+              value="2"
+            />
+            <span id="wave-freq-val">2.0 Hz</span>
+          </div>
+          <div class="slider-row">
+            <label>Amplitude</label>
+            <input
+              type="range"
+              id="wave-amp"
+              min="0.1"
+              max="1"
+              step="0.01"
+              value="0.7"
+            />
+            <span id="wave-amp-val">0.70</span>
+          </div>
+          <canvas id="sine-canvas" width="800" height="250"></canvas>
+          <div class="canvas-legend">
+            <span class="legend-dot" style="background: var(--teal)"></span>
+            onde
+            <span class="legend-dot" style="background: var(--orange)"></span>
+            crête (+1)
+            <span class="legend-dot" style="background: var(--red)"></span>
+            creux (-1)
+            <span style="opacity: 0.5">— — silence (0)</span>
+          </div>
+        </div>
+
+        <!-- VALUES -1 to +1 -->
+        <h3>Les valeurs : de -1 à +1</h3>
+        <div class="values-row">
+          <div class="val-card val-neg">
+            <span class="val-big">-1</span><span>Son fort (bas)</span>
+          </div>
+          <div class="val-card val-zero">
+            <span class="val-big">0</span><span>Silence 🤫</span>
+          </div>
+          <div class="val-card val-pos">
+            <span class="val-big">+1</span><span>Son fort (haut)</span>
+          </div>
+        </div>
+
+        <div class="callout callout-amber">
+          💡 <strong>Modifier le son = opérations sur les nombres</strong><br />
+          Volume ×2 → multiplier par 2 &nbsp;|&nbsp; Mix → additionner deux
+          tableaux
+        </div>
+      </section>
+
+      <!-- ── 02 · SAMPLES & BUFFER ───────────────────── -->
+      <section id="s2" class="section reveal">
+        <div class="sec-header">
+          <span class="sec-num">02</span>
+          <div>
+            <h2>Samples &amp; Buffer</h2>
+            <p class="sec-sub">Échantillon · Tableau de valeurs</p>
+          </div>
+        </div>
+
+        <div class="callout callout-orange">
+          📸
+          <strong>Un sample = une mesure du son à un instant précis.</strong>
+          Comme une photo d'une vidéo. Un son complet = plein de photos
+          (samples) mises à la suite. Tous ces samples ensemble forment un
+          <strong>buffer</strong> (un tableau de nombres).
+        </div>
+
+        <div class="two-col">
+          <div class="info-card teal-card">
+            <h4>📹 Analogie vidéo</h4>
+            <p>Vidéo = plein d'images<br />Son = plein de nombres</p>
+            <p>
+              Plus il y a d'images → plus la vidéo est fluide. Plus il y a de
+              samples → plus le son est précis.
+            </p>
+          </div>
+          <div class="info-card orange-card">
+            <h4>🔢 En pratique</h4>
+            <div class="code-block">
+              Temps → t1 t2 t3 t4 t5 Valeurs → 0.0 -0.1 -0.5 -0.7 ...
+            </div>
+            <p>Chaque valeur = un sample. L'ensemble = un buffer.</p>
+          </div>
+        </div>
+
+        <!-- SAMPLING VISUALIZATION -->
+        <div class="demo-box">
+          <div class="demo-title">
+            <span class="demo-badge">📊 Visualisation</span> onde → samples →
+            buffer
+          </div>
+          <div class="slider-row">
+            <label>Nombre de samples</label>
+            <input
+              type="range"
+              id="sample-count"
+              min="4"
+              max="40"
+              step="1"
+              value="10"
+            />
+            <span id="sample-count-val">10</span>
+          </div>
+          <canvas id="sampling-canvas" width="800" height="250"></canvas>
+          <p class="subtle-hint">
+            Les <span style="color: var(--orange)">points orange</span> sur la
+            courbe = les samples prélevés.
+          </p>
+
+          <h4 style="margin-top: 1rem">Buffer résultant</h4>
+          <div class="buffer-cells" id="sample-buffer-cells"></div>
+
+          <button class="btn btn-primary" id="animate-sampling-btn">
+            ▶ Animer le remplissage
+          </button>
+        </div>
+
+        <!-- TERMINOLOGY -->
+        <h3>Terminologie essentielle</h3>
+        <div class="two-col">
+          <div class="info-card teal-card">
+            <h4
+              style="
+                text-transform: uppercase;
+                font-size: 0.75rem;
+                letter-spacing: 1px;
+                color: var(--teal);
+              "
+            >
+              Sample
+            </h4>
+            <p><strong>Une seule valeur</strong><br />entre -1 et +1</p>
+          </div>
+          <div class="info-card orange-card">
+            <h4
+              style="
+                text-transform: uppercase;
+                font-size: 0.75rem;
+                letter-spacing: 1px;
+                color: var(--orange);
+              "
+            >
+              Buffer
+            </h4>
+            <p>
+              <strong>Tableau de samples</strong><br />[0.2, -0.1, 0.5, ...]
+            </p>
+          </div>
+        </div>
+
+        <div class="code-block" style="margin-top: 1rem">
+          float buffer[] = {0.0, 0.4, 0.7, 1.0, 0.7, 0.4, 0.0, -0.4, ...}; // ↑
+          chaque élément = un sample
+        </div>
+      </section>
+
+      <!-- ── 03 · FRÉQUENCE ──────────────────────────── -->
+      <section id="s3" class="section reveal">
+        <div class="sec-header">
+          <span class="sec-num">03</span>
+          <div>
+            <h2>Fréquence d'échantillonnage</h2>
+            <p class="sec-sub">44100 Hz · Qualité du son</p>
+          </div>
+        </div>
+
+        <div class="callout callout-red">
+          ⏱
+          <strong>C'est combien de samples on prélève par seconde.</strong>
+          Unité : Hz (Hertz).<br />
+          Exemple : <code>44100 Hz</code> = 44 100 samples par seconde. En 1
+          seconde, l'ordi mesure l'onde <strong>44 100 fois</strong>.
+        </div>
+
+        <!-- COMPARISON LOW vs HIGH -->
+        <div class="demo-box">
+          <div class="demo-title">
+            <span class="demo-badge">📈 Comparaison interactive</span> peu vs
+            beaucoup de samples
+          </div>
+          <div class="slider-row">
+            <label>Nombre de points</label>
+            <input
+              type="range"
+              id="freq-pts"
+              min="4"
+              max="80"
+              step="1"
+              value="12"
+            />
+            <span id="freq-pts-val">12 pts</span>
+          </div>
+          <div class="two-col" style="gap: 1rem">
+            <div class="freq-compare-box">
+              <div class="freq-label bad">
+                ⚠ PEU DE SAMPLES — reconstruction grossière
+              </div>
+              <canvas id="freq-low-canvas" width="380" height="200"></canvas>
+            </div>
+            <div class="freq-compare-box">
+              <div class="freq-label good">
+                ✓ BEAUCOUP DE SAMPLES — reconstruction fidèle
+              </div>
+              <canvas id="freq-high-canvas" width="380" height="200"></canvas>
+            </div>
+          </div>
+          <div class="freq-verdict" id="freq-verdict">🎧 Qualité correcte</div>
+        </div>
+
+        <!-- FPS vs Hz analogy -->
+        <h3>Analogie : FPS vidéo vs Hz audio</h3>
+        <div class="two-col">
+          <div style="flex: 1">
+            <h4>🎥 Vidéo</h4>
+            <div class="analogy-bar bad-bar">5 fps → saccadé 😵</div>
+            <div class="analogy-bar mid-bar">15 fps → passable</div>
+            <div class="analogy-bar good-bar">30 fps → fluide ✅</div>
+          </div>
+          <div style="flex: 1">
+            <h4>🔊 Audio</h4>
+            <div class="analogy-bar bad-bar">8 000 Hz → téléphone</div>
+            <div class="analogy-bar mid-bar">22 050 Hz → radio FM</div>
+            <div class="analogy-bar good-bar">
+              44 100 Hz → CD / ton projet 🎯
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-amber">
+          💡 Plus il y a de samples → plus le son est précis → plus le fichier
+          est lourd.<br />
+          <strong>44100 Hz est le standard</strong> pour la qualité CD. C'est
+          celui utilisé dans ton projet.
+        </div>
+      </section>
+
+      <!-- ── 04 · STÉRÉO & FRAMES ────────────────────── -->
+      <section id="s4" class="section reveal">
+        <div class="sec-header">
+          <span class="sec-num">04</span>
+          <div>
+            <h2>Stéréo &amp; Frames</h2>
+            <p class="sec-sub">Mono · Stéréo · Interleaved · Frames</p>
+          </div>
+        </div>
+
+        <div class="callout callout-purple">
+          👂 <strong>Pourquoi "stéréo" ?</strong> Parce qu'on a
+          <strong>2 oreilles</strong> ! Gauche et droite. Le son arrive
+          différemment à chacune → sensation d'espace.
+        </div>
+
+        <!-- L / R visual -->
+        <div class="two-col">
+          <div class="ear-card">
+            <div class="ear-emoji">👂</div>
+            <h4>Canal L (Gauche)</h4>
+            <div class="ear-wave" id="ear-l">—</div>
+          </div>
+          <div class="ear-card">
+            <div class="ear-emoji">👂</div>
+            <h4>Canal R (Droite)</h4>
+            <div class="ear-wave" id="ear-r">—</div>
+          </div>
+        </div>
+
+        <!-- INTERLEAVED BUFFER DEMO -->
+        <div class="demo-box">
+          <div class="demo-title">
+            <span class="demo-badge">🧱 Buffer interleaved</span> comment l'ordi
+            stocke le stéréo
+          </div>
+          <p>
+            Les deux canaux sont mélangés dans <strong>un seul tableau</strong>,
+            case par case :
+          </p>
+          <div class="code-block">
+            [ L ][ R ][ L ][ R ][ L ][ R ]... // ↑ gauche ↑ droite → interleaved
+            (entrelacé)
+          </div>
+          <div class="interleaved-cells" id="interleaved-cells"></div>
+          <div class="interleaved-legend">
+            <span class="legend-dot" style="background: var(--teal)"></span>
+            Gauche (L)
+            <span class="legend-dot" style="background: var(--orange)"></span>
+            Droite (R)
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-primary" id="il-advance">
+              ▶ Avancer 1 frame
+            </button>
+            <button class="btn btn-ghost" id="il-reset">↺ Recommencer</button>
+          </div>
+          <div class="tree-msg" id="il-msg">
+            Clique "Avancer 1 frame" pour voir comment le buffer se remplit.
+          </div>
+        </div>
+
+        <!-- MONO vs STEREO -->
+        <h3>Mono vs Stéréo</h3>
+        <div class="two-col">
+          <div class="info-card teal-card">
+            <h4>🔈 MONO — 1 canal</h4>
+            <p>Même son dans les 2 oreilles.</p>
+            <div class="code-block">1 frame = 1 sample</div>
+            <div class="mini-cells mono-cells">
+              <span class="mc">0.5</span><span class="mc">0.8</span
+              ><span class="mc">0.3</span>
+            </div>
+          </div>
+          <div class="info-card orange-card">
+            <h4>🎧 STÉRÉO — 2 canaux</h4>
+            <p>Son différent gauche/droite.</p>
+            <div class="code-block">1 frame = 2 samples</div>
+            <div class="mini-cells stereo-cells">
+              <span class="mc l-cell">L</span><span class="mc r-cell">R</span>
+              <span class="mc l-cell">L</span><span class="mc r-cell">R</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-red">
+          ⚠
+          <strong
+            >Dans ton projet C++ : le buffer est interleaved stéréo !</strong
+          ><br />
+          <code>index 0 → L</code> &nbsp;|&nbsp;
+          <code>index 1 → R</code> &nbsp;|&nbsp;
+          <code>index 2 → L</code> &nbsp;|&nbsp; <code>index 3 → R</code> ...
+        </div>
+      </section>
+
+      <!-- ── 05 · FICHIER WAV ────────────────────────── -->
+      <section id="s5" class="section reveal">
+        <div class="sec-header">
+          <span class="sec-num">05</span>
+          <div>
+            <h2>Fichier .WAV</h2>
+            <p class="sec-sub">Format · Chargement · WAV vs MP3</p>
+          </div>
+        </div>
+
+        <div class="callout callout-teal">
+          📁
+          <strong>Un .WAV = une boîte remplie de nombres (samples).</strong> Le
+          fichier stocke les données audio <strong>sans compression</strong>.
+        </div>
+
+        <!-- WAV vs MP3 -->
+        <div class="two-col">
+          <div class="info-card teal-card">
+            <h4>🎧 WAV ✅</h4>
+            <p>
+              ✓ Qualité parfaite 🔥<br />✓ Facile à lire en C++<br />✓ Non
+              compressé<br />✗ Fichier lourd
+            </p>
+          </div>
+          <div class="info-card grey-card">
+            <h4>🎧 MP3</h4>
+            <p>
+              ✓ Fichier léger<br />✗ Perd de la qualité<br />✗ Plus complexe à
+              décoder<br />✗ Non utilisé dans le projet
+            </p>
+          </div>
+        </div>
+
+        <div class="callout callout-amber">
+          💡 <strong>Analogie :</strong> WAV = photo HD 📸 &nbsp;|&nbsp; MP3 =
+          photo compressée 🪫
+        </div>
+
+        <!-- WAV ANATOMY DEMO -->
+        <div class="demo-box">
+          <div class="demo-title">
+            <span class="demo-badge">📦 Anatomie d'un fichier WAV</span> +
+            simulation de chargement
+          </div>
+          <div class="wav-file-box">
+            <div class="wav-header">
+              <span class="wav-icon">📁</span>
+              <strong id="wav-filename">kick.wav</strong>
+              <span class="wav-format">RIFF / WAV format</span>
+            </div>
+            <div class="wav-section" id="wav-header-section">
+              — HEADER (métadonnées)<br />
+              <span id="wav-meta"
+                >sample_rate: <em>?</em> &nbsp; channels: <em>?</em> &nbsp;
+                bit_depth: <em>?</em></span
+              >
+            </div>
+            <div class="wav-section wav-data-section" id="wav-data-section">
+              — <span style="color: var(--green)">DATA (samples)</span>
+            </div>
+          </div>
+          <button class="btn btn-primary" id="wav-load-btn">
+            ▶ Étape 1 : ouvrir le fichier
+          </button>
+          <div class="tree-msg" id="wav-msg">
+            Clique pour simuler le chargement de <code>kick.wav</code> en
+            mémoire.
+          </div>
+        </div>
+
+        <!-- CODE -->
+        <h3>Dans ton code C++</h3>
+        <div class="code-block">
+          <span class="c-comment">// 1. Ouvrir le fichier</span>
+          open(<span class="c-str">"kick.wav"</span>)
+
+          <span class="c-comment">// 2. Lire le header → récupérer infos</span>
+          sampleRate = <span class="c-num">44100</span>; channels =
+          <span class="c-num">2</span>; bitDepth =
+          <span class="c-num">16</span>;
+
+          <span class="c-comment"
+            >// 3. Extraire les samples → remplir le buffer</span
+          >
+          <span class="c-kw">float</span>* buffer = {
+          <span class="c-num">0.2</span>, <span class="c-num">0.1</span>,
+          <span class="c-num">0.5</span>, <span class="c-num">0.3</span>,
+          <span class="c-num">-0.3</span>, <span class="c-num">-0.2</span>, ...
+          };
+
+          <span class="c-comment"
+            >// 4. Prêt à jouer / looper / modifier !</span
+          >
+        </div>
+      </section>
+
+      <!-- ── 06 · BUFFER CIRCULAIRE & DELAY ──────────── -->
+      <section id="s6" class="section reveal">
+        <div class="sec-header">
+          <span class="sec-num">06</span>
+          <div>
+            <h2>Buffer circulaire &amp; Delay</h2>
+            <p class="sec-sub">Écho · Mémoire du passé · Read / Write</p>
+          </div>
+        </div>
+
+        <div class="callout callout-orange">
+          🎯 <strong>Le but : créer un écho.</strong> BOUM → boum → boum. Pour
+          ça, il faut <strong>se souvenir du passé</strong>. L'ordi oublie tout
+          par défaut → on crée une mémoire = <strong>buffer circulaire</strong>.
+        </div>
+
+        <!-- WHAT IS DELAY -->
+        <div class="two-col">
+          <div class="info-card orange-card">
+            <h4>⏱️ Le delay (écho)</h4>
+            <p>
+              On <strong>rejoue le même son plus tard</strong>. Le son actuel
+              est mélangé avec un ancien son stocké dans le buffer.
+            </p>
+            <div class="code-block">
+              sortie = son actuel + ancien son (buffer)
+            </div>
+          </div>
+          <div class="info-card teal-card">
+            <h4>🔄 Pourquoi "circulaire" ?</h4>
+            <p>
+              Le son ne s'arrête jamais, mais la mémoire est limitée. Quand on
+              arrive à la fin du buffer → on revient au début. Comme un
+              <strong>tapis roulant</strong>.
+            </p>
+          </div>
+        </div>
+
+        <!-- CIRCULAR BUFFER DEMO -->
+        <div class="demo-box">
+          <div class="demo-title">
+            <span class="demo-badge">🔄 Buffer circulaire</span> interactif —
+            WRITE &amp; READ
+          </div>
+          <p>
+            <strong>WRITE</strong> = j'écris le son actuel (présent)
+            &nbsp;|&nbsp; <strong>READ</strong> = je lis un ancien son (passé)
+            &nbsp;|&nbsp; <strong>distance</strong> = delay
+          </p>
+          <div class="circ-buf-wrap">
+            <div class="circ-cells" id="circ-cells"></div>
+            <div class="circ-labels">
+              <span class="circ-w-label" id="circ-w-label">✍ WRITE</span>
+              <span class="circ-r-label" id="circ-r-label">📖 READ</span>
+            </div>
+          </div>
+          <div class="slider-row">
+            <label>Delay (cases)</label>
+            <input
+              type="range"
+              id="circ-delay"
+              min="1"
+              max="6"
+              step="1"
+              value="3"
+            />
+            <span id="circ-delay-val">3</span>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-primary" id="circ-step">
+              ▶ Avancer 1 pas
+            </button>
+            <button class="btn btn-ghost" id="circ-reset">↺ Reset</button>
+          </div>
+          <div class="tree-msg" id="circ-msg">
+            Clique "Avancer 1 pas" pour voir le buffer tourner.
+          </div>
+        </div>
+
+        <!-- STEP-BY-STEP ECHO -->
+        <h3>Ce qu'on fait à CHAQUE instant</h3>
+        <div class="steps-grid">
+          <div class="echo-step">
+            <span class="step-n">1</span> Je prends le
+            <strong>son actuel</strong>
+          </div>
+          <div class="echo-step">
+            <span class="step-n">2</span> Je lis un
+            <strong>ancien son</strong> (dans le buffer)
+          </div>
+          <div class="echo-step">
+            <span class="step-n">3</span> Je <strong>mélange</strong> les deux
+          </div>
+          <div class="echo-step">
+            <span class="step-n">4</span> J'<strong>écris</strong> le nouveau
+            dans le buffer
+          </div>
+        </div>
+
+        <div class="callout callout-teal">
+          🎡 <strong>Analogie :</strong> Imagine un tapis roulant. Tu poses un
+          son dessus. Il tourne. Il revient plus tard. Quand il revient → tu
+          l'entends avec le nouveau son. = <strong>écho !</strong>
+        </div>
+      </section>
+
+      <!-- ── 07 · SÉQUENCEUR ─────────────────────────── -->
+      <section id="s7" class="section reveal">
+        <div class="sec-header">
+          <span class="sec-num">07</span>
+          <div>
+            <h2>Le Séquenceur</h2>
+            <p class="sec-sub">Grille · BPM · Step · Drum Machine</p>
+          </div>
+        </div>
+
+        <div class="callout callout-purple">
+          🥁 <strong>C'est quoi une boîte à rythmes ?</strong> Une machine qui
+          joue des sons <strong>automatiquement et en boucle</strong>. Un
+          <strong>séquenceur</strong> gère une grille : lignes = instruments,
+          colonnes = pas de temps.
+        </div>
+
+        <div class="code-block">
+          Temps → [ 1 ][ 2 ][ 3 ][ 4 ][ 5 ][ 6 ][ 7 ][ 8 ]... Kick → [ X ][ ][ X
+          ][ ][ X ][ ][ ][ ] Snare → [ ][ X ][ ][ X ][ ][ X ][ ][ ] Hi-Hat→ [ X
+          ][ X ][ X ][ X ][ X ][ X ][ X ][ X ]
+        </div>
+        <p class="subtle-hint">
+          Un curseur avance case par case → case active ✅ = son joué → arrivée
+          à la fin → retour au début 🔁
+        </p>
+
+        <!-- INTERACTIVE SEQUENCER -->
+        <div class="demo-box">
+          <div class="demo-title">
+            <span class="demo-badge">🥁 Séquenceur interactif</span> 4 pistes ×
+            16 steps
+          </div>
+          <p>
+            Clique sur les cases pour les activer/désactiver, puis appuie sur
+            Play !
+          </p>
+          <div class="slider-row">
+            <label>BPM</label>
+            <input
+              type="range"
+              id="seq-bpm"
+              min="60"
+              max="200"
+              step="1"
+              value="120"
+            />
+            <span id="seq-bpm-val">120 BPM</span>
+          </div>
+          <div class="seq-grid" id="seq-grid"></div>
+          <div class="btn-row" style="margin-top: 0.75rem">
+            <button class="btn btn-primary" id="seq-play">▶ Play</button>
+            <button class="btn btn-ghost" id="seq-clear">🗑 Clear</button>
+            <button class="btn btn-ghost" id="seq-preset1">
+              🥁 Basic Beat
+            </button>
+            <button class="btn btn-ghost" id="seq-preset2">⚡ Techno</button>
+          </div>
+          <div class="seq-track-labels">
+            <span class="seq-tl" style="--tc: var(--orange)">● Kick</span>
+            <span class="seq-tl" style="--tc: var(--teal)">● Snare</span>
+            <span class="seq-tl" style="--tc: var(--green)">● Hi-Hat</span>
+            <span class="seq-tl" style="--tc: var(--purple)">● Clap</span>
+          </div>
+        </div>
+
+        <!-- BPM EXPLAINED -->
+        <h3>Calcul : BPM → durée d'un step</h3>
+        <div class="code-block">
+          durée_beat = 60 / BPM
+          <span class="c-comment">// en secondes</span> durée_step = durée_beat
+          / 4 <span class="c-comment">// 4 subdivisions par beat</span>
+
+          <span class="c-comment">// À 120 BPM :</span>
+          durée_beat = 60 / 120 = 0.5 s durée_step = 0.5 / 4 = 0.125 s = 125 ms
+        </div>
+        <div class="callout callout-amber">
+          💡 <code>120 BPM</code> → 1 beat = 500ms → 1 step = 125ms
+        </div>
+
+        <!-- 256 FRAMES EXPLAINED -->
+        <h3>Pourquoi 256 frames ?</h3>
+        <div class="callout callout-teal">
+          📦 Le programme ne traite PAS 44100 frames d'un coup. Il travaille par
+          <strong>petits blocs de 256 frames</strong> (= 1 buffer). Il envoie
+          ~172 buffers par seconde (44100 / 256 ≈ 172). Toutes les
+          <strong>~6 ms</strong>, le programme est appelé pour fournir le buffer
+          suivant.
+        </div>
+
+        <div
+          class="info-card orange-card"
+          style="max-width: 600px; margin: 1rem auto"
+        >
+          <h4>🔑 Point clé : la case allumée ne joue PAS "juste 256 frames"</h4>
+          <p>
+            Elle <strong>déclenche la lecture complète du son</strong>. Le son
+            est ensuite lu petit morceau par petit morceau (buffer après buffer)
+            jusqu'à ce qu'il soit terminé. La ligne jaune = bouton "START". Le
+            player = continue la lecture jusqu'à la fin du WAV.
+          </p>
+        </div>
+      </section>
+
+      <!-- ── 08 · ARCHITECTURE ───────────────────────── -->
+      <section id="s8" class="section arch-mega-section reveal">
+        <div class="sec-header">
+          <span class="sec-num">08</span>
+          <div>
+            <h2>Architecture complète</h2>
+            <p class="sec-sub">
+              Le vrai chemin du son, de A à Z — ultra détaillé
+            </p>
+          </div>
+        </div>
+
+        <!-- MINI TABLE DES MATIÈRES -->
+        <div class="arch-toc">
+          <div class="arch-toc-title">📑 Dans cette section</div>
+          <div class="arch-toc-items">
+            <a href="#arch-vue" class="arch-toc-link">🗺 Vue d'ensemble</a>
+            <a href="#arch-wav" class="arch-toc-link">📁 Fichier WAV</a>
+            <a href="#arch-load" class="arch-toc-link">📥 Chargement</a>
+            <a href="#arch-buffers" class="arch-toc-link">📦 Les 5 buffers</a>
+            <a href="#arch-seq" class="arch-toc-link">🎼 Séquenceur</a>
+            <a href="#arch-player" class="arch-toc-link">🎵 Audio Player</a>
+            <a href="#arch-delay" class="arch-toc-link">⏱ Delay</a>
+            <a href="#arch-mixer" class="arch-toc-link">🎛 Mixer</a>
+            <a href="#arch-out" class="arch-toc-link">🔊 Audio Out</a>
+            <a href="#arch-callback" class="arch-toc-link">🔄 1 Callback</a>
+            <a href="#arch-errors" class="arch-toc-link">⚠ Erreurs</a>
+            <a href="#arch-final" class="arch-toc-link">📋 Résumé</a>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════
+             8.0 — VUE D'ENSEMBLE
+        ═══════════════════════════════════════════════ -->
+        <div class="arch-sub" id="arch-vue">
+          <h3>🗺 Vue d'ensemble — le pipeline complet</h3>
+
+          <div class="callout callout-teal">
+            🎯
+            <strong
+              >Quand tu appuies sur Play, voilà ce qui se passe — en une phrase
+              :</strong
+            ><br />
+            Le séquenceur dit "joue !", chaque player lit un morceau de son, le
+            delay ajoute un écho, le mixer mélange tout, et PortAudio envoie le
+            résultat à tes oreilles.
+            <strong>Ça se répète ~172 fois par seconde.</strong>
+          </div>
+
+          <p class="subtle-hint">
+            👇 Clique sur chaque bloc pour voir son rôle, puis détail de
+            <strong>chaque étape</strong> plus bas.
+          </p>
+
+          <!-- INTERACTIVE PIPELINE (kept from before) -->
+          <div class="demo-box">
+            <div class="demo-title">
+              <span class="demo-badge">🔊 Pipeline interactif</span> Clique sur
+              un bloc pour voir son rôle
+            </div>
+            <div class="arch-pipeline" id="arch-pipeline">
+              <div class="arch-block arch-seq" data-arch="seq">
+                <div class="ab-label">Step<br />Sequencer</div>
+              </div>
+              <div class="arch-arrow">→</div>
+              <div class="arch-col">
+                <div class="arch-block arch-player" data-arch="player">
+                  Player 1
+                </div>
+                <div class="arch-block arch-player" data-arch="player">
+                  Player 2
+                </div>
+                <div class="arch-block arch-player" data-arch="player">
+                  Player 3
+                </div>
+                <div class="arch-block arch-player" data-arch="player">
+                  Player 4
+                </div>
+              </div>
+              <div class="arch-arrow">→</div>
+              <div class="arch-col">
+                <div class="arch-block arch-delay" data-arch="delay">
+                  Delay 1
+                </div>
+                <div class="arch-block arch-delay" data-arch="delay">
+                  Delay 2
+                </div>
+                <div class="arch-block arch-delay" data-arch="delay">
+                  Delay 3
+                </div>
+                <div class="arch-block arch-delay" data-arch="delay">
+                  Delay 4
+                </div>
+              </div>
+              <div class="arch-arrow">→</div>
+              <div class="arch-block arch-mixer" data-arch="mixer">Mixer</div>
+              <div class="arch-arrow">→</div>
+              <div class="arch-block arch-out" data-arch="out">
+                Audio Out<br />🔊
+              </div>
+            </div>
+            <div class="tree-msg" id="arch-msg">
+              Clique sur un bloc ci-dessus pour voir son rôle.
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════
+             8.1 — FICHIER WAV SUR LE DISQUE
+        ═══════════════════════════════════════════════ -->
+        <div class="arch-sub" id="arch-wav">
+          <h3>📁 Étape 1 — Le fichier WAV sur le disque</h3>
+
+          <div class="callout callout-orange">
+            💬 <strong>En mots simples :</strong> Sur ton disque dur, tu as des
+            fichiers comme <code>kick.wav</code>, <code>snare.wav</code>, etc.
+            Ce sont juste des fichiers — des suites d'octets (0 et 1) stockés
+            sur le disque. Le programme ne peut PAS jouer directement un
+            fichier. Il faut d'abord le <strong>lire</strong> et le
+            <strong>convertir</strong> en nombres qu'il comprend.
+          </div>
+
+          <div class="two-col">
+            <div class="info-card teal-card">
+              <h4>📂 C'est quoi un .wav ?</h4>
+              <p>
+                Un fichier <strong>WAV</strong> c'est comme une
+                <strong>boîte</strong> avec deux compartiments :
+              </p>
+              <p>
+                <strong>1.</strong> Le <strong>header</strong> (l'étiquette) →
+                dit "mon son est à 44100 Hz, en stéréo, en 16 bits"
+              </p>
+              <p>
+                <strong>2.</strong> Les <strong>données</strong> (le contenu) →
+                les vrais échantillons du son, stockés en octets bruts
+              </p>
+            </div>
+            <div class="info-card orange-card">
+              <h4>🎯 Dans ton projet</h4>
+              <p>Tu as <strong>4 fichiers WAV</strong> :</p>
+              <div class="code-block">
+                kick.wav → le son de la grosse caisse 🥁 snare.wav → la caisse
+                claire hihat.wav → le charleston 🎩 clap.wav → le clap 👏
+              </div>
+              <p>Chaque fichier = un instrument différent.</p>
+            </div>
+          </div>
+
+          <div class="demo-box">
+            <div class="demo-title">
+              <span class="demo-badge">📁 Structure d'un fichier WAV</span> Survole les zones
+            </div>
+            <div class="wav-file-visual" id="wav-file-visual">
+              <div class="wav-file-icon">
+                <span>📁</span>
+                <strong id="wav-filename">kick.wav</strong>
+                <span class="wav-format">RIFF / WAV format</span>
+              </div>
+              <div class="wav-section" id="wav-header-zone">
+                <div class="wav-section-label">📋 HEADER</div>
+                <div class="wav-section-size">44 octets</div>
+                <div class="wav-fields">
+                  <div class="wav-field"><span class="wav-field-key">format</span><span class="wav-field-val">"RIFF"</span></div>
+                  <div class="wav-field"><span class="wav-field-key">sample_rate</span><span class="wav-field-val">44100</span></div>
+                  <div class="wav-field"><span class="wav-field-key">channels</span><span class="wav-field-val">2 (stéréo)</span></div>
+                  <div class="wav-field"><span class="wav-field-key">bit_depth</span><span class="wav-field-val">16 bits</span></div>
+                </div>
+              </div>
+              <div class="wav-section wav-data-section" id="wav-data-zone">
+                <div class="wav-section-label">🔊 DATA</div>
+                <div class="wav-section-size">~48 000 octets</div>
+                <div class="wav-bytes" id="wav-bytes">
+                  <span>01</span><span>3F</span><span>A2</span><span>B7</span><span>C4</span><span>00</span><span>FF</span><span>D8</span><span>1A</span><span>6E</span><span>F0</span><span>42</span><span>...</span>
+                </div>
+                <div class="wav-data-note">↑ Octets bruts — PAS encore des floats !</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout callout-amber">
+            💡 <strong>Point important :</strong> Le fichier WAV contient des
+            octets bruts — pas des nombres entre -1 et +1. Il faut une
+            <strong>conversion</strong> pour que le programme puisse les
+            utiliser. C'est l'étape suivante !
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════
+             8.2 — CHARGEMENT EN MÉMOIRE
+        ═══════════════════════════════════════════════ -->
+        <div class="arch-sub" id="arch-load">
+          <h3>📥 Étape 2 — Le chargement en mémoire</h3>
+
+          <div class="callout callout-teal">
+            💬 <strong>En mots simples :</strong> Quand tu choisis un fichier
+            WAV dans l'interface, le programme fait 3 choses : il lit le
+            fichier, il convertit les données en nombres compréhensibles (des
+            <code>float</code> entre -1 et +1), et il range tout ça dans un
+            grand tableau en mémoire. Ce tableau s'appelle le
+            <strong>sample buffer</strong>.
+          </div>
+
+          <!-- 3-STEP LOADING -->
+          <div class="demo-box">
+            <div class="demo-title">
+              <span class="demo-badge">📥 Les 3 étapes du chargement</span>
+            </div>
+
+            <div class="load-steps">
+              <div class="load-step">
+                <div class="load-step-num">1</div>
+                <div class="load-step-body">
+                  <h4>📖 Lire les octets bruts</h4>
+                  <p>
+                    La fonction <code>SDL_LoadWAV()</code> ouvre le fichier et
+                    lit tous les octets dans la RAM. Elle récupère aussi le
+                    header (sample rate, nombre de canaux, bit depth).
+                  </p>
+                  <div class="code-block" style="font-size: 0.75rem">
+                    SDL_LoadWAV("kick.wav", &spec, &rawBuf, &len) Résultat :
+                    rawBuf = [01, 3F, A2, B7, C4, 00, FF, ...] spec = { freq:
+                    44100, channels: 2, format: S16 }
+                  </div>
+                </div>
+              </div>
+
+              <div class="load-step">
+                <div class="load-step-num">2</div>
+                <div class="load-step-body">
+                  <h4>🔄 Convertir en float stéréo 44100 Hz</h4>
+                  <p>
+                    Le fichier WAV original peut être en n'importe quel format
+                    (8 bits, 16 bits, mono, 22050 Hz...). La fonction
+                    <code>SDL_ConvertAudioSamples()</code> convertit
+                    <strong>tout</strong> vers le format du projet :
+                  </p>
+                  <div class="three-badges">
+                    <span class="mini-badge teal-bg">Float 32 bits</span>
+                    <span class="mini-badge orange-bg">Stéréo (2 canaux)</span>
+                    <span class="mini-badge purple-bg">44100 Hz</span>
+                  </div>
+                  <p style="margin-top: 0.5rem">
+                    Si le fichier est <strong>mono</strong> → il le duplique en
+                    stéréo.<br />
+                    Si le fichier est en <strong>16 bits</strong> → il convertit
+                    en floats (-1.0 à +1.0).<br />
+                    Si le sample rate est différent → il
+                    <strong>rééchantillonne</strong>.
+                  </p>
+                </div>
+              </div>
+
+              <div class="load-step">
+                <div class="load-step-num">3</div>
+                <div class="load-step-body">
+                  <h4>📦 Stocker dans le sample buffer</h4>
+                  <p>
+                    Les floats convertis sont copiés dans un
+                    <code>std::vector&lt;float&gt;</code>. C'est le
+                    <strong>sample buffer</strong> — le son complet en mémoire,
+                    prêt à être lu.
+                  </p>
+                  <div class="code-block" style="font-size: 0.75rem">
+                    outBuffer = { 0.0, 0.0, 0.12, 0.11, 0.38, 0.35, 0.71, 0.68,
+                    ... } ↑L ↑R ↑L ↑R ↑L ↑R ↑L ↑R ←─ frame 0 ─→ ←─ frame 1 ─→ ←─
+                    frame 2 ─→
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- LOADING ANIMATION -->
+          <div class="demo-box">
+            <div class="demo-title">
+              <span class="demo-badge">🎬 Animation</span> Simule le chargement
+              d'un fichier WAV
+            </div>
+            <div class="load-anim-wrap">
+              <div class="load-anim-file" id="load-anim-file">
+                <span class="laf-icon">📁</span>
+                <span class="laf-name">kick.wav</span>
+                <span class="laf-size">~48 Ko</span>
+              </div>
+              <div class="load-anim-arrow" id="load-anim-arrow">→</div>
+              <div class="load-anim-ram" id="load-anim-ram">
+                <span class="lar-title">RAM (mémoire)</span>
+                <div class="lar-cells" id="load-anim-cells"></div>
+              </div>
+            </div>
+            <div class="btn-row">
+              <button class="btn btn-primary" id="load-anim-btn">
+                ▶ Lancer le chargement
+              </button>
+              <button class="btn btn-ghost" id="load-anim-reset">
+                ↺ Reset
+              </button>
+            </div>
+            <div class="tree-msg" id="load-anim-msg">
+              Clique pour voir le fichier WAV se charger en mémoire étape par
+              étape.
+            </div>
+          </div>
+
+          <div class="callout callout-red">
+            ⚠ <strong>Attention :</strong> Le chargement se fait
+            <strong>UNE SEULE FOIS</strong> quand tu choisis le fichier. Après,
+            le sample buffer reste en mémoire. On ne relit JAMAIS le fichier
+            quand on joue le son — on lit directement le buffer en RAM. C'est
+            beaucoup plus rapide !
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════
+             8.3 — LES 5 BUFFERS
+        ═══════════════════════════════════════════════ -->
+        <div class="arch-sub" id="arch-buffers">
+          <h3>📦 Les 5 buffers — ne les confonds pas !</h3>
+
+          <div class="callout callout-purple">
+            💬 <strong>C'est L'erreur n°1 des étudiants :</strong> confondre les
+            différents buffers. Dans ton projet, le mot "buffer" apparaît
+            partout, mais il y a <strong>5 buffers différents</strong> avec des
+            rôles très différents. On va les voir un par un.
+          </div>
+
+          <div class="demo-box">
+            <div class="demo-title">
+              <span class="demo-badge">📦 Dictionnaire des buffers</span> Clique
+              pour les comparer
+            </div>
+
+            <div class="buf-dict-btns" id="buf-dict-btns">
+              <button class="buf-dict-btn active" data-buf="sample">
+                📁 Sample Buffer
+              </button>
+              <button class="buf-dict-btn" data-buf="track">
+                🎵 Track Buffer
+              </button>
+              <button class="buf-dict-btn" data-buf="delay">
+                ⏱ Delay Buffer
+              </button>
+              <button class="buf-dict-btn" data-buf="output">
+                🔊 Output Buffer
+              </button>
+            </div>
+
+            <div class="buf-dict-info" id="buf-dict-info">
+              <!-- JS fills this -->
+            </div>
+          </div>
+
+          <!-- TABLE COMPARISON -->
+          <div class="recap-table" style="margin-top: 1.5rem">
+            <div class="rt-hdr">
+              <span>Buffer</span><span>Taille</span><span>Durée de vie</span
+              ><span>Rôle</span>
+            </div>
+            <div class="rt-row">
+              <span style="color: var(--teal)">Sample Buffer</span
+              ><span>Variable (tout le WAV)</span><span>Permanent</span
+              ><span>Le son complet en mémoire</span>
+            </div>
+            <div class="rt-row">
+              <span style="color: var(--green)">Track Buffer</span
+              ><span>512 floats (256 frames)</span><span>~6ms (1 callback)</span
+              ><span>Le petit morceau qu'on lit maintenant</span>
+            </div>
+            <div class="rt-row">
+              <span style="color: var(--orange)">Delay Buffer</span
+              ><span>88200 floats (~1 sec)</span><span>Permanent</span
+              ><span>Mémoire circulaire pour l'écho</span>
+            </div>
+            <div class="rt-row">
+              <span style="color: var(--purple)">Output Buffer</span
+              ><span>512 floats (256 frames)</span><span>~6ms (1 callback)</span
+              ><span>Le mélange final des 4 pistes</span>
+            </div>
+          </div>
+
+          <div class="demo-box">
+            <div class="demo-title">
+              <span class="demo-badge">📦 Les 4 buffers visuellement</span> Survole chaque buffer
+            </div>
+            <div class="buf-visual-grid" id="buf-visual-grid">
+
+              <div class="buf-visual-card" data-buftype="sample" id="bv-sample">
+                <div class="buf-visual-header bv-teal">
+                  <span>📁 Sample Buffer</span>
+                  <span class="bv-tag">par piste</span>
+                </div>
+                <div class="buf-visual-bar">
+                  <div class="bv-cells bv-full" id="bv-sample-cells"></div>
+                </div>
+                <div class="buf-visual-info">
+                  <span>22 050 frames = 44 100 floats</span>
+                  <span class="bv-life">♾️ Permanent en RAM</span>
+                </div>
+                <div class="buf-visual-desc">Le fichier WAV complet en mémoire. Ne change jamais.</div>
+              </div>
+
+              <div class="buf-visual-card" data-buftype="track" id="bv-track">
+                <div class="buf-visual-header bv-green">
+                  <span>🎵 Track Buffer</span>
+                  <span class="bv-tag">par piste</span>
+                </div>
+                <div class="buf-visual-bar">
+                  <div class="bv-cells bv-small" id="bv-track-cells"></div>
+                  <div class="bv-pointer">← 256 frames seulement</div>
+                </div>
+                <div class="buf-visual-info">
+                  <span>256 frames = 512 floats</span>
+                  <span class="bv-life">⏱ ~6ms (1 callback)</span>
+                </div>
+                <div class="buf-visual-desc">Un petit bout du sample, lu maintenant. Écrasé à chaque callback.</div>
+              </div>
+
+              <div class="buf-visual-card" data-buftype="delay" id="bv-delay">
+                <div class="buf-visual-header bv-orange">
+                  <span>⏱ Delay Buffer</span>
+                  <span class="bv-tag">par piste</span>
+                </div>
+                <div class="buf-visual-bar">
+                  <div class="bv-circular" id="bv-delay-ring">
+                    <div class="bv-ring-track"></div>
+                    <div class="bv-ring-write" id="bv-ring-write">W</div>
+                    <div class="bv-ring-read" id="bv-ring-read">R</div>
+                    <div class="bv-ring-label">circulaire</div>
+                  </div>
+                </div>
+                <div class="buf-visual-info">
+                  <span>88 200 floats ≈ 1 seconde</span>
+                  <span class="bv-life">♾️ Permanent, écriture continue</span>
+                </div>
+                <div class="buf-visual-desc">Mémoire du passé pour l'écho. WRITE écrit, READ relit plus loin.</div>
+              </div>
+
+              <div class="buf-visual-card" data-buftype="output" id="bv-output">
+                <div class="buf-visual-header bv-purple">
+                  <span>🔊 Output Buffer</span>
+                  <span class="bv-tag">unique</span>
+                </div>
+                <div class="buf-visual-bar">
+                  <div class="bv-cells bv-small bv-mix" id="bv-output-cells"></div>
+                  <div class="bv-formula">T1 + T2 + T3 + T4</div>
+                </div>
+                <div class="buf-visual-info">
+                  <span>256 frames = 512 floats</span>
+                  <span class="bv-life">⏱ ~6ms (1 callback)</span>
+                </div>
+                <div class="buf-visual-desc">Le mélange final des 4 pistes. Envoyé à PortAudio → tes oreilles.</div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="callout callout-amber">
+            💡 <strong>L'analogie du restaurant :</strong><br />
+            <strong>Sample buffer</strong> = le livre de recettes complet 📖<br />
+            <strong>Track buffer</strong> = l'assiette qu'on prépare maintenant
+            🍽<br />
+            <strong>Delay buffer</strong> = le frigo qui garde les restes pour
+            plus tard 🧊<br />
+            <strong>Output buffer</strong> = le plateau final qu'on sert au
+            client 🍛
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════
+             8.4 — LE STEP SEQUENCER
+        ═══════════════════════════════════════════════ -->
+        <div class="arch-sub" id="arch-seq">
+          <h3>🎼 Étape 3 — Le Step Sequencer (chef d'orchestre)</h3>
+
+          <div class="callout callout-orange">
+            💬 <strong>En mots simples :</strong> Le séquenceur, c'est comme un
+            <strong>métronome intelligent</strong>. Il ne joue AUCUN son
+            lui-même. Son seul travail : regarder sa montre, et quand c'est le
+            bon moment, il dit aux players "COMMENCE !". C'est le
+            <strong>chef d'orchestre</strong> — il donne les ordres, mais ce
+            sont les musiciens (les players) qui jouent.
+          </div>
+
+          <div class="two-col">
+            <div class="info-card teal-card">
+              <h4>🎯 Ce que le séquenceur fait</h4>
+              <p>
+                ✓ Il <strong>compte le temps</strong> qui passe<br />
+                ✓ Il sait <strong>quel step</strong> on est (0 à 15)<br />
+                ✓ Il regarde la <strong>grille</strong> : "est-ce que cette case
+                est allumée ?"<br />
+                ✓ Si oui → il dit au player : <code>start()</code>
+              </p>
+            </div>
+            <div class="info-card red-card">
+              <h4>🚫 Ce que le séquenceur ne fait PAS</h4>
+              <p>
+                ✗ Il ne lit AUCUN son<br />
+                ✗ Il ne touche AUCUN buffer<br />
+                ✗ Il ne mélange rien<br />
+                ✗ Il ne sait même pas ce qu'est un fichier WAV
+              </p>
+              <p style="margin-top: 0.5rem">
+                <strong>Il est 100% timing, 0% audio.</strong>
+              </p>
+            </div>
+          </div>
+
+          <h4>Comment il compte le temps</h4>
+
+          <div class="code-block" style="font-size: 0.78rem">
+            <span class="c-comment"
+              >// À chaque callback (~6ms), il ajoute un petit bout de temps
+              :</span
+            >
+
+            bufferDuration = 256 / 44100 = 0.0058 secondes
+            <span class="c-comment">// durée d'un buffer</span> durationInBeats
+            = (0.0058 × BPM) / 60
+            <span class="c-comment">// converti en "beats"</span>
+
+            beatAccumulator += durationInBeats
+            <span class="c-comment">// on accumule</span>
+
+            <span class="c-comment"
+              >// Quand l'accumulateur dépasse 0.25 (= 1 step) :</span
+            >
+            <span class="c-kw">if</span> (beatAccumulator >= 0.25) {
+            beatAccumulator -= 0.25; currentStep = (currentStep + 1) % 16;
+            <span class="c-comment">// step suivant (0→15→0)</span>
+
+            <span class="c-comment"
+              >// Pour chaque piste : si la case est allumée → START !</span
+            >
+            <span class="c-kw">for</span> (track = 0; track < 4; track++) {
+            <span class="c-kw">if</span> (grille[track][currentStep] == true) {
+            players[track].start();
+            <span class="c-comment">// "Joue ton son !"</span> } } }
+          </div>
+
+          <h4>Exemple concret à 120 BPM</h4>
+          <div class="code-block" style="font-size: 0.78rem">
+            <span class="c-comment">// À 120 BPM :</span>
+            durationInBeats = (0.0058 × 120) / 60 = 0.01161 beats par callback
+
+            <span class="c-comment"
+              >// Il faut ~21.5 callbacks pour atteindre 0.25 :</span
+            >
+            0.25 / 0.01161 ≈ 21.5 callbacks → soit ~125 ms par step
+
+            <span class="c-comment"
+              >// 16 steps × 125 ms = 2 secondes pour une mesure complète
+              🔁</span
+            >
+          </div>
+
+          <h4>C'est quoi "déclencher un son" ?</h4>
+
+          <div class="callout callout-teal">
+            🔑
+            <strong
+              >Déclencher un son = appeler <code>player.start()</code>.</strong
+            >
+            C'est tout. Ça veut dire : "remets ta position de lecture au début
+            (ou à la fin si reverse) et mets-toi en mode
+            <code>playing = true</code>". Le player commencera à lire son sample
+            buffer au prochain callback. Le séquenceur n'attend PAS que le son
+            finisse — il donne l'ordre et passe au step suivant.
+          </div>
+
+          <div class="code-block" style="font-size: 0.78rem">
+            <span class="c-comment"
+              >// "Déclencher un son" en vrai, c'est :</span
+            >
+            player.start(reverse): position = reverse ? (totalFrames - 1) : 0
+            <span class="c-comment">// début ou fin</span> playing = true
+            <span class="c-comment">// "je suis en train de jouer"</span>
+            <span class="c-comment"
+              >// C'est TOUT. Pas de lecture, pas de son. Juste un flag.</span
+            >
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════
+             8.5 — AUDIO PLAYER
+        ═══════════════════════════════════════════════ -->
+        <div class="arch-sub" id="arch-player">
+          <h3>🎵 Étape 4 — L'Audio Player (le musicien)</h3>
+
+          <div class="callout callout-purple">
+            💬 <strong>En mots simples :</strong> L'Audio Player, c'est le
+            <strong>musicien</strong>. Il a son instrument (le sample buffer) et
+            quand le chef dit "joue !", il commence à lire les notes une par
+            une. Mais attention : il ne lit pas tout d'un coup ! Il lit juste un
+            petit bout à chaque fois (256 frames), et il continue au callback
+            suivant. Comme quelqu'un qui lit un livre page par page, pas tout le
+            livre en une fois.
+          </div>
+
+          <div class="callout callout-red">
+            ⚠ <strong>LE piège n°1 à éviter :</strong> "Le player joue le son en
+            entier quand le séquenceur dit START".<br />
+            <strong>NON !</strong> Le player ne lit que
+            <strong>256 frames à la fois</strong> (= 1 callback = ~6ms de son).
+            Le son complet est étalé sur
+            <strong>plein de callbacks successifs</strong>. Un kick qui dure 0.5
+            seconde = ~86 callbacks pour le lire en entier !
+          </div>
+
+          <!-- PLAYER TIMELINE -->
+          <div class="demo-box">
+            <div class="demo-title">
+              <span class="demo-badge">📖 Lecture d'un son</span> Le player lit
+              morceau par morceau
+            </div>
+
+            <div class="demo-box">
+            <div class="demo-title">
+              <span class="demo-badge">🎬 Timeline de lecture</span> Le player avance callback par callback
+            </div>
+            <div class="player-timeline-visual" id="player-timeline">
+              <div class="ptv-label">Sample buffer complet (22 050 frames) :</div>
+              <div class="ptv-full-bar">
+                <div class="ptv-full-track" id="ptv-full-track"></div>
+                <div class="ptv-chunk ptv-chunk-anim" id="ptv-chunk"></div>
+              </div>
+              <div class="ptv-callbacks" id="ptv-callbacks">
+                <div class="ptv-cb ptv-cb-done"><span>CB 1</span><small>0→255</small></div>
+                <div class="ptv-cb ptv-cb-done"><span>CB 2</span><small>256→511</small></div>
+                <div class="ptv-cb ptv-cb-done"><span>CB 3</span><small>512→767</small></div>
+                <div class="ptv-cb ptv-cb-current"><span>CB 4</span><small>768→1023</small></div>
+                <div class="ptv-cb ptv-cb-pending"><span>...</span><small>~86 CBs</small></div>
+                <div class="ptv-cb ptv-cb-last"><span>CB 86</span><small>FIN 🔇</small></div>
+              </div>
+              <div class="ptv-note">Chaque callback lit <strong>256 frames</strong> (~6ms). Un kick de 0.5s = ~86 callbacks.</div>
+            </div>
+          </div>
+          </div>
+
+          <h4>Que se passe-t-il À CHAQUE callback ?</h4>
+
+          <div class="load-steps">
+            <div class="load-step">
+              <div class="load-step-num">1</div>
+              <div class="load-step-body">
+                <h4>Vérifier : "est-ce que je suis en train de jouer ?"</h4>
+                <p>
+                  Si <code>playing == false</code> → écrire du
+                  <strong>silence</strong> (que des 0.0) dans le track buffer et
+                  s'arrêter là.
+                </p>
+              </div>
+            </div>
+            <div class="load-step">
+              <div class="load-step-num">2</div>
+              <div class="load-step-body">
+                <h4>Lire 256 frames depuis le sample buffer</h4>
+                <p>
+                  Pour chaque frame (de 0 à 255), lire les 2 floats (gauche +
+                  droite) depuis le sample buffer à la position actuelle, les
+                  multiplier par le volume, et les écrire dans le track buffer.
+                </p>
+                <div class="code-block" style="font-size: 0.75rem">
+                  <span class="c-comment"
+                    >// Pour chaque frame i de 0 à 255 :</span
+                  >
+                  trackBuffer[i × 2] = sampleBuffer[position × 2] × volume
+                  <span class="c-comment">// gauche</span> trackBuffer[i × 2 +
+                  1] = sampleBuffer[position × 2 + 1] × volume
+                  <span class="c-comment">// droite</span> position++
+                  <span class="c-comment">// avance !</span>
+                </div>
+              </div>
+            </div>
+            <div class="load-step">
+              <div class="load-step-num">3</div>
+              <div class="load-step-body">
+                <h4>Vérifier : "est-ce que j'ai fini le son ?"</h4>
+                <p>
+                  Si <code>position >= totalFrames</code> → mettre
+                  <code>playing = false</code>. Au prochain callback, le player
+                  écrira du silence.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- INTERACTIVE PLAYER DEMO -->
+          <div class="demo-box">
+            <div class="demo-title">
+              <span class="demo-badge">🎮 Simulateur de lecture</span> Vois le
+              player avancer dans le sample buffer
+            </div>
+            <p>
+              Chaque clic = 1 callback (~6ms). Le player lit 256 frames du
+              sample buffer et avance sa position.
+            </p>
+            <div class="player-sim-wrap">
+              <div class="player-sim-bar" id="player-sim-bar">
+                <div class="player-sim-progress" id="player-sim-progress"></div>
+                <div class="player-sim-cursor" id="player-sim-cursor"></div>
+              </div>
+              <div class="player-sim-labels">
+                <span>Frame 0</span>
+                <span id="player-sim-total">Frame 2000</span>
+              </div>
+            </div>
+            <div class="player-sim-info" id="player-sim-info">
+              position : <strong id="player-sim-pos">0</strong> /
+              <span id="player-sim-max">2000</span> — playing :
+              <strong id="player-sim-playing">true</strong> — callback :
+              <strong id="player-sim-cb">#0</strong>
+            </div>
+            <div class="btn-row">
+              <button class="btn btn-primary" id="player-sim-step">
+                ▶ 1 Callback (256 frames)
+              </button>
+              <button class="btn btn-ghost" id="player-sim-auto">
+                ⏩ Auto (rapide)
+              </button>
+              <button class="btn btn-ghost" id="player-sim-reset">
+                ↺ Reset
+              </button>
+            </div>
+            <div class="tree-msg" id="player-sim-msg">
+              Clique pour avancer le player de 256 frames.
+            </div>
+          </div>
+
+          <!-- REVERSE -->
+          <h4>🔄 Comment fonctionne le reverse ?</h4>
+
+          <div class="callout callout-teal">
+            💬 <strong>C'est super simple :</strong> au lieu de commencer au
+            début et d'avancer (<code>position++</code>), le player commence
+            <strong>à la fin</strong> et
+            <strong>recule</strong> (<code>position--</code>). C'est tout. Le
+            son est lu à l'envers !
+          </div>
+
+          <div class="two-col">
+            <div class="info-card teal-card">
+              <h4>▶ Normal (forward)</h4>
+              <div class="code-block" style="font-size: 0.75rem">
+                position = 0 <span class="c-comment">// commence au début</span>
+                <span class="c-comment">// à chaque frame :</span>
+                position++ <span class="c-comment">// avance</span>
+                <span class="c-comment"
+                  >// fin quand position >= totalFrames</span
+                >
+              </div>
+              <p>Le son joue du début à la fin → 🥁</p>
+            </div>
+            <div class="info-card orange-card">
+              <h4>◀ Reverse</h4>
+              <div class="code-block" style="font-size: 0.75rem">
+                position = totalFrames - 1
+                <span class="c-comment">// commence à la fin</span>
+                <span class="c-comment">// à chaque frame :</span>
+                position-- <span class="c-comment">// recule</span>
+                <span class="c-comment">// fin quand position < 0</span>
+              </div>
+              <p>Le son joue de la fin au début → 🥁🔙</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════
+             8.6 — DELAY
+        ═══════════════════════════════════════════════ -->
+        <div class="arch-sub" id="arch-delay">
+          <h3>⏱ Étape 5 — Le Delay (l'écho)</h3>
+
+          <div class="callout callout-orange">
+            💬 <strong>En mots simples :</strong> Le delay, c'est comme un
+            <strong>magnétophone à bande</strong>. Imagine une bande magnétique
+            qui tourne en boucle. Tu enregistres dessus (WRITE), et un peu plus
+            loin sur la bande, une tête de lecture relit ce que tu as enregistré
+            avant (READ). Le résultat : tu entends le son d'avant mélangé avec
+            le son d'maintenant → <strong>écho !</strong>
+          </div>
+
+          <div class="callout callout-red">
+            ⚠ <strong>Attention :</strong> Le delay
+            <strong>modifie directement</strong> le track buffer. Il ne crée pas
+            un nouveau buffer. Après le delay, le track buffer contient le son
+            original + l'écho mélangé.
+          </div>
+
+          <h4>Le buffer circulaire du delay</h4>
+
+          <div class="two-col">
+            <div class="info-card teal-card">
+              <h4>📏 Taille</h4>
+              <p>
+                <code>88200 floats</code> = 44100 × 2 canaux =
+                <strong>1 seconde</strong> de son stéréo en mémoire. C'est la
+                durée maximale de l'écho.
+              </p>
+            </div>
+            <div class="info-card orange-card">
+              <h4>🔄 Circulaire ?</h4>
+              <p>
+                Quand on arrive au bout du buffer (position 88199), on revient à
+                0. C'est un <strong>cercle</strong> — il ne se remplit jamais,
+                il écrase les anciennes valeurs.
+              </p>
+            </div>
+          </div>
+
+          <h4>Ce qui se passe pour chaque sample</h4>
+
+          <div class="code-block" style="font-size: 0.78rem">
+            <span class="c-comment"
+              >// Pour chaque sample du track buffer (512 au total) :</span
+            >
+
+            <span class="c-comment">// 1. Calculer où lire dans le passé</span>
+            delaySamples = delayTime × 44100 × 2
+            <span class="c-comment">// ex: 0.3s → 26460 floats</span> readIndex
+            = (writeIndex - delaySamples) % 88200
+            <span class="c-comment">// position "dans le passé"</span>
+
+            <span class="c-comment">// 2. Lire l'ancien son (l'écho)</span>
+            delayed = circularBuffer[readIndex]
+            <span class="c-comment">// le son d'il y a 0.3s</span>
+
+            <span class="c-comment">// 3. Mélanger : son actuel + écho</span>
+            trackBuffer[i] = trackBuffer[i] + delayMix × delayed
+            <span class="c-comment"
+              >// ↑ son actuel ↑ force de l'écho (0.0 à 1.0)</span
+            >
+
+            <span class="c-comment"
+              >// 4. Écrire le résultat dans le buffer circulaire (pour le futur
+              !)</span
+            >
+            circularBuffer[writeIndex] = trackBuffer[i]
+            <span class="c-comment">// ← FEEDBACK !</span>
+
+            <span class="c-comment">// 5. Avancer les pointeurs</span>
+            readIndex = (readIndex + 1) % 88200 writeIndex = (writeIndex + 1) %
+            88200
+          </div>
+
+          <h4>🔁 Le feedback — pourquoi l'écho se répète</h4>
+
+          <div class="callout callout-teal">
+            💬 <strong>Le secret :</strong> À l'étape 4, on écrit dans le buffer
+            circulaire la valeur
+            <strong>qui contient déjà l'écho</strong> (trackBuffer[i] = original
+            + écho). Donc quand cette valeur sera relue plus tard, elle créera
+            un écho de l'écho. Et ainsi de suite → l'écho se répète et s'atténue
+            à chaque fois.
+          </div>
+
+          <div class="code-block" style="font-size: 0.78rem">
+            <span class="c-comment"
+              >// Avec delayMix = 0.5 et delayTime = 0.3s :</span
+            >
+
+            Son original : BOUM (amplitude 1.0) 1er écho (après 0.3s) : boum
+            (amplitude 0.5) <span class="c-comment">// 1.0 × 0.5</span> 2ème
+            écho (après 0.6s): boum (amplitude 0.25)
+            <span class="c-comment">// 0.5 × 0.5</span> 3ème écho (après 0.9s):
+            boum (amplitude 0.125)
+            <span class="c-comment">// 0.25 × 0.5</span> ... et ça continue en
+            s'atténuant jusqu'au silence
+          </div>
+
+          <div class="callout callout-amber">
+            💡 <strong>delayMix contrôle la force de l'écho :</strong><br />
+            <code>0.0</code> = pas d'écho (le delay ne fait rien)<br />
+            <code>0.3</code> = écho léger<br />
+            <code>0.5</code> = écho moyen<br />
+            <code>0.8</code> = écho fort (se répète longtemps)<br />
+            <code>≥ 1.0</code> = ⚠ DANGER ! L'écho ne s'atténue JAMAIS → le son
+            explose !
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════
+             8.7 — MIXER
+        ═══════════════════════════════════════════════ -->
+        <div class="arch-sub" id="arch-mixer">
+          <h3>🎛 Étape 6 — Le Mixer (le mélange)</h3>
+
+          <div class="callout callout-purple">
+            💬 <strong>En mots simples :</strong> Le mixer, c'est la
+            <strong>table de mixage</strong>. Il prend ce que chaque musicien
+            joue en ce moment (les 4 track buffers) et il les additionne pour
+            faire un seul son. C'est vraiment juste une
+            <strong>addition</strong>.
+          </div>
+
+          <div class="callout callout-red">
+            ⚠ <strong>LE piège n°2 :</strong> "Le mixer mélange tous les buffers
+            de la seconde".<br />
+            <strong>NON !</strong> À un instant T, chaque piste a
+            <strong>UN SEUL</strong> petit buffer de 256 frames (le track buffer
+            de CE callback). Le mixer additionne seulement ces 4 petits buffers.
+            Pas 172. Pas tout le fichier. Juste 4.
+          </div>
+
+          <div class="demo-box">
+            <div class="demo-title">
+              <span class="demo-badge">🎛 Visualisation du mix</span> Comment 4
+              pistes deviennent 1 son
+            </div>
+
+            <div class="demo-box">
+            <div class="demo-title">
+              <span class="demo-badge">🏛 Mix interactif</span> Comment 4 pistes deviennent 1 son
+            </div>
+            <div class="mixer-visual" id="mixer-visual">
+              <div class="mx-tracks">
+                <div class="mx-track mx-playing" data-track="kick">
+                  <div class="mx-track-label">🥁 Kick</div>
+                  <div class="mx-track-bars" id="mx-bars-kick"></div>
+                  <div class="mx-track-vals">0.8, 0.7, 0.5, 0.2</div>
+                </div>
+                <div class="mx-track mx-silent" data-track="snare">
+                  <div class="mx-track-label">🥁 Snare</div>
+                  <div class="mx-track-bars" id="mx-bars-snare"></div>
+                  <div class="mx-track-vals">0.0, 0.0, 0.0, 0.0</div>
+                </div>
+                <div class="mx-track mx-playing" data-track="hihat">
+                  <div class="mx-track-label">🎩 Hihat</div>
+                  <div class="mx-track-bars" id="mx-bars-hihat"></div>
+                  <div class="mx-track-vals">0.3, 0.3, 0.1, -0.1</div>
+                </div>
+                <div class="mx-track mx-silent" data-track="clap">
+                  <div class="mx-track-label">👏 Clap</div>
+                  <div class="mx-track-bars" id="mx-bars-clap"></div>
+                  <div class="mx-track-vals">0.0, 0.0, 0.0, 0.0</div>
+                </div>
+              </div>
+              <div class="mx-operator">➕</div>
+              <div class="mx-output">
+                <div class="mx-output-label">🔊 Output</div>
+                <div class="mx-track-bars mx-out-bars" id="mx-bars-out"></div>
+                <div class="mx-track-vals mx-out-vals">1.1, 1.0, 0.6, 0.1</div>
+                <div class="mx-formula">0.8+0+0.3+0 = <strong>1.1</strong></div>
+              </div>
+            </div>
+          </div>
+          </div>
+
+          <h4>Le code du mixer — c'est le plus simple de tout le projet</h4>
+
+          <div class="code-block" style="font-size: 0.78rem">
+            <span class="c-comment">// C'est littéralement 3 lignes :</span>
+            <span class="c-kw">for</span> (i = 0; i < 512; i++) { output[i] =
+            track1[i] + track2[i] + track3[i] + track4[i]; }
+            <span class="c-comment"
+              >// C'est tout. Pas de magie. Juste une addition.</span
+            >
+          </div>
+
+          <div class="two-col">
+            <div class="info-card red-card">
+              <h4>❌ FAUX — le mixer mélange 172 buffers</h4>
+              <p>
+                Non ! Il n'existe qu'<strong
+                  >un seul buffer actif par piste</strong
+                >
+                à chaque instant. Le mixer en reçoit 4 (un par piste) et les
+                additionne.
+              </p>
+            </div>
+            <div class="info-card green-card">
+              <h4>✅ VRAI — le mixer additionne 4 buffers</h4>
+              <p>
+                À chaque callback, il prend les 4 track buffers (après le delay)
+                et fait : output = T1 + T2 + T3 + T4, sample par sample.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════
+             8.8 — AUDIO OUT
+        ═══════════════════════════════════════════════ -->
+        <div class="arch-sub" id="arch-out">
+          <h3>🔊 Étape 7 — Audio Out (la sortie)</h3>
+
+          <div class="callout callout-teal">
+            💬 <strong>En mots simples :</strong> L'output buffer (le mélange
+            final) est donné à <strong>PortAudio</strong>. PortAudio le passe à
+            la <strong>carte son</strong> de ton ordi. La carte son convertit
+            les nombres en <strong>signal électrique</strong>. Le signal passe
+            dans les <strong>haut-parleurs</strong> ou le casque. Les
+            haut-parleurs bougent → l'air bouge → ton oreille capte la vibration
+            → <strong>tu entends le son !</strong> 🎧
+          </div>
+
+          <div class="demo-box">
+            <div class="demo-title">
+              <span class="demo-badge">🔊 Chaîne de sortie</span> Du buffer jusqu'à tes oreilles
+            </div>
+            <div class="audio-out-chain" id="audio-out-chain">
+              <div class="aoc-step">
+                <div class="aoc-icon">💾</div>
+                <div class="aoc-label">Output Buffer</div>
+                <div class="aoc-detail">512 floats en mémoire</div>
+              </div>
+              <div class="aoc-arrow">▶</div>
+              <div class="aoc-step">
+                <div class="aoc-icon">⚙️</div>
+                <div class="aoc-label">PortAudio</div>
+                <div class="aoc-detail">Driver logiciel C/C++</div>
+              </div>
+              <div class="aoc-arrow">▶</div>
+              <div class="aoc-step">
+                <div class="aoc-icon">💻</div>
+                <div class="aoc-label">Carte Son</div>
+                <div class="aoc-detail">Numérique → Analogique</div>
+              </div>
+              <div class="aoc-arrow">▶</div>
+              <div class="aoc-step">
+                <div class="aoc-icon">🔊</div>
+                <div class="aoc-label">Haut-parleurs</div>
+                <div class="aoc-detail">Vibration dans l'air</div>
+              </div>
+              <div class="aoc-arrow">▶</div>
+              <div class="aoc-step">
+                <div class="aoc-icon">👂</div>
+                <div class="aoc-label">Toi !</div>
+                <div class="aoc-detail">Tu entends le son</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout callout-amber">
+            💡 <strong>PortAudio</strong> c'est une librairie C/C++ qui sert de
+            "pont" entre ton programme et la carte son. Sans elle, tu ne
+            pourrais pas envoyer du son vers les haut-parleurs. Elle gère aussi
+            le <strong>callback</strong> — c'est elle qui appelle ta fonction
+            ~172 fois par seconde en disant "donne-moi 256 frames !".
+          </div>
+
+          <h4>Configuration de PortAudio dans ton projet</h4>
+
+          <div class="code-block" style="font-size: 0.78rem">
+            <span class="c-comment">// PortAudio est configuré avec :</span>
+            Format : paFloat32
+            <span class="c-comment">// des floats 32 bits</span> Canaux : 2
+            <span class="c-comment">// stéréo</span> Sample Rate : 44100
+            <span class="c-comment">// Hz</span> Buffer Size : 256 frames
+            <span class="c-comment">// par callback</span> Callback :
+            audioCallback()
+            <span class="c-comment">// la fonction appelée ~172×/sec</span>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════
+             8.9 — UN CALLBACK COMPLET
+        ═══════════════════════════════════════════════ -->
+        <div class="arch-sub" id="arch-callback">
+          <h3>🔄 Un callback complet — que se passe-t-il en 6ms ?</h3>
+
+          <div class="callout callout-orange">
+            💬 <strong>Le callback c'est le cœur du programme.</strong> C'est
+            une fonction que PortAudio appelle automatiquement ~172 fois par
+            seconde. À chaque appel, le programme doit fournir 256 frames de son
+            (512 floats). Si le programme est trop lent → le son va couper /
+            grésiller.
+          </div>
+
+          <div class="demo-box">
+            <div class="demo-title">
+              <span class="demo-badge">🔄 Simulateur de callback</span> Clique
+              étape par étape
+            </div>
+
+            <div class="callback-steps" id="callback-steps">
+              <div class="cb-step" data-step="0">
+                <div class="cb-step-num">1</div>
+                <div class="cb-step-content">
+                  <h4>🎼 Séquenceur</h4>
+                  <p>
+                    Vérifie le timing. Si c'est le moment → déclenche les
+                    players actifs.
+                  </p>
+                </div>
+                <div class="cb-step-status" id="cb-status-0">⏳</div>
+              </div>
+              <div class="cb-step" data-step="1">
+                <div class="cb-step-num">2</div>
+                <div class="cb-step-content">
+                  <h4>🎵 Players (×4)</h4>
+                  <p>
+                    Chaque player lit 256 frames de son sample buffer → remplit
+                    son track buffer.
+                  </p>
+                </div>
+                <div class="cb-step-status" id="cb-status-1">⏳</div>
+              </div>
+              <div class="cb-step" data-step="2">
+                <div class="cb-step-num">3</div>
+                <div class="cb-step-content">
+                  <h4>⏱ Delays (×4)</h4>
+                  <p>
+                    Chaque delay modifie le track buffer : ajoute l'écho depuis
+                    le buffer circulaire.
+                  </p>
+                </div>
+                <div class="cb-step-status" id="cb-status-2">⏳</div>
+              </div>
+              <div class="cb-step" data-step="3">
+                <div class="cb-step-num">4</div>
+                <div class="cb-step-content">
+                  <h4>🎛 Mixer</h4>
+                  <p>
+                    Additionne les 4 track buffers → 1 output buffer de 512
+                    floats.
+                  </p>
+                </div>
+                <div class="cb-step-status" id="cb-status-3">⏳</div>
+              </div>
+              <div class="cb-step" data-step="4">
+                <div class="cb-step-num">5</div>
+                <div class="cb-step-content">
+                  <h4>🔊 Audio Out</h4>
+                  <p>
+                    L'output buffer est envoyé à PortAudio → carte son →
+                    haut-parleurs.
+                  </p>
+                </div>
+                <div class="cb-step-status" id="cb-status-4">⏳</div>
+              </div>
+            </div>
+
+            <div class="btn-row">
+              <button class="btn btn-primary" id="cb-sim-step">
+                ▶ Étape suivante
+              </button>
+              <button class="btn btn-ghost" id="cb-sim-all">
+                ⏩ Tout d'un coup
+              </button>
+              <button class="btn btn-ghost" id="cb-sim-reset">↺ Reset</button>
+            </div>
+            <div class="tree-msg" id="cb-sim-msg">
+              Clique pour simuler les étapes d'un callback audio.
+            </div>
+          </div>
+
+          <h4>Le vrai code du callback</h4>
+
+          <div class="code-block" style="font-size: 0.75rem">
+            <span class="c-kw">int</span> audioCallback(<span class="c-kw"
+              >float</span
+            >* output, <span class="c-kw">int</span> frames) {
+            <span class="c-comment"
+              >// frames = 256, output = le buffer que PortAudio attend</span
+            >
+
+            <span class="c-comment"
+              >// 1. Le séquenceur vérifie le timing et déclenche les sons</span
+            >
+            sequencer.process(drumMachine, players);
+
+            <span class="c-comment">// 2+3. Pour CHAQUE piste :</span>
+            <span class="c-kw">float</span> trackBuffers[4][512];
+            <span class="c-comment"
+              >// 4 buffers temporaires (1 par piste)</span
+            >
+
+            <span class="c-kw">for</span> (i = 0; i < 4; i++) {
+            <span class="c-comment"
+              >// 2. Le player lit 256 frames de son sample buffer</span
+            >
+            players[i].process(trackBuffers[i], frames, volume[i], muted[i]);
+
+            <span class="c-comment"
+              >// 3. Le delay modifie le track buffer (ajoute l'écho)</span
+            >
+            delays[i].process(trackBuffers[i], frames, delayTime, delayMix,
+            enabled); }
+
+            <span class="c-comment"
+              >// 4. Le mixer additionne les 4 track buffers</span
+            >
+            mixer.process(output, trackBuffers[0], trackBuffers[1],
+            trackBuffers[2], trackBuffers[3], frames);
+
+            <span class="c-comment"
+              >// 5. output est automatiquement envoyé à la carte son par
+              PortAudio</span
+            >
+            <span class="c-kw">return</span> paContinue;
+            <span class="c-comment">// "continue à m'appeler !"</span> }
+          </div>
+
+          <div class="callout callout-amber">
+            💡
+            <strong>Les 4 track buffers sont des variables locales</strong> (sur
+            la stack). Ils sont créés au début du callback et détruits à la fin.
+            Ils n'existent que pendant ~6ms. Au callback suivant, on en crée 4
+            nouveaux.
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════
+             8.10 — ERREURS FRÉQUENTES
+        ═══════════════════════════════════════════════ -->
+        <div class="arch-sub" id="arch-errors">
+          <h3>⚠ Erreurs et malentendus fréquents</h3>
+
+          <div class="callout callout-red">
+            🚨
+            <strong>Les erreurs les plus courantes des étudiants.</strong>
+            Lis-les toutes — tu en as probablement cru au moins une !
+          </div>
+
+          <div class="mistake-list">
+            <div class="mistake-card">
+              <div class="mistake-wrong">❌ "Le séquenceur joue les sons"</div>
+              <div class="mistake-right">
+                ✅ Le séquenceur ne joue RIEN. Il dit juste aux players
+                "commence !". C'est un chef d'orchestre, pas un musicien. Il ne
+                touche aucun sample, aucun buffer audio.
+              </div>
+            </div>
+
+            <div class="mistake-card">
+              <div class="mistake-wrong">
+                ❌ "Le son sort d'un coup quand la case est allumée"
+              </div>
+              <div class="mistake-right">
+                ✅ La case allumée <strong>déclenche</strong> le son (= appelle
+                start()). Mais le son est lu petit bout par petit bout : 256
+                frames par callback, sur des dizaines de callbacks successifs.
+                Un kick de 0.5s = ~86 callbacks.
+              </div>
+            </div>
+
+            <div class="mistake-card">
+              <div class="mistake-wrong">
+                ❌ "Le mixer mélange tous les buffers de la seconde (172
+                buffers)"
+              </div>
+              <div class="mistake-right">
+                ✅ Le mixer ne reçoit que <strong>4 buffers</strong> à chaque
+                callback (1 par piste). Il les additionne. C'est tout. Il n'a
+                aucune mémoire des callbacks précédents.
+              </div>
+            </div>
+
+            <div class="mistake-card">
+              <div class="mistake-wrong">
+                ❌ "Le sample buffer et le track buffer c'est la même chose"
+              </div>
+              <div class="mistake-right">
+                ✅ Non ! Le sample buffer = le son COMPLET en mémoire (des
+                milliers de frames). Le track buffer = un PETIT BOUT de 256
+                frames lu pendant 1 callback. C'est comme "le livre entier" vs
+                "la page qu'on lit maintenant".
+              </div>
+            </div>
+
+            <div class="mistake-card">
+              <div class="mistake-wrong">
+                ❌ "Le delay crée un nouveau buffer"
+              </div>
+              <div class="mistake-right">
+                ✅ Le delay <strong>modifie directement</strong> le track
+                buffer. Après le delay, le track buffer contient le son original
+                + l'écho mélangé. Pas de nouveau buffer créé.
+              </div>
+            </div>
+
+            <div class="mistake-card">
+              <div class="mistake-wrong">
+                ❌ "Le fichier WAV est relu à chaque fois qu'on joue le son"
+              </div>
+              <div class="mistake-right">
+                ✅ Le fichier WAV est lu UNE SEULE FOIS (au chargement).
+                Ensuite, le sample buffer reste en RAM. Quand on "joue", on lit
+                depuis la RAM (ultra rapide), jamais depuis le disque.
+              </div>
+            </div>
+
+            <div class="mistake-card">
+              <div class="mistake-wrong">
+                ❌ "Le reverse inverse le buffer en mémoire"
+              </div>
+              <div class="mistake-right">
+                ✅ Le buffer n'est PAS modifié. Le player lit simplement dans
+                l'autre sens : position commence à la fin et décrémente au lieu
+                d'incrémenter. Les données restent identiques.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════
+             8.11 — RÉSUMÉ FINAL
+        ═══════════════════════════════════════════════ -->
+        <div class="arch-sub" id="arch-final">
+          <h3>📋 Résumé final — tout en un coup d'œil</h3>
+
+          <div class="summary-bars">
+            <div class="sum-bar" style="border-left-color: var(--text-d)">
+              <strong>📁 Fichier WAV</strong> — Le son stocké sur le disque
+              (header + octets bruts)
+            </div>
+            <div class="sum-bar" style="border-left-color: var(--teal)">
+              <strong>📥 Chargement</strong> — Lire le fichier → convertir en
+              floats stéréo → stocker dans le sample buffer
+            </div>
+            <div class="sum-bar" style="border-left-color: var(--amber)">
+              <strong>🎼 Séquenceur</strong> — Compte le temps, déclenche les
+              players quand c'est le bon step
+            </div>
+            <div class="sum-bar" style="border-left-color: var(--green)">
+              <strong>🎵 Player ×4</strong> — Lit 256 frames du sample buffer →
+              remplit le track buffer
+            </div>
+            <div class="sum-bar" style="border-left-color: var(--red)">
+              <strong>⏱ Delay ×4</strong> — Modifie le track buffer en ajoutant
+              l'écho (buffer circulaire)
+            </div>
+            <div class="sum-bar" style="border-left-color: var(--purple)">
+              <strong>🎛 Mixer</strong> — Additionne les 4 track buffers →
+              output buffer
+            </div>
+            <div class="sum-bar" style="border-left-color: var(--orange)">
+              <strong>🔊 Audio Out</strong> — Output buffer → PortAudio → carte
+              son → haut-parleurs
+            </div>
+          </div>
+
+          <div class="demo-box" style="padding: 1.25rem">
+            <div class="final-pipeline-visual" id="final-pipeline">
+              <div class="fpv-step fpv-file"><span>📁</span> WAV</div>
+              <div class="fpv-arrow">▶</div>
+              <div class="fpv-step fpv-load"><span>📥</span> Chargement</div>
+              <div class="fpv-arrow">▶</div>
+              <div class="fpv-step fpv-sample"><span>💾</span> Sample Buffer</div>
+              <div class="fpv-sep">↻ 172×/sec</div>
+              <div class="fpv-step fpv-seq"><span>🎼</span> Séquenceur</div>
+              <div class="fpv-arrow">▶</div>
+              <div class="fpv-step fpv-play"><span>🎵</span> Player</div>
+              <div class="fpv-arrow">▶</div>
+              <div class="fpv-step fpv-delay"><span>⏱</span> Delay</div>
+              <div class="fpv-arrow">▶</div>
+              <div class="fpv-step fpv-mix"><span>🏛</span> Mixer</div>
+              <div class="fpv-arrow">▶</div>
+              <div class="fpv-step fpv-out"><span>🔊</span> Audio Out</div>
+              <div class="fpv-arrow">▶</div>
+              <div class="fpv-step fpv-ear"><span>👂</span> Toi</div>
+            </div>
+          </div>
+
+          <div class="callout callout-teal" style="margin-top: 1.5rem">
+            👶 <strong>La version Feynman (5 ans) :</strong> Tu as 4 boîtes à
+            musique. Un chef regarde sa montre et dit "toi, joue !". Chaque
+            boîte joue un tout petit bout de sa chanson. Un robot peut rajouter
+            un écho. Un autre robot mélange tout ensemble. Et pouf — le son sort
+            dans tes oreilles ! Et ça recommence 172 fois chaque seconde
+            tellement vite que tu entends un son <strong>continu</strong>. 🎧
+          </div>
+
+          <div class="callout callout-amber">
+            🧠 <strong>Le truc à retenir :</strong> Tout le système est basé sur
+            le <strong>callback</strong>. Toutes les ~6 ms, PortAudio dit
+            "donne-moi 256 frames !". Et le programme fait : séquenceur →
+            players → delays → mixer → output. En boucle. Sans jamais s'arrêter.
+            C'est pour ça que le son est continu même si le programme travaille
+            par petits bouts.
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 09 · ANTISÈCHE ──────────────────────────── -->
+      <section id="s9" class="section reveal">
+        <div class="sec-header">
+          <span class="sec-num">09</span>
+          <div>
+            <h2>Antisèche</h2>
+            <p class="sec-sub">Tableau récapitulatif · Chiffres clés</p>
+          </div>
+        </div>
+
+        <!-- RECAP TABLE -->
+        <h3>Tableau récapitulatif</h3>
+        <div class="recap-table">
+          <div class="rt-hdr">
+            <span>Concept</span><span>Définition</span><span>Exemple</span>
+          </div>
+          <div class="rt-row">
+            <span>Sample</span><span>1 mesure du son à un instant</span
+            ><span>0.42</span>
+          </div>
+          <div class="rt-row">
+            <span>Buffer</span><span>Tableau de samples</span
+            ><span>[0.2, -0.1, 0.5, ...]</span>
+          </div>
+          <div class="rt-row">
+            <span>Frame</span><span>1 instant temporel</span
+            ><span>Stéréo : 1 frame = 2 samples [L][R]</span>
+          </div>
+          <div class="rt-row">
+            <span>Sample Rate</span><span>Samples par seconde</span
+            ><span>44100 Hz</span>
+          </div>
+          <div class="rt-row">
+            <span>Buffer Size</span><span>Frames par appel</span
+            ><span>256 frames</span>
+          </div>
+          <div class="rt-row">
+            <span>Interleaved</span><span>L/R alternés dans 1 tableau</span
+            ><span>[L][R][L][R]...</span>
+          </div>
+          <div class="rt-row">
+            <span>Delay</span><span>Écho par buffer circulaire</span
+            ><span>sortie = actuel + ancien</span>
+          </div>
+          <div class="rt-row">
+            <span>BPM</span><span>Battements par minute</span
+            ><span>120 BPM = 1 beat = 0.5s</span>
+          </div>
+          <div class="rt-row">
+            <span>Mixer</span><span>Additionne les 4 pistes</span
+            ><span>output = T1+T2+T3+T4</span>
+          </div>
+          <div class="rt-row">
+            <span>WAV</span><span>Fichier audio non compressé</span
+            ><span>kick.wav, snare.wav</span>
+          </div>
+        </div>
+
+        <!-- KEY NUMBERS -->
+        <h3>Chiffres clés à retenir</h3>
+        <div class="key-numbers">
+          <div class="kn-card">
+            <div class="kn-val">44100</div>
+            <div class="kn-desc">samples / seconde (Hz)</div>
+          </div>
+          <div class="kn-card">
+            <div class="kn-val">256</div>
+            <div class="kn-desc">frames / buffer</div>
+          </div>
+          <div class="kn-card">
+            <div class="kn-val">~172</div>
+            <div class="kn-desc">buffers / seconde</div>
+          </div>
+          <div class="kn-card">
+            <div class="kn-val">~6 ms</div>
+            <div class="kn-desc">entre chaque appel</div>
+          </div>
+          <div class="kn-card">
+            <div class="kn-val">88200</div>
+            <div class="kn-desc">samples / sec stéréo</div>
+          </div>
+          <div class="kn-card">
+            <div class="kn-val">16</div>
+            <div class="kn-desc">steps dans le séquenceur</div>
+          </div>
+        </div>
+
+        <!-- KEY FORMULAS -->
+        <h3>Formules utiles</h3>
+        <div class="formulas-grid">
+          <div class="fcard">
+            <div class="fcard-title">Buffers par seconde</div>
+            <div class="fcard-f">44100 / 256 ≈ 172</div>
+            <div class="fcard-desc">
+              → Le programme est appelé ~172 fois par seconde pour fournir un
+              nouveau buffer de 256 frames.
+            </div>
+          </div>
+          <div class="fcard">
+            <div class="fcard-title">Samples stéréo par seconde</div>
+            <div class="fcard-f">44100 × 2 = 88200</div>
+            <div class="fcard-desc">
+              → En stéréo, chaque frame = 2 samples (G+D). Donc 88200 valeurs
+              pour 1 seconde.
+            </div>
+          </div>
+          <div class="fcard">
+            <div class="fcard-title">Durée d'un beat</div>
+            <div class="fcard-f">durée = 60 / BPM</div>
+            <div class="fcard-desc">
+              → À 120 BPM : 60/120 = 0.5 seconde par beat.
+            </div>
+          </div>
+          <div class="fcard">
+            <div class="fcard-title">Durée d'un step</div>
+            <div class="fcard-f">step = (60 / BPM) / 4</div>
+            <div class="fcard-desc">
+              → 4 subdivisions par beat. À 120 BPM : 0.125s = 125ms par step.
+            </div>
+          </div>
+          <div class="fcard">
+            <div class="fcard-title">Écho (delay)</div>
+            <div class="fcard-f">sortie = actuel + buffer[read]</div>
+            <div class="fcard-desc">
+              → On mélange le son présent avec un ancien son lu dans le buffer
+              circulaire.
+            </div>
+          </div>
+          <div class="fcard">
+            <div class="fcard-title">Index circulaire</div>
+            <div class="fcard-f">index = (pos + 1) % taille</div>
+            <div class="fcard-desc">
+              → Le modulo (%) fait revenir l'index au début quand on atteint la
+              fin du buffer.
+            </div>
+          </div>
+        </div>
+
+        <!-- PIPELINE RESUME -->
+        <h3>Pipeline complet</h3>
+        <div class="code-block" style="text-align: center; font-size: 0.95rem">
+          StepSequencer → AudioPlayers (×4) → Delay (×4) → Mixer → Audio Out 🔊
+        </div>
+        <div class="callout callout-teal" style="margin-top: 1.5rem">
+          🧠 <strong>Résumé Feynman :</strong> Ton ordi prend des petits
+          morceaux de son 🎵, les mélange, et les envoie très vite. Et ton
+          oreille entend un son continu 😄
+        </div>
+
+        <!-- FINAL NOTE -->
+        <div class="final-note">
+          <span class="fn-emoji">🎧</span>
+          <div>
+            Tu as parcouru tout le guide ! Tu connais maintenant les concepts
+            fondamentaux du traitement audio : son, samples, fréquence, stéréo,
+            WAV, buffer circulaire, delay, séquenceur et architecture complète.
+            Bonne chance pour le projet ! 🚀
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
