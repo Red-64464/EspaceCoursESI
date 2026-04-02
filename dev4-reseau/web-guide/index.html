@@ -1,0 +1,2772 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DEV4 Réseau — Guide Interactif Python &amp; ML</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- ═══════════════════════════════════════ SIDEBAR ═══ -->
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <span class="brand-emoji">🐍</span>
+        <div>
+          <div class="brand-title">DEV4 Réseau</div>
+          <div class="brand-sub">Python &amp; ML</div>
+        </div>
+      </div>
+
+      <div class="progress-wrap">
+        <svg width="54" height="54" viewBox="0 0 54 54">
+          <circle class="prog-bg" cx="27" cy="27" r="22" />
+          <circle class="prog-fill" cx="27" cy="27" r="22" id="prog-circle" />
+        </svg>
+        <span class="prog-label" id="prog-pct">0%</span>
+      </div>
+
+      <ul class="nav-list">
+        <li>
+          <a href="#s0" class="nav-link" data-s="s0"
+            ><span class="nn">00</span>Accueil</a
+          >
+        </li>
+        <li>
+          <a href="#s1" class="nav-link" data-s="s1"
+            ><span class="nn">01</span>Python OOP</a
+          >
+        </li>
+        <li>
+          <a href="#s2" class="nav-link" data-s="s2"
+            ><span class="nn">02</span>OOP Avancé</a
+          >
+        </li>
+        <li>
+          <a href="#s3" class="nav-link" data-s="s3"
+            ><span class="nn">03</span>Outils Python</a
+          >
+        </li>
+        <li>
+          <a href="#s4" class="nav-link" data-s="s4"
+            ><span class="nn">04</span>NumPy</a
+          >
+        </li>
+        <li>
+          <a href="#s5" class="nav-link" data-s="s5"
+            ><span class="nn">05</span>SciPy &amp; Graphes</a
+          >
+        </li>
+        <li>
+          <a href="#s6" class="nav-link" data-s="s6"
+            ><span class="nn">06</span>Cryptanalyse</a
+          >
+        </li>
+        <li>
+          <a href="#s7" class="nav-link" data-s="s7"
+            ><span class="nn">07</span>Machine Learning</a
+          >
+        </li>
+        <li>
+          <a href="#s8" class="nav-link" data-s="s8"
+            ><span class="nn">08</span>Préparer les données</a
+          >
+        </li>
+        <li>
+          <a href="#s9" class="nav-link" data-s="s9"
+            ><span class="nn">09</span>Modèles &amp; Métriques</a
+          >
+        </li>
+        <li>
+          <a href="#s10" class="nav-link" data-s="s10"
+            ><span class="nn">10</span>Data Mining</a
+          >
+        </li>
+        <li>
+          <a href="#s11" class="nav-link" data-s="s11"
+            ><span class="nn">11</span>Le Projet</a
+          >
+        </li>
+        <li>
+          <a href="#s12" class="nav-link" data-s="s12"
+            ><span class="nn">12</span>Le Dataset</a
+          >
+        </li>
+        <li>
+          <a href="#s13" class="nav-link" data-s="s13"
+            ><span class="nn">13</span>Régression</a
+          >
+        </li>
+        <li>
+          <a href="#s14" class="nav-link" data-s="s14"
+            ><span class="nn">14</span>Modèles avancés</a
+          >
+        </li>
+        <li>
+          <a href="#s15" class="nav-link" data-s="s15"
+            ><span class="nn">15</span>Clustering hiérar.</a
+          >
+        </li>
+        <li>
+          <a href="#s16" class="nav-link" data-s="s16"
+            ><span class="nn">16</span>Le livrable</a
+          >
+        </li>
+        <li>
+          <a href="#s17" class="nav-link" data-s="s17"
+            ><span class="nn">17</span>Antisèche</a
+          >
+        </li>
+      </ul>
+
+      <button class="menu-toggle" id="menu-toggle">☰</button>
+    </nav>
+
+    <!-- ═══════════════════════════════════════ MAIN ══════ -->
+    <main class="main" id="main">
+      <!-- ── 00 · HERO ─────────────────────────────────── -->
+      <section id="s0" class="section hero-section reveal">
+        <div class="hero-left">
+          <div class="hero-badge">🎓 Cours DEV4 Réseau · ESI Bruxelles</div>
+          <h1 class="hero-title">
+            Guide Complet<br /><span class="gradient-text"
+              >Python, Data &amp; Machine Learning</span
+            >
+          </h1>
+          <p class="hero-sub">
+            Orienté objet · NumPy · SciPy · Cryptanalyse · Scikit-Learn · Data
+            Mining — tout le cours expliqué simplement, de A à Z.
+          </p>
+          <div class="hero-pills">
+            <span class="pill teal">🐍 Python OOP</span>
+            <span class="pill orange">📊 NumPy / SciPy</span>
+            <span class="pill purple">🤖 Machine Learning</span>
+            <span class="pill green">🔐 Cryptanalyse</span>
+          </div>
+          <a href="#s1" class="cta-btn">Commencer l'apprentissage →</a>
+
+          <div class="theme-switcher">
+            <span class="theme-label">🎨 Thème</span>
+            <button
+              class="theme-btn active"
+              data-theme="default"
+              title="Bleu profond (défaut)"
+            >
+              <span class="theme-dot" style="background: #4a9eff"></span>
+            </button>
+            <button class="theme-btn" data-theme="rose" title="Rose pastel">
+              <span class="theme-dot" style="background: #f4a0b5"></span>
+            </button>
+            <button class="theme-btn" data-theme="green" title="Vert nature">
+              <span class="theme-dot" style="background: #34d399"></span>
+            </button>
+          </div>
+        </div>
+        <div class="hero-right">
+          <div class="hero-visual-box">
+            <span class="hv-emoji">🐍</span>
+            <div
+              style="
+                font-family: var(--mono);
+                font-size: 0.8rem;
+                color: var(--teal);
+                margin: 0.5rem 0;
+              "
+            >
+              class MonProjet:
+            </div>
+            <div
+              style="
+                font-family: var(--mono);
+                font-size: 0.72rem;
+                color: var(--text-d);
+              "
+            >
+              def apprendre(self):<br />
+              return "🚀"
+            </div>
+            <div class="hv-label" style="margin-top: 0.75rem">
+              Python + ML = superpouvoir 💪
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════
+     01 · PYTHON OOP — Les bases de l'orienté objet
+══════════════════════════════════════════════════════ -->
+      <section id="s1" class="section reveal">
+        <div class="sec-header">
+          <span class="sec-num">01</span>
+          <div>
+            <h2>Python OOP — Les bases</h2>
+            <p class="sec-sub">
+              Classe · Objet · Constructeur · Attribut · Méthode
+            </p>
+          </div>
+        </div>
+
+        <div class="callout callout-teal">
+          🧱 <strong>C'est quoi "orienté objet" ?</strong> Imagine que tu veux
+          créer un jeu vidéo avec des personnages. Chaque personnage a un
+          <strong>nom</strong>, des <strong>points de vie</strong>, et peut
+          <strong>attaquer</strong>. Au lieu de tout mélanger dans ton code, tu
+          crées un <strong>moule</strong> (= une <em>classe</em>) qui dit "voilà
+          à quoi ressemble un personnage". Ensuite, tu utilises ce moule pour
+          créer autant de personnages que tu veux (= des <em>objets</em>). C'est
+          ça, l'orienté objet.
+        </div>
+
+        <div class="two-col">
+          <div class="info-card teal-card">
+            <h4>📦 Classe = le moule</h4>
+            <p>
+              C'est le <strong>plan de construction</strong>. Elle dit : "un
+              chien a un nom, un poids, et il peut aboyer". Mais elle ne crée
+              rien toute seule — c'est juste le plan.
+            </p>
+            <div class="code-block">
+              <span class="c-kw">class</span> Dog:
+              <span class="c-kw">pass</span>
+              <span class="c-comment"># pour l'instant, le plan est vide</span>
+            </div>
+          </div>
+          <div class="info-card orange-card">
+            <h4>🐕 Objet = le truc réel</h4>
+            <p>
+              C'est ce que tu <strong>fabriques</strong> à partir du moule. Si
+              la classe c'est "Chien", l'objet c'est "Médor, 10 kg". Tu peux en
+              créer 100 si tu veux.
+            </p>
+            <div class="code-block">
+              medor = Dog()
+              <span class="c-comment"># je fabrique UN chien</span> rex = Dog()
+              <span class="c-comment"># et un deuxième !</span>
+            </div>
+          </div>
+        </div>
+
+        <h3>Le constructeur : <code>__init__</code></h3>
+        <div class="callout callout-orange">
+          🔧
+          <strong
+            >Le constructeur, c'est la fonction qui se lance automatiquement
+            quand tu crées un objet.</strong
+          >
+          En Python, il s'appelle toujours <code>__init__</code> (avec deux
+          underscores de chaque côté). C'est là-dedans que tu dis "quand je crée
+          un chien, il faut lui donner un nom et un poids".
+        </div>
+
+        <div class="code-block">
+          <span class="c-kw">class</span> Dog: <span class="c-kw">def</span>
+          <span class="c-fn">__init__</span>(self, name, weight): self.__name =
+          name
+          <span class="c-comment"># attribut privé (le __ devant = privé)</span>
+          self.__weight = weight self.__hungry = <span class="c-kw">False</span>
+          <span class="c-comment"># par défaut, le chien n'a pas faim</span>
+        </div>
+
+        <div class="callout callout-amber">
+          💡 <strong>C'est quoi <code>self</code> ?</strong> C'est le mot qui
+          fait référence à <strong>l'objet lui-même</strong>. Quand tu écris
+          <code>self.__name = name</code>, tu dis "MON nom à moi (l'objet chien)
+          = le nom qu'on m'a donné". Chaque méthode d'une classe prend
+          <code>self</code> en premier argument, c'est obligatoire.
+        </div>
+
+        <h3>Attributs : publics, protégés, privés</h3>
+        <div class="callout callout-purple">
+          🔒 En Python, le nom de l'attribut détermine
+          <strong>qui peut y accéder</strong> : <br />• <code>name</code> →
+          <strong>public</strong> : tout le monde peut le lire/modifier <br />•
+          <code>_name</code> → <strong>protégé</strong> : convention pour dire
+          "ne touche pas stp" (mais c'est pas bloqué) <br />•
+          <code>__name</code> → <strong>privé</strong> : Python le "cache" pour
+          de vrai (name mangling)
+        </div>
+
+        <h3>Accesseur &amp; Mutateur (getter / setter)</h3>
+        <p>
+          Tu ne veux pas que n'importe qui modifie le nom de ton chien n'importe
+          comment. Alors tu crées des <strong>fonctions spéciales</strong> pour
+          lire et modifier les attributs :
+        </p>
+
+        <div class="code-block">
+          <span class="c-dec">@property</span>
+          <span class="c-comment"># ← c'est l'accesseur (getter)</span>
+          <span class="c-kw">def</span> <span class="c-fn">name</span>(self):
+          <span class="c-kw">return</span> self.__name
+
+          <span class="c-dec">@name.setter</span>
+          <span class="c-comment"># ← c'est le mutateur (setter)</span>
+          <span class="c-kw">def</span> <span class="c-fn">name</span>(self,
+          name): self.__name = name
+        </div>
+
+        <div class="callout callout-green">
+          ✨ Avec <code>@property</code>, tu peux écrire
+          <code>medor.name</code> au lieu de <code>medor.get_name()</code>.
+          C'est plus joli et plus "pythonique". Pareil pour le setter :
+          <code>medor.name = "Rex"</code> au lieu de
+          <code>medor.set_name("Rex")</code>.
+        </div>
+
+        <h3>Type Hinting — indiquer les types</h3>
+        <p>
+          Python ne t'oblige pas à dire le type de tes variables, mais tu
+          <strong>peux</strong> le faire pour t'aider (et aider ton IDE à te
+          montrer les erreurs) :
+        </p>
+        <div class="code-block">
+          <span class="c-kw">def</span> <span class="c-fn">__init__</span>(self,
+          name: <span class="c-dec">str</span>, weight:
+          <span class="c-dec">int</span>): self.__name:
+          <span class="c-dec">str</span> = name self.__weight:
+          <span class="c-dec">int</span> = weight
+
+          <span class="c-kw">def</span> <span class="c-fn">sound</span>(self) ->
+          <span class="c-dec">str</span>:
+          <span class="c-comment"># → dit que la fonction retourne un str</span>
+          <span class="c-kw">return</span> <span class="c-str">"Woof!"</span>
+        </div>
+
+        <h3>Docstring — documenter son code</h3>
+        <p>
+          Un <strong>docstring</strong>, c'est un commentaire spécial juste en
+          dessous d'une fonction. Ton IDE le lira et te montrera l'aide quand tu
+          survoleras la fonction :
+        </p>
+        <div class="code-block">
+          <span class="c-kw">def</span> <span class="c-fn">sound</span>(self) ->
+          <span class="c-dec">str</span>:
+          <span class="c-str"
+            >""" Fait aboyer le chien. :return: Le son que fait le chien
+            """</span
+          >
+          <span class="c-kw">return</span> <span class="c-str">"Woof!"</span>
+        </div>
+
+        <h3>Méthodes spéciales (<code>__str__</code>, <code>__eq__</code>)</h3>
+        <div class="two-col">
+          <div class="info-card teal-card">
+            <h4><code>__str__</code></h4>
+            <p>
+              Quand tu fais <code>print(medor)</code>, Python appelle cette
+              méthode. Sans elle, tu verras un truc moche genre
+              <code>&lt;Dog object at 0x...&gt;</code>.
+            </p>
+            <div class="code-block">
+              <span class="c-kw">def</span>
+              <span class="c-fn">__str__</span>(self):
+              <span class="c-kw">return</span>
+              <span class="c-str">f"Dog({self.__name})"</span>
+            </div>
+          </div>
+          <div class="info-card orange-card">
+            <h4><code>__eq__</code></h4>
+            <p>
+              Quand tu fais <code>medor == rex</code>, Python appelle cette
+              méthode. C'est toi qui décides ce que "égal" veut dire.
+            </p>
+            <div class="code-block">
+              <span class="c-kw">def</span>
+              <span class="c-fn">__eq__</span>(self, other):
+              <span class="c-kw">return</span> self.__name == other.__name
+            </div>
+          </div>
+        </div>
+
+        <!-- OOP DEMO -->
+        <div class="demo-box">
+          <div class="demo-title">
+            <span class="demo-badge">🧱 Démo interactive</span> Crée ton objet
+          </div>
+          <p>Remplis les champs et vois l'objet se créer en temps réel :</p>
+          <div class="slider-row">
+            <label>Nom du chien</label>
+            <input
+              type="text"
+              id="oop-name"
+              value="Médor"
+              style="
+                flex: 1;
+                padding: 0.4rem 0.8rem;
+                border-radius: var(--rad-sm);
+                border: 1px solid var(--border2);
+                background: var(--surf2);
+                color: var(--text);
+                font-family: var(--font);
+                font-size: 0.85rem;
+              "
+            />
+          </div>
+          <div class="slider-row">
+            <label>Poids (kg)</label>
+            <input type="range" id="oop-weight" min="1" max="60" value="12" />
+            <span id="oop-weight-val">12 kg</span>
+          </div>
+          <div id="oop-result" class="oop-class-box" style="margin-top: 1rem">
+            <div class="oop-class-title">Dog</div>
+            <span class="oop-attr">__name = "Médor"</span>
+            <span class="oop-attr">__weight = 12</span>
+            <span class="oop-attr">__hungry = False</span>
+            <span class="oop-method">sound() → "Woof!"</span>
+            <span class="oop-method">__str__() → "Dog(Médor)"</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════
+     02 · OOP AVANCÉ
+══════════════════════════════════════════════════════ -->
+      <section id="s2" class="section reveal">
+        <div class="sec-header">
+          <span class="sec-num">02</span>
+          <div>
+            <h2>OOP Avancé</h2>
+            <p class="sec-sub">
+              Héritage · Abstrait · Enum · NamedTuple · Copie
+            </p>
+          </div>
+        </div>
+
+        <div class="callout callout-teal">
+          👪 <strong>L'héritage, c'est quoi ?</strong> Imagine que tu as une
+          classe <code>Animal</code> avec un nom et un poids. Un chien EST un
+          animal. Un chat aussi. Au lieu de tout réécrire, tu dis "Chien
+          <strong>hérite</strong> d'Animal" → il récupère automatiquement le nom
+          et le poids, et tu ajoutes juste ce qui est spécifique au chien (ex:
+          aboyer).
+        </div>
+
+        <div class="code-block">
+          <span class="c-kw">class</span> Animal: <span class="c-kw">def</span>
+          <span class="c-fn">__init__</span>(self, name:
+          <span class="c-dec">str</span>, weight:
+          <span class="c-dec">int</span>): self._name = name
+          <span class="c-comment"
+            ># protégé (1 underscore) → les enfants y accèdent</span
+          >
+          self._weight = weight
+
+          <span class="c-kw">class</span> Dog(Animal):
+          <span class="c-comment"># ← Dog HÉRITE de Animal</span>
+          <span class="c-kw">def</span> <span class="c-fn">__init__</span>(self,
+          name: <span class="c-dec">str</span>, weight:
+          <span class="c-dec">int</span>):
+          <span class="c-fn">super</span>().__init__(name, weight)
+          <span class="c-comment"># ← appelle le constructeur du parent</span>
+
+          <span class="c-kw">def</span> <span class="c-fn">sound</span>(self) ->
+          <span class="c-dec">str</span>: <span class="c-kw">return</span>
+          <span class="c-str">"Woof!"</span>
+        </div>
+
+        <h3>Classe abstraite — le contrat à respecter</h3>
+        <div class="callout callout-orange">
+          📜
+          <strong
+            >Une classe abstraite, c'est un moule qu'on ne peut PAS utiliser
+            directement.</strong
+          >
+          Elle dit "si tu hérites de moi, tu DOIS écrire telle méthode". Par
+          exemple : "tout Animal doit avoir une méthode <code>sound()</code>".
+          Si tu oublies → erreur !
+        </div>
+        <div class="code-block">
+          <span class="c-kw">from</span> abc
+          <span class="c-kw">import</span> ABC, abstractmethod
+
+          <span class="c-kw">class</span> Animal(ABC):
+          <span class="c-comment"># ← ABC = Abstract Base Class</span>
+          <span class="c-dec">@abstractmethod</span>
+          <span class="c-kw">def</span> <span class="c-fn">sound</span>(self) ->
+          <span class="c-dec">str</span>: <span class="c-kw">pass</span>
+          <span class="c-comment"
+            ># pas de code ici, c'est aux enfants de le faire</span
+          >
+        </div>
+
+        <h3>Enum — une liste de choix fixes</h3>
+        <div class="callout callout-purple">
+          🎯 Imagine que dans ton programme tu as 4 directions possibles : Nord,
+          Sud, Est, Ouest. Tu ne veux pas que quelqu'un écrive "Norrd" par
+          erreur. Un <strong>Enum</strong> te donne une liste FIXE de valeurs
+          permises.
+        </div>
+        <div class="code-block">
+          <span class="c-kw">from</span> enum
+          <span class="c-kw">import</span> StrEnum
+
+          <span class="c-kw">class</span> Direction(StrEnum): NORTH =
+          <span class="c-str">'N'</span> SOUTH =
+          <span class="c-str">'S'</span> WEST =
+          <span class="c-str">'W'</span> EAST = <span class="c-str">'E'</span>
+
+          <span class="c-comment"># Utilisation :</span>
+          d = Direction.NORTH <span class="c-comment"># ✅ OK</span>
+        </div>
+
+        <h3>NamedTuple — un paquet de données rapide</h3>
+        <div class="callout callout-green">
+          📦 Parfois tu veux juste regrouper 2-3 valeurs ensemble sans créer une
+          grosse classe. Un <strong>NamedTuple</strong>, c'est un mini-objet
+          avec juste des attributs, sans méthodes compliquées. Pratique !
+        </div>
+        <div class="code-block">
+          <span class="c-kw">from</span> typing
+          <span class="c-kw">import</span> NamedTuple
+
+          <span class="c-kw">class</span> Item(NamedTuple): value:
+          <span class="c-dec">int</span> weight: <span class="c-dec">int</span>
+
+          stuff = Item(<span class="c-num">3</span>,
+          <span class="c-num">5</span>)
+          <span class="c-fn">print</span>(stuff.value)
+          <span class="c-comment"># → 3</span>
+          <span class="c-fn">print</span>(stuff.weight)
+          <span class="c-comment"># → 5</span>
+        </div>
+
+        <h3>Copie shallow vs deep</h3>
+        <div class="two-col">
+          <div class="info-card teal-card">
+            <h4>📋 Shallow copy (copie légère)</h4>
+            <p>
+              Crée un <strong>nouvel objet</strong>, mais les attributs qui sont
+              eux-mêmes des objets pointent encore vers les
+              <strong>mêmes</strong> objets. C'est comme photocopier une fiche
+              qui contient des liens : la fiche est nouvelle, mais les liens
+              mènent au même endroit.
+            </p>
+            <div class="code-block">
+              <span class="c-kw">import</span> copy b = copy.copy(a)
+            </div>
+          </div>
+          <div class="info-card orange-card">
+            <h4>📋📋 Deep copy (copie complète)</h4>
+            <p>
+              Crée un <strong>nouvel objet ET copie tout</strong> ce qu'il
+              contient. C'est une vraie copie indépendante. Modifier la copie ne
+              modifie pas l'original.
+            </p>
+            <div class="code-block">
+              <span class="c-kw">import</span> copy b = copy.deepcopy(a)
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════
+     03 · OUTILS PYTHON
+══════════════════════════════════════════════════════ -->
+      <section id="s3" class="section reveal">
+        <div class="sec-header">
+          <span class="sec-num">03</span>
+          <div>
+            <h2>Outils Python essentiels</h2>
+            <p class="sec-sub">Tests unitaires · Counter · with</p>
+          </div>
+        </div>
+
+        <div class="callout callout-teal">
+          🧪 <strong>C'est quoi un test unitaire ?</strong> C'est un petit
+          programme qui vérifie qu'une de tes fonctions marche bien. Par exemple
+          : "je teste que <code>'foo'.upper()</code> donne bien
+          <code>'FOO'</code>". Si ça marche → ✅. Sinon → ❌ et tu sais
+          exactement ce qui est cassé.
+        </div>
+
+        <div class="code-block">
+          <span class="c-kw">import</span> unittest
+
+          <span class="c-kw">class</span> TestStringMethods(unittest.TestCase):
+
+          <span class="c-kw">def</span>
+          <span class="c-fn">test_upper</span>(self): self.assertEqual(<span
+            class="c-str"
+            >'foo'</span
+          >.upper(), <span class="c-str">'FOO'</span>)
+          <span class="c-comment"># vérifie que c'est égal</span>
+
+          <span class="c-kw">def</span>
+          <span class="c-fn">test_isupper</span>(self): self.assertTrue(<span
+            class="c-str"
+            >'FOO'</span
+          >.isupper())
+          <span class="c-comment"># vérifie que c'est True</span>
+          self.assertFalse(<span class="c-str">'Foo'</span>.isupper())
+          <span class="c-comment"># vérifie que c'est False</span>
+
+          <span class="c-kw">if</span> __name__ ==
+          <span class="c-str">'__main__'</span>: unittest.main()
+          <span class="c-comment"># lance tous les tests !</span>
+        </div>
+
+        <h3>Counter — compter les occurrences</h3>
+        <div class="callout callout-orange">
+          🔢 <strong><code>Counter</code></strong> c'est un dictionnaire
+          magique. Tu lui donnes une liste, et il te dit
+          <strong>combien de fois</strong> chaque valeur apparaît. Super utile
+          pour compter des lettres, des mots, etc.
+        </div>
+        <div class="code-block">
+          <span class="c-kw">from</span> collections
+          <span class="c-kw">import</span> Counter a = [<span class="c-num"
+            >12</span
+          >, <span class="c-num">3</span>, <span class="c-num">4</span>,
+          <span class="c-num">3</span>, <span class="c-num">5</span>,
+          <span class="c-num">12</span>] counter = Counter(a)
+          <span class="c-fn">print</span>(counter)
+          <span class="c-comment"># → Counter({12: 2, 3: 2, 4: 1, 5: 1})</span>
+          <span class="c-comment"
+            ># 12 apparaît 2 fois, 3 apparaît 2 fois, etc.</span
+          >
+        </div>
+
+        <h3><code>with</code> — gérer les ressources proprement</h3>
+        <div class="callout callout-green">
+          📂
+          <strong
+            >Quand tu ouvres un fichier, il faut TOUJOURS le refermer</strong
+          >
+          quand t'as fini. Mais si ton programme plante au milieu, le fichier
+          reste ouvert → catastrophe. <code>with</code> résout ce problème : il
+          <strong>ferme automatiquement</strong> le fichier quoi qu'il arrive.
+        </div>
+        <div class="code-block">
+          <span class="c-comment"># ❌ Sans with — dangereux</span> f =
+          <span class="c-fn">open</span>(<span class="c-str">"fichier.txt"</span
+          >, <span class="c-str">'r'</span>) contenu = f.read() f.close()
+          <span class="c-comment"
+            ># si une erreur arrive avant cette ligne, le fichier reste ouvert
+            !</span
+          >
+
+          <span class="c-comment"># ✅ Avec with — sûr</span>
+          <span class="c-kw">with</span> <span class="c-fn">open</span>(<span
+            class="c-str"
+            >"fichier.txt"</span
+          >, <span class="c-str">'r'</span>) <span class="c-kw">as</span> f:
+          contenu = f.read()
+          <span class="c-comment"
+            ># le fichier est AUTOMATIQUEMENT fermé ici, même si ça plante</span
+          >
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════
+     04 · NUMPY
+══════════════════════════════════════════════════════ -->
+      <section id="s4" class="section reveal">
+        <div class="sec-header">
+          <span class="sec-num">04</span>
+          <div>
+            <h2>NumPy — les super-tableaux</h2>
+            <p class="sec-sub">ndarray · Création · Opérations · Indexation</p>
+          </div>
+        </div>
+
+        <div class="callout callout-teal">
+          🔢 <strong>NumPy, c'est quoi ?</strong> C'est une bibliothèque Python
+          qui te donne des <strong>tableaux surpuissants</strong>. Les listes
+          normales de Python sont lentes pour les maths. NumPy utilise du code C
+          en coulisses pour aller <strong>super vite</strong>. C'est LA base de
+          tout calcul scientifique en Python.
+        </div>
+
+        <div class="code-block">
+          <span class="c-kw">import</span> numpy <span class="c-kw">as</span> np
+          <span class="c-comment"># on importe NumPy avec le surnom "np"</span>
+        </div>
+
+        <h3>Créer un tableau</h3>
+        <div class="code-block">
+          <span class="c-comment"># À partir d'une liste</span> a =
+          np.array([<span class="c-num">2</span>, <span class="c-num">3</span>,
+          <span class="c-num">4</span>])
+
+          <span class="c-comment"
+            ># Tableau de zéros (3 lignes × 4 colonnes)</span
+          >
+          b = np.zeros((<span class="c-num">3</span>,
+          <span class="c-num">4</span>))
+
+          <span class="c-comment"># Tableau de 0 à 14</span>
+          c = np.arange(<span class="c-num">15</span>)
+
+          <span class="c-comment"
+            ># 11 nombres entre 0 et 100, espacés régulièrement</span
+          >
+          d = np.linspace(<span class="c-num">0</span>,
+          <span class="c-num">100</span>, num=<span class="c-num">11</span>)
+        </div>
+
+        <h3>Reshape — changer la forme</h3>
+        <div class="callout callout-orange">
+          🔄 Tu as un tableau de 15 éléments en ligne ? Tu peux le transformer
+          en 3 lignes × 5 colonnes avec <code>reshape</code>. Condition : le
+          nombre total d'éléments doit rester le même (3×5 = 15 ✅).
+        </div>
+        <div class="code-block">
+          a = np.arange(<span class="c-num">15</span>)
+          <span class="c-comment"># [0, 1, 2, ..., 14]</span> b =
+          a.reshape(<span class="c-num">3</span>, <span class="c-num">5</span>)
+          <span class="c-comment"># 3 lignes × 5 colonnes</span> c =
+          a.reshape(<span class="c-num">3</span>, <span class="c-num">-1</span>)
+          <span class="c-comment"># -1 = "calcule tout seul" → 3×5</span>
+        </div>
+
+        <!-- NUMPY DEMO -->
+        <div class="demo-box">
+          <div class="demo-title">
+            <span class="demo-badge">📊 Démo interactive</span> Reshape visuel
+          </div>
+          <div class="slider-row">
+            <label>Nb éléments</label>
+            <input
+              type="range"
+              id="np-count"
+              min="4"
+              max="24"
+              step="1"
+              value="12"
+            />
+            <span id="np-count-val">12</span>
+          </div>
+          <div class="slider-row">
+            <label>Nb lignes</label>
+            <input
+              type="range"
+              id="np-rows"
+              min="1"
+              max="12"
+              step="1"
+              value="3"
+            />
+            <span id="np-rows-val">3</span>
+          </div>
+          <div id="np-grid-wrap" class="np-grid"></div>
+          <div class="tree-msg" id="np-msg">Shape : (3, 4) — 12 éléments</div>
+        </div>
+
+        <h3>Opérations — tout se fait élément par élément</h3>
+        <div class="callout callout-green">
+          ✨ <strong>Le truc magique de NumPy :</strong> quand tu fais
+          <code>a + b</code>, il additionne chaque case de <code>a</code> avec
+          la case correspondante de <code>b</code>. Pareil pour <code>*</code>,
+          <code>-</code>, <code>**</code>, etc. Pas besoin de boucle !
+        </div>
+        <div class="code-block">
+          a = np.array([<span class="c-num">20</span>,
+          <span class="c-num">30</span>, <span class="c-num">40</span>]) b =
+          np.array([<span class="c-num">1</span>, <span class="c-num">2</span>,
+          <span class="c-num">3</span>]) a + b
+          <span class="c-comment"># → [21, 32, 43] (élément par élément)</span>
+          a * b <span class="c-comment"># → [20, 60, 120]</span> a **
+          <span class="c-num">2</span>
+          <span class="c-comment"># → [400, 900, 1600]</span> a >
+          <span class="c-num">25</span>
+          <span class="c-comment"># → [False, True, True]</span> a.mean()
+          <span class="c-comment"># → 30.0 (la moyenne)</span>
+        </div>
+
+        <h3>Indexation — accéder aux éléments</h3>
+        <div class="code-block">
+          a = np.arange(<span class="c-num">12</span>).reshape(<span
+            class="c-num"
+            >3</span
+          >, <span class="c-num">4</span>)
+          <span class="c-comment"
+            ># [[ 0, 1, 2, 3], # [ 4, 5, 6, 7], # [ 8, 9, 10, 11]]</span
+          >
+
+          a[<span class="c-num">0</span>, <span class="c-num">2</span>]
+          <span class="c-comment"># → 2 (ligne 0, colonne 2)</span> a[<span
+            class="c-num"
+            >1</span
+          >, <span class="c-num">1</span>:<span class="c-num">3</span>]
+          <span class="c-comment"># → [5, 6] (ligne 1, colonnes 1 à 2)</span>
+          a[:, <span class="c-num">0</span>]
+          <span class="c-comment"
+            ># → [0, 4, 8] (TOUTES les lignes, colonne 0)</span
+          >
+        </div>
+
+        <h3>Produit scalaire &amp; matriciel</h3>
+        <div class="code-block">
+          v1 = np.array([<span class="c-num">1</span>,
+          <span class="c-num">2</span>]) v2 = np.array([<span class="c-num"
+            >10</span
+          >, <span class="c-num">5</span>]) v1.dot(v2)
+          <span class="c-comment"># → 20 (1×10 + 2×5)</span> v1 @ v2
+          <span class="c-comment"
+            ># → 20 (même chose, syntaxe plus courte)</span
+          >
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════
+     05 · SCIPY & VISUALISATION
+══════════════════════════════════════════════════════ -->
+      <section id="s5" class="section reveal">
+        <div class="sec-header">
+          <span class="sec-num">05</span>
+          <div>
+            <h2>SciPy &amp; Visualisation</h2>
+            <p class="sec-sub">
+              Statistiques · Optimisation · Graphes · Matplotlib
+            </p>
+          </div>
+        </div>
+
+        <div class="callout callout-teal">
+          📐
+          <strong
+            >SciPy c'est la boîte à outils mathématiques de Python.</strong
+          >
+          Construite par-dessus NumPy, elle te donne des fonctions pour les
+          stats, l'optimisation, les graphes, la géométrie... tout ce qui est
+          "maths avancées" en quelques lignes.
+        </div>
+
+        <h3>Module stats — les statistiques</h3>
+        <div class="code-block">
+          <span class="c-kw">from</span> scipy.stats
+          <span class="c-kw">import</span> norm, describe
+          <span class="c-kw">import</span> numpy <span class="c-kw">as</span> np
+
+          <span class="c-comment"
+            ># Densité d'une distribution normale (courbe en cloche)</span
+          >
+          x = np.linspace(<span class="c-num">0</span>,
+          <span class="c-num">10</span>, <span class="c-num">101</span>) y =
+          norm.pdf(x, <span class="c-num">5</span>,
+          <span class="c-num">1.5</span>)
+          <span class="c-comment"># centre=5, écart-type=1.5</span>
+
+          <span class="c-comment"># Décrire des données aléatoires</span>
+          v = np.random.normal(size=<span class="c-num">100</span>)
+          <span class="c-comment"># 100 nombres aléatoires</span>
+          <span class="c-fn">print</span>(describe(v))
+          <span class="c-comment"># → moyenne, variance, min, max, etc.</span>
+        </div>
+
+        <h3>Module optimize — trouver la meilleure courbe</h3>
+        <div class="callout callout-orange">
+          📈 <strong>Régression</strong> = trouver une formule mathématique qui
+          "colle" au mieux à tes données. <code>curve_fit</code> essaie plein de
+          paramètres et te donne ceux qui marchent le mieux.
+        </div>
+        <div class="code-block">
+          <span class="c-kw">from</span> scipy.optimize
+          <span class="c-kw">import</span> curve_fit
+
+          <span class="c-kw">def</span> <span class="c-fn">func</span>(x, a, b,
+          c): <span class="c-kw">return</span> a * np.exp(-b * x) + c popt, pcov
+          = curve_fit(func, xdata, ydata)
+          <span class="c-comment"
+            ># popt = les meilleurs paramètres a, b, c trouvés</span
+          >
+        </div>
+
+        <h3>Graphes — Dijkstra &amp; BFS</h3>
+        <div class="code-block">
+          <span class="c-kw">from</span> scipy.sparse
+          <span class="c-kw">import</span> csr_array
+          <span class="c-kw">from</span> scipy.sparse.csgraph
+          <span class="c-kw">import</span> dijkstra graph = csr_array([[<span
+            class="c-num"
+            >0</span
+          >,<span class="c-num">1</span>,<span class="c-num">2</span>,<span
+            class="c-num"
+            >0</span
+          >], [<span class="c-num">0</span>,<span class="c-num">0</span>,<span
+            class="c-num"
+            >0</span
+          >,<span class="c-num">1</span>], [<span class="c-num">0</span>,<span
+            class="c-num"
+            >0</span
+          >,<span class="c-num">0</span>,<span class="c-num">3</span>], [<span
+            class="c-num"
+            >0</span
+          >,<span class="c-num">0</span>,<span class="c-num">0</span>,<span
+            class="c-num"
+            >0</span
+          >]]) dist, pred = dijkstra(graph, indices=<span class="c-num">0</span
+          >, return_predecessors=<span class="c-kw">True</span>)
+          <span class="c-comment"
+            ># dist = distance minimale depuis le sommet 0 vers tous les
+            autres</span
+          >
+        </div>
+
+        <h3>Matplotlib — dessiner des graphiques</h3>
+        <div class="callout callout-green">
+          📊 <strong>Matplotlib</strong> c'est la librairie qui transforme tes
+          données en <strong>jolis graphiques</strong>. Tu lui donnes des
+          points, elle te fait une courbe, un histogramme, un scatter plot...
+        </div>
+        <div class="code-block">
+          <span class="c-kw">import</span> matplotlib.pyplot
+          <span class="c-kw">as</span> plt x = np.arange(<span class="c-num"
+            >0</span
+          >, <span class="c-num">3</span> * np.pi,
+          <span class="c-num">0.1</span>) y = np.sin(x) plt.plot(x, y)
+          plt.show()
+          <span class="c-comment"># affiche une belle courbe sinus 🌊</span>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════
+     06 · CRYPTANALYSE
+══════════════════════════════════════════════════════ -->
+      <section id="s6" class="section reveal">
+        <div class="sec-header">
+          <span class="sec-num">06</span>
+          <div>
+            <h2>Cryptanalyse</h2>
+            <p class="sec-sub">
+              César · Chi-carré · Vigenère · Indice de coïncidence
+            </p>
+          </div>
+        </div>
+
+        <div class="callout callout-teal">
+          🔐
+          <strong>La cryptanalyse, c'est l'art de casser un code secret</strong>
+          sans connaître la clé. Dans ce cours, on va apprendre à casser 2
+          systèmes de chiffrement : César (facile) et Vigenère (plus costaud).
+        </div>
+
+        <h3>Le chiffrement de César</h3>
+        <div class="callout callout-orange">
+          🔄 <strong>Comment ça marche ?</strong> Tu prends chaque lettre et tu
+          la <strong>décales</strong> dans l'alphabet d'un nombre fixe. Par
+          exemple avec une clé de 3 : A→D, B→E, C→F... C'est comme un alphabet
+          qui a "glissé". Le même décalage pour TOUTES les lettres.
+        </div>
+
+        <!-- CAESAR DEMO -->
+        <div class="demo-box">
+          <div class="demo-title">
+            <span class="demo-badge">🔐 Démo César</span> Chiffre et déchiffre
+            en direct
+          </div>
+          <div class="slider-row">
+            <label>Clé (décalage)</label>
+            <input
+              type="range"
+              id="caesar-key"
+              min="0"
+              max="25"
+              step="1"
+              value="3"
+            />
+            <span id="caesar-key-val">3</span>
+          </div>
+          <div class="caesar-io">
+            <textarea id="caesar-input" placeholder="Tape ton texte ici...">
+HELLO WORLD</textarea
+            >
+            <span class="arrow-mid">→</span>
+            <textarea
+              id="caesar-output"
+              readonly
+              placeholder="Résultat chiffré..."
+            ></textarea>
+          </div>
+          <div id="caesar-alphabet" class="caesar-grid"></div>
+        </div>
+
+        <h3>Casser César — analyse des fréquences</h3>
+        <div class="callout callout-purple">
+          📊 <strong>L'idée :</strong> en français, la lettre
+          <strong>E</strong> est la plus fréquente (~15%). Donc si dans le texte
+          chiffré, la lettre la plus fréquente c'est le <strong>H</strong>, on
+          peut supposer que H = E chiffré. H est 3 lettres après E → la clé est
+          probablement <strong>3</strong>.
+        </div>
+
+        <h3>Le test du χ² (chi-carré)</h3>
+        <div class="callout callout-red">
+          🎯 <strong>Le problème :</strong> la méthode "lettre la plus
+          fréquente" est trop simple. Si quelqu'un supprime des E
+          volontairement, ça ne marche plus. Le <strong>χ²</strong> est plus
+          malin : il compare la <strong>forme entière</strong> de la
+          distribution, pas juste le pic.
+        </div>
+        <div class="code-block">
+          <span class="c-comment"># La formule du chi-carré :</span>
+          <span class="c-comment"
+            ># χ² = Σ (observé_i - attendu_i)² / attendu_i</span
+          >
+          <span class="c-comment"
+            ># Plus le χ² est petit → plus les distributions se
+            ressemblent</span
+          >
+          <span class="c-comment"
+            ># On teste les 25 décalages possibles et on garde le plus petit
+            χ²</span
+          >
+        </div>
+
+        <h3>Le chiffrement de Vigenère</h3>
+        <div class="callout callout-teal">
+          🔑 <strong>Vigenère = César amélioré.</strong> Au lieu d'un SEUL
+          décalage pour toutes les lettres, tu utilises un
+          <strong>mot-clé</strong>. Chaque lettre du mot-clé donne un décalage
+          différent. Exemple avec la clé "INFO" :<br />
+          • 1ère lettre : décalée de I (=8)<br />
+          • 2ème lettre : décalée de N (=13)<br />
+          • 3ème lettre : décalée de F (=5)<br />
+          • 4ème lettre : décalée de O (=14)<br />
+          • 5ème lettre : on recommence avec I, etc.
+        </div>
+
+        <h3>Indice de coïncidence — trouver la longueur de la clé</h3>
+        <div class="callout callout-amber">
+          🔍 <strong>Le problème :</strong> pour casser Vigenère, il faut
+          d'abord trouver la <strong>longueur de la clé</strong>. L'indice de
+          coïncidence mesure "à quel point un texte ressemble à une vraie
+          langue". Si on teste la bonne longueur de clé, les sous-textes ont un
+          IC proche de celui du français (≈2.02). Sinon, l'IC est proche de 1 (=
+          aléatoire).
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════
+     07 · MACHINE LEARNING
+══════════════════════════════════════════════════════ -->
+      <section id="s7" class="section reveal">
+        <div class="sec-header">
+          <span class="sec-num">07</span>
+          <div>
+            <h2>Machine Learning — c'est quoi ?</h2>
+            <p class="sec-sub">
+              Supervisé · Classification · Régression · Overfitting
+            </p>
+          </div>
+        </div>
+
+        <div class="callout callout-teal">
+          🤖
+          <strong
+            >Le Machine Learning, c'est quand tu apprends à un programme à faire
+            des prédictions tout seul.</strong
+          >
+          Au lieu de lui écrire des règles ("si âge > 60 ET homme → risque
+          élevé"), tu lui donnes <strong>plein d'exemples</strong> et il
+          <strong>trouve les règles lui-même</strong>. C'est comme montrer 1000
+          photos de chats à un enfant : au bout d'un moment, il reconnaît les
+          chats tout seul.
+        </div>
+
+        <div class="two-col">
+          <div class="info-card teal-card">
+            <h4>📊 Classification</h4>
+            <p>
+              Le programme doit
+              <strong>mettre les données dans des catégories</strong>. Ex : "ce
+              mail est-il du spam ou pas ?", "ce passager a-t-il survécu ou pas
+              ?"
+            </p>
+            <p>
+              → La réponse est un <strong>choix</strong> (oui/non, catégorie
+              A/B/C...)
+            </p>
+          </div>
+          <div class="info-card orange-card">
+            <h4>📈 Régression</h4>
+            <p>
+              Le programme doit <strong>prédire un nombre</strong>. Ex : "quel
+              sera le prix de cette maison ?", "quel âge a cette personne ?"
+            </p>
+            <p>→ La réponse est un <strong>nombre continu</strong></p>
+          </div>
+        </div>
+
+        <div class="callout callout-purple">
+          👀 <strong>Supervisé vs Non supervisé :</strong><br />
+          • <strong>Supervisé</strong> = on donne les réponses au programme
+          pendant l'entraînement. "Voilà 891 passagers du Titanic, et je te dis
+          lesquels ont survécu. Apprends à prédire la survie des prochains."<br />
+          • <strong>Non supervisé</strong> = PAS de réponses. "Voilà des
+          données, trouve des groupes intéressants tout seul." C'est le
+          <strong>clustering</strong>.
+        </div>
+
+        <h3>Overfitting vs Underfitting</h3>
+        <div class="two-col">
+          <div class="info-card red-card">
+            <h4>😵 Overfitting (surapprentissage)</h4>
+            <p>
+              Le modèle a <strong>trop bien appris</strong> les données
+              d'entraînement. Il les connaît par cœur mais ne sait pas
+              généraliser. C'est comme un élève qui apprend les réponses par
+              cœur sans comprendre : il réussit l'interro mais pas l'examen.
+            </p>
+          </div>
+          <div class="info-card green-card">
+            <h4>🤷 Underfitting (sous-apprentissage)</h4>
+            <p>
+              Le modèle est <strong>trop simple</strong> pour comprendre les
+              données. Il rate même les données d'entraînement. C'est comme
+              essayer de tracer une ligne droite à travers des données qui
+              forment une courbe.
+            </p>
+          </div>
+        </div>
+
+        <h3>Le dataset du Titanic</h3>
+        <div class="callout callout-orange">
+          🚢 <strong>Le jeu de données qu'on utilise :</strong> 891 passagers du
+          Titanic, avec 12 infos par passager. Le but : prédire qui a survécu.
+        </div>
+        <div class="recap-table">
+          <div class="rt-hdr">
+            <span>Attribut</span><span>C'est quoi</span><span>Exemple</span>
+          </div>
+          <div class="rt-row">
+            <span>PassengerId</span><span>Un numéro unique</span
+            ><span>1, 2, 3...</span>
+          </div>
+          <div class="rt-row">
+            <span>Survived</span><span>A survécu ? (0=non, 1=oui)</span
+            ><span>0 ou 1</span>
+          </div>
+          <div class="rt-row">
+            <span>Pclass</span><span>Classe du billet (1=luxe, 3=éco)</span
+            ><span>1, 2, 3</span>
+          </div>
+          <div class="rt-row">
+            <span>Name</span><span>Nom complet</span
+            ><span>"Braund, Mr. Owen"</span>
+          </div>
+          <div class="rt-row">
+            <span>Sex</span><span>Sexe</span><span>male, female</span>
+          </div>
+          <div class="rt-row">
+            <span>Age</span><span>Âge</span><span>22, 38, 0.42...</span>
+          </div>
+          <div class="rt-row">
+            <span>SibSp</span><span>Frères/sœurs/conjoint à bord</span
+            ><span>0, 1, 2...</span>
+          </div>
+          <div class="rt-row">
+            <span>Parch</span><span>Parents/enfants à bord</span
+            ><span>0, 1, 2...</span>
+          </div>
+          <div class="rt-row">
+            <span>Ticket</span><span>Numéro du billet</span
+            ><span>"A/5 21171"</span>
+          </div>
+          <div class="rt-row">
+            <span>Fare</span><span>Prix du billet</span
+            ><span>7.25, 71.28...</span>
+          </div>
+          <div class="rt-row">
+            <span>Cabin</span><span>Numéro de cabine</span
+            ><span>"C85", vide souvent</span>
+          </div>
+          <div class="rt-row">
+            <span>Embarked</span><span>Port d'embarquement</span
+            ><span>S, C ou Q</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════
+     08 · PRÉPARATION DES DONNÉES
+══════════════════════════════════════════════════════ -->
+      <section id="s8" class="section reveal">
+        <div class="sec-header">
+          <span class="sec-num">08</span>
+          <div>
+            <h2>Préparer les données</h2>
+            <p class="sec-sub">
+              Valeurs manquantes · Anomalies · Encodage · Mise à l'échelle · PCA
+            </p>
+          </div>
+        </div>
+
+        <div class="callout callout-teal">
+          🧹
+          <strong
+            >Avant de donner tes données à un modèle, il faut les nettoyer
+            !</strong
+          >
+          C'est comme cuisiner : si tes ingrédients sont sales ou périmés, ton
+          plat sera dégueu. Les données brutes ont des trous, des erreurs, des
+          formats bizarres. On va tout réparer.
+        </div>
+
+        <!-- PIPELINE INTERACTIF -->
+        <div class="demo-box">
+          <div class="demo-title">
+            <span class="demo-badge">🔧 Pipeline de preprocessing</span> Clique
+            sur chaque étape
+          </div>
+          <div class="pipeline" id="prep-pipeline">
+            <div class="pipe-block pipe-data" data-prep="raw">
+              📂 Données brutes
+            </div>
+            <div class="pipe-arrow">→</div>
+            <div class="pipe-block pipe-prep" data-prep="missing">
+              🕳 Valeurs manquantes
+            </div>
+            <div class="pipe-arrow">→</div>
+            <div class="pipe-block pipe-prep" data-prep="anomalies">
+              ⚠ Anomalies
+            </div>
+            <div class="pipe-arrow">→</div>
+            <div class="pipe-block pipe-prep" data-prep="encoding">
+              🔤 Encodage
+            </div>
+            <div class="pipe-arrow">→</div>
+            <div class="pipe-block pipe-prep" data-prep="scaling">
+              📏 Mise à l'échelle
+            </div>
+            <div class="pipe-arrow">→</div>
+            <div class="pipe-block pipe-prep" data-prep="dim">
+              📉 Dimensionnalité
+            </div>
+            <div class="pipe-arrow">→</div>
+            <div class="pipe-block pipe-model" data-prep="ready">✅ Prêt !</div>
+          </div>
+          <div class="tree-msg" id="prep-msg">
+            Clique sur une étape pour voir ce qu'elle fait.
+          </div>
+        </div>
+
+        <h3>1. Valeurs manquantes</h3>
+        <div class="callout callout-orange">
+          🕳 <strong>Problème :</strong> dans le Titanic, plein de passagers
+          n'ont pas d'âge renseigné. La plupart des algorithmes ne supportent
+          PAS les cases vides. Il faut les remplir (<strong>imputer</strong>).
+        </div>
+        <div class="steps-grid">
+          <div class="step-card">
+            <span class="step-n">1</span> <strong>Moyenne/Médiane</strong
+            ><br />Remplacer les trous par la moyenne. Simple mais approximatif.
+          </div>
+          <div class="step-card">
+            <span class="step-n">2</span> <strong>Distribution</strong
+            ><br />Simuler les valeurs manquantes avec une courbe en cloche.
+            Plus réaliste.
+          </div>
+          <div class="step-card">
+            <span class="step-n">3</span> <strong>Prédiction ML</strong
+            ><br />Entraîner un mini-modèle pour deviner les valeurs manquantes.
+            Le plus malin.
+          </div>
+        </div>
+
+        <h3>2. Anomalies (outliers)</h3>
+        <div class="callout callout-red">
+          🚨 <strong>Anomalie</strong> = une donnée qui est très bizarre par
+          rapport aux autres. Ex : un billet à 512$ quand la plupart sont à
+          20-80$. On peut les détecter avec <strong>k-NN</strong> (k plus
+          proches voisins) et les supprimer ou les remplacer.
+        </div>
+
+        <h3>3. Encodage des catégories</h3>
+        <div class="callout callout-purple">
+          🔤 <strong>Problème :</strong> un algorithme ne comprend que des
+          <strong>nombres</strong>. Mais "male"/"female" ou "S"/"C"/"Q" sont du
+          texte. Il faut transformer le texte en nombres.
+        </div>
+        <div class="two-col">
+          <div class="info-card teal-card">
+            <h4>🔢 One-Hot Encoding</h4>
+            <p>
+              Tu crées une colonne par catégorie. Ex : <code>Embarked</code> → 3
+              colonnes : <code>is_S</code>, <code>is_C</code>,
+              <code>is_Q</code>. Chacune vaut 0 ou 1. Utilisé quand il n'y a
+              <strong>pas d'ordre</strong> entre les catégories.
+            </p>
+          </div>
+          <div class="info-card orange-card">
+            <h4>🔢 Ordinal Encoding</h4>
+            <p>
+              Tu donnes un numéro à chaque catégorie : 1, 2, 3... Utilisé quand
+              il y a un <strong>ordre naturel</strong> (ex : 1ère classe < 2ème
+              classe < 3ème classe).
+            </p>
+          </div>
+        </div>
+
+        <h3>4. Mise à l'échelle (scaling)</h3>
+        <div class="callout callout-amber">
+          📏 <strong>Pourquoi ?</strong> L'âge va de 0 à 80, mais le prix du
+          billet de 0 à 512. L'algorithme va penser que le prix est 6× plus
+          important juste parce qu'il est plus grand en valeur. Il faut tout
+          remettre à la <strong>même échelle</strong>.
+        </div>
+        <div class="steps-grid">
+          <div class="step-card">
+            <span class="step-n">S</span> <strong>StandardScaler</strong
+            ><br />Moyenne = 0, écart-type = 1. Le classique.
+          </div>
+          <div class="step-card">
+            <span class="step-n">M</span> <strong>MinMaxScaler</strong
+            ><br />Tout entre 0 et 1. Simple.
+          </div>
+          <div class="step-card">
+            <span class="step-n">R</span> <strong>RobustScaler</strong
+            ><br />Résistant aux anomalies (utilise la médiane).
+          </div>
+        </div>
+
+        <h3>5. Réduire la dimensionnalité</h3>
+        <div class="callout callout-green">
+          📉 <strong>Si tu as trop de colonnes</strong> (= trop de dimensions),
+          le modèle peut se perdre. L'idée : combiner plusieurs colonnes en une
+          seule, en gardant l'essentiel de l'information. C'est comme résumer un
+          livre en gardant les idées clés.
+        </div>
+        <div class="two-col">
+          <div class="info-card teal-card">
+            <h4>PCA</h4>
+            <p>
+              <strong>Analyse en Composantes Principales.</strong> Sélectionne
+              les nouvelles dimensions qui capturent le plus de variation dans
+              les données.
+            </p>
+            <div class="code-block">
+              <span class="c-kw">from</span> sklearn.decomposition
+              <span class="c-kw">import</span> PCA pca = PCA(n_components=<span
+                class="c-num"
+                >3</span
+              >)
+            </div>
+          </div>
+          <div class="info-card purple-card">
+            <h4>LDA</h4>
+            <p>
+              <strong>Analyse Discriminante Linéaire.</strong> Sélectionne les
+              dimensions qui séparent le mieux les classes (ex : survivants vs
+              décédés).
+            </p>
+            <div class="code-block">
+              <span class="c-kw">from</span> sklearn.discriminant_analysis \
+              <span class="c-kw">import</span> LinearDiscriminantAnalysis
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════
+     09 · MODÈLES & MÉTRIQUES
+══════════════════════════════════════════════════════ -->
+      <section id="s9" class="section reveal">
+        <div class="sec-header">
+          <span class="sec-num">09</span>
+          <div>
+            <h2>Modèles &amp; Métriques</h2>
+            <p class="sec-sub">
+              Train/Test · Arbre de décision · K-Means · Accuracy · Silhouette
+            </p>
+          </div>
+        </div>
+
+        <h3>Séparer les données : Train vs Test</h3>
+        <div class="callout callout-teal">
+          ✂️ <strong>Règle d'or :</strong> tu ne testes JAMAIS un modèle sur les
+          données qu'il a utilisées pour apprendre ! C'est comme donner les
+          réponses de l'interro à un élève, puis s'étonner qu'il ait 20/20. On
+          coupe les données en <strong>85% entraînement</strong> et
+          <strong>15% test</strong>.
+        </div>
+        <div class="code-block">
+          <span class="c-kw">from</span> sklearn.model_selection
+          <span class="c-kw">import</span> train_test_split y = df[<span
+            class="c-str"
+            >"Survived"</span
+          >] <span class="c-comment"># ce qu'on veut prédire</span> X =
+          df.drop(<span class="c-str">"Survived"</span>, axis=<span
+            class="c-num"
+            >1</span
+          >) <span class="c-comment"># tout le reste</span>
+
+          X_train, X_test, y_train, y_test = train_test_split( X, y,
+          test_size=<span class="c-num">0.15</span> )
+        </div>
+
+        <h3>Arbre de décision (classification)</h3>
+        <div class="callout callout-orange">
+          🌳
+          <strong>Un arbre de décision, c'est un jeu de questions.</strong>
+          "Est-ce que le passager est une femme ?" → Si oui, branche à gauche.
+          "Est-ce qu'elle est en 1ère classe ?" → Si oui, elle a probablement
+          survécu. L'algorithme construit cet arbre automatiquement en
+          choisissant les meilleures questions.
+        </div>
+
+        <!-- TREE DEMO -->
+        <div class="demo-box">
+          <div class="demo-title">
+            <span class="demo-badge">🌳 Arbre de décision</span> Exemple
+            simplifié
+          </div>
+          <div class="tree-viz">
+            <div class="tree-node" id="tree-root">Sex = female ?</div>
+            <div class="tree-children">
+              <div class="tree-branch">
+                <div class="tree-edge-label">Oui ✓</div>
+                <div class="tree-edge"></div>
+                <div class="tree-node">Pclass ≤ 2 ?</div>
+                <div class="tree-children">
+                  <div class="tree-branch">
+                    <div class="tree-edge-label">Oui</div>
+                    <div class="tree-edge"></div>
+                    <div class="tree-node leaf-yes">Survécu ✅</div>
+                  </div>
+                  <div class="tree-branch">
+                    <div class="tree-edge-label">Non</div>
+                    <div class="tree-edge"></div>
+                    <div class="tree-node leaf-yes">
+                      Survécu ✅<br /><small>(68%)</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="tree-branch">
+                <div class="tree-edge-label">Non ✗ (homme)</div>
+                <div class="tree-edge"></div>
+                <div class="tree-node">Age ≤ 13 ?</div>
+                <div class="tree-children">
+                  <div class="tree-branch">
+                    <div class="tree-edge-label">Oui (enfant)</div>
+                    <div class="tree-edge"></div>
+                    <div class="tree-node leaf-yes">Survécu ✅</div>
+                  </div>
+                  <div class="tree-branch">
+                    <div class="tree-edge-label">Non (adulte)</div>
+                    <div class="tree-edge"></div>
+                    <div class="tree-node leaf-no">Décédé ❌</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="code-block">
+          <span class="c-kw">from</span> sklearn.tree
+          <span class="c-kw">import</span> DecisionTreeClassifier, plot_tree clf
+          = DecisionTreeClassifier( criterion=<span class="c-str"
+            >"entropy"</span
+          >,
+          <span class="c-comment"
+            ># comment choisir les meilleures questions</span
+          >
+          max_depth=<span class="c-num">4</span>
+          <span class="c-comment"
+            ># limiter la profondeur pour éviter l'overfitting</span
+          >
+          ) clf.fit(X_train, y_train)
+          <span class="c-comment"># entraîner !</span> y_pred =
+          clf.predict(X_test) <span class="c-comment"># prédire !</span>
+        </div>
+
+        <h3>K-Means (clustering)</h3>
+        <div class="callout callout-purple">
+          🎯
+          <strong
+            >K-Means, c'est regrouper des données en "paquets" (clusters) sans
+            connaître les réponses.</strong
+          >
+          Tu dis "trouve-moi 3 groupes". L'algo place 3 points au hasard
+          (centroïdes), puis itère : chaque donnée va dans le groupe du
+          centroïde le plus proche, puis les centroïdes bougent au centre de
+          leur groupe. Et on recommence jusqu'à ce que ça se stabilise.
+        </div>
+        <div class="code-block">
+          <span class="c-kw">from</span> sklearn.cluster
+          <span class="c-kw">import</span> KMeans kmeans =
+          KMeans(n_clusters=<span class="c-num">3</span>, init=<span
+            class="c-str"
+            >"k-means++"</span
+          >, n_init=<span class="c-num">10</span>) kmeans.fit(X) labels =
+          kmeans.labels_
+          <span class="c-comment"
+            ># → [0, 1, 2, 0, 1, ...] chaque donnée a un groupe</span
+          >
+        </div>
+
+        <h3>Métriques de classification</h3>
+        <div class="callout callout-amber">
+          📊 <strong>Comment savoir si ton modèle est bon ?</strong> On compare
+          les prédictions avec les vraies réponses et on calcule des scores.
+        </div>
+
+        <!-- CONFUSION MATRIX -->
+        <div class="demo-box">
+          <div class="demo-title">
+            <span class="demo-badge">📊 Matrice de confusion</span> Les 4 cases
+            possibles
+          </div>
+          <div class="conf-matrix">
+            <div class="cm-cell cm-header"></div>
+            <div class="cm-cell cm-header">Prédit ✅</div>
+            <div class="cm-cell cm-header">Prédit ❌</div>
+            <div class="cm-cell cm-header">Réel ✅</div>
+            <div class="cm-cell cm-tp" title="True Positive">
+              TP<br /><small>Bien trouvé !</small>
+            </div>
+            <div class="cm-cell cm-fn" title="False Negative">
+              FN<br /><small>Raté...</small>
+            </div>
+            <div class="cm-cell cm-header">Réel ❌</div>
+            <div class="cm-cell cm-fp" title="False Positive">
+              FP<br /><small>Fausse alerte</small>
+            </div>
+            <div class="cm-cell cm-tn" title="True Negative">
+              TN<br /><small>Bien rejeté</small>
+            </div>
+          </div>
+          <div
+            style="
+              font-size: 0.82rem;
+              color: var(--text-m);
+              margin-top: 0.75rem;
+            "
+          >
+            <strong>Accuracy</strong> = (TP + TN) / total — "quel % est correct
+            ?"<br />
+            <strong>Precision</strong> = TP / (TP + FP) — "parmi ceux que j'ai
+            dit oui, combien sont vraiment oui ?"<br />
+            <strong>Recall</strong> = TP / (TP + FN) — "parmi les vrais oui,
+            combien j'en ai trouvé ?"<br />
+            <strong>Specificity</strong> = TN / (TN + FP) — "parmi les vrais
+            non, combien j'en ai trouvé ?"
+          </div>
+        </div>
+
+        <h3>Métriques de clustering</h3>
+        <div class="two-col">
+          <div class="info-card teal-card">
+            <h4>🎯 Score Silhouette</h4>
+            <p>
+              Entre -1 et 1. Plus c'est proche de <strong>1</strong> → mieux les
+              groupes sont séparés. Proche de 0 → les groupes se chevauchent.
+              Négatif → des données sont dans le mauvais groupe.
+            </p>
+          </div>
+          <div class="info-card orange-card">
+            <h4>📐 Davies-Bouldin Index</h4>
+            <p>
+              Plus c'est <strong>proche de 0</strong> → meilleur le clustering.
+              Il mesure la "compacité" de chaque groupe et la distance entre les
+              groupes.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════
+     10 · DATA MINING
+══════════════════════════════════════════════════════ -->
+      <section id="s10" class="section reveal">
+        <div class="sec-header">
+          <span class="sec-num">10</span>
+          <div>
+            <h2>Data Mining</h2>
+            <p class="sec-sub">
+              Comprendre vs Prédire · Analyse descriptive · Exemples concrets
+            </p>
+          </div>
+        </div>
+
+        <div class="callout callout-teal">
+          ⛏
+          <strong
+            >Data Mining = fouiller dans les données pour trouver des infos
+            cachées.</strong
+          >
+          C'est différent du Machine Learning ! Le ML veut
+          <strong>prédire</strong> le futur. Le Data Mining veut
+          <strong>comprendre</strong> le passé. Les deux utilisent parfois les
+          mêmes outils (arbres, clustering...) mais pas avec le même objectif.
+        </div>
+
+        <div class="two-col">
+          <div class="info-card purple-card">
+            <h4>🤖 Machine Learning</h4>
+            <p>
+              <strong>But :</strong> prédire des nouvelles données<br /><strong
+                >Question :</strong
+              >
+              "Ce nouveau passager va-t-il survivre ?"<br /><strong
+                >On mesure :</strong
+              >
+              la précision des prédictions
+            </p>
+          </div>
+          <div class="info-card teal-card">
+            <h4>⛏ Data Mining</h4>
+            <p>
+              <strong>But :</strong> comprendre les données existantes<br /><strong
+                >Question :</strong
+              >
+              "Pourquoi certains passagers ont-ils survécu ?"<br /><strong
+                >On mesure :</strong
+              >
+              l'utilité et la clarté des découvertes
+            </p>
+          </div>
+        </div>
+
+        <h3>Exemples concrets</h3>
+        <div class="mistake-list">
+          <div class="mistake-card">
+            <div class="mistake-wrong">
+              🤖 ML : Arbre de décision → prédire si un client va retourner son
+              achat
+            </div>
+            <div class="mistake-right">
+              ⛏ DM : Arbre de décision → comprendre POURQUOI des clients
+              retournent des achats (quels facteurs sont importants ?)
+            </div>
+          </div>
+          <div class="mistake-card">
+            <div class="mistake-wrong">
+              🤖 ML : K-NN → classer automatiquement si une transaction est
+              frauduleuse
+            </div>
+            <div class="mistake-right">
+              ⛏ DM : K-NN → trouver les transactions les plus similaires à une
+              transaction suspecte pour voir comment elles ont été traitées
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-amber">
+          💡 <strong>En résumé :</strong> ML = prédiction automatique. Data
+          Mining = exploration et compréhension humaine. Dans ton projet, tu
+          feras les <strong>deux</strong> : d'abord du ML pour construire des
+          modèles, puis du Data Mining pour en tirer des conclusions.
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════
+     11 · LE PROJET — CANCER DU SEIN
+══════════════════════════════════════════════════════ -->
+      <section id="s11" class="section reveal">
+        <div class="sec-header">
+          <span class="sec-num">11</span>
+          <div>
+            <h2>Le Projet — Cancer du sein</h2>
+            <p class="sec-sub">Contexte · Objectifs · Système TNM · Stades</p>
+          </div>
+        </div>
+
+        <div class="callout callout-teal">
+          🏥 <strong>Ton projet :</strong> on te donne un fichier avec les
+          données de <strong>4 024 patientes</strong> atteintes d'un cancer du
+          sein. Ton travail : utiliser le Machine Learning pour
+          <strong>comprendre ces données</strong> et
+          <strong>faire des prédictions</strong>. Concrètement, tu dois répondre
+          à 4 grandes questions.
+        </div>
+
+        <div class="steps-grid">
+          <div class="step-card">
+            <span class="step-n">1</span>
+            <strong>Prédire la survie</strong><br />Classification : cette
+            patiente va-t-elle survivre oui ou non ?
+          </div>
+          <div class="step-card">
+            <span class="step-n">2</span>
+            <strong>Prédire l'espérance de vie</strong><br />Régression :
+            combien de mois cette patiente va-t-elle vivre ?
+          </div>
+          <div class="step-card">
+            <span class="step-n">3</span>
+            <strong>Trouver les facteurs clés</strong><br />Data Mining : quels
+            critères influencent le plus la survie ?
+          </div>
+          <div class="step-card">
+            <span class="step-n">4</span>
+            <strong>Regrouper les patientes</strong><br />Clustering : quels
+            profils de patientes peut-on identifier ?
+          </div>
+        </div>
+
+        <h3>Le cancer du sein — c'est quoi ?</h3>
+        <div class="callout callout-orange">
+          🔬 <strong>En très simple :</strong> les cellules du sein commencent à
+          se multiplier de façon incontrôlée. Ça forme une
+          <strong>tumeur</strong>. Si la tumeur reste dans le sein → c'est
+          <strong>localisé</strong>. Si elle s'étend aux ganglions lymphatiques
+          (des petits filtres du système immunitaire situés sous les bras) →
+          c'est <strong>régional</strong>. Si elle touche d'autres organes →
+          c'est <strong>distant</strong> (= des <strong>métastases</strong>).
+          Plus c'est avancé, plus c'est grave.
+        </div>
+
+        <h3>Le système TNM — classer l'avancement du cancer</h3>
+        <div class="callout callout-purple">
+          📋 Les médecins utilisent un système à 3 lettres pour décrire
+          précisément où en est le cancer :
+        </div>
+        <div class="steps-grid">
+          <div class="step-card">
+            <span class="step-n">T</span>
+            <strong>Tumeur</strong><br />La taille de la tumeur. T1 = petite
+            (moins grave), T4 = très grosse (plus grave).
+          </div>
+          <div class="step-card">
+            <span class="step-n">N</span>
+            <strong>Nodes (ganglions)</strong><br />Combien de ganglions sont
+            touchés. N0 = aucun, N3 = beaucoup → plus grave.
+          </div>
+          <div class="step-card">
+            <span class="step-n">M</span>
+            <strong>Métastases</strong><br />Est-ce que le cancer s'est propagé
+            à d'autres organes ? Si oui → très grave.
+          </div>
+        </div>
+
+        <h3>Les stades — résumé simple</h3>
+        <div class="two-col">
+          <div class="info-card teal-card">
+            <h4>AJCC 6th Stage</h4>
+            <p>
+              Combine T, N et M en un seul chiffre :
+              <strong>I</strong> (très tôt, bon pronostic), <strong>II</strong>,
+              <strong>III</strong>, <strong>IV</strong> (très avancé, mauvais
+              pronostic). Avec des sous-catégories comme IIA, IIIC, etc.
+            </p>
+          </div>
+          <div class="info-card orange-card">
+            <h4>A Stage</h4>
+            <p>
+              Version simplifiée en 3 catégories :<br />
+              • <strong>Localisé</strong> = confiné dans le sein<br />
+              • <strong>Régional</strong> = étendu aux ganglions proches<br />
+              • <strong>Distant</strong> = métastases dans d'autres organes
+            </p>
+          </div>
+        </div>
+
+        <h3>Le grade — agressivité de la tumeur</h3>
+        <div class="callout callout-amber">
+          🔬 <strong>Le grade</strong> mesure à quel point les cellules
+          cancéreuses sont « anormales » quand on les regarde au microscope.<br />
+          • <strong>Grade 1</strong> = cellules qui ressemblent encore aux
+          cellules normales → cancer <strong>lent</strong><br />
+          • <strong>Grade 2</strong> = modérément anormal<br />
+          • <strong>Grade 3</strong> = cellules très anormales → cancer
+          <strong>agressif</strong><br />
+          • <strong>Grade 4</strong> = le plus anormal → le plus agressif
+        </div>
+
+        <h3>Les récepteurs hormonaux</h3>
+        <div class="callout callout-green">
+          💊 Certaines tumeurs sont sensibles aux hormones (œstrogènes,
+          progestérone). Si
+          <strong>Estrogen Status = Positive</strong>, ça veut dire que la
+          tumeur « se nourrit » d'œstrogènes. C'est en fait une
+          <strong>bonne nouvelle</strong> : on peut bloquer ces hormones avec
+          des médicaments, ce qui donne plus d'options de traitement.
+        </div>
+
+        <div class="callout callout-red">
+          ⚠ <strong>Important :</strong> tu es informaticien, pas médecin ! Tu
+          n'as pas besoin de comprendre la médecine en détail. C'est justement
+          POUR ÇA qu'on utilise le Machine Learning : la machine trouve les
+          patterns que toi tu ne vois pas. Et ne sors jamais ton modèle de son
+          contexte : ce n'est PAS un vrai outil de diagnostic.
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════
+     12 · LE DATASET — 16 ATTRIBUTS
+══════════════════════════════════════════════════════ -->
+      <section id="s12" class="section reveal">
+        <div class="sec-header">
+          <span class="sec-num">12</span>
+          <div>
+            <h2>Le Dataset — 16 attributs</h2>
+            <p class="sec-sub">4 024 patientes · Chaque colonne expliquée</p>
+          </div>
+        </div>
+
+        <div class="callout callout-teal">
+          📂 <strong>Le fichier <code>train.csv</code></strong> contient les
+          données de <strong>4 024 patientes</strong> atteintes d'un cancer du
+          sein. Chaque ligne = une patiente. Chaque colonne = une info sur elle.
+          On a <strong>16 colonnes</strong> au total. Voici ce que chacune veut
+          dire.
+        </div>
+
+        <div class="recap-table">
+          <div class="rt-hdr">
+            <span>Attribut</span><span>C'est quoi</span><span>Type</span>
+          </div>
+          <div class="rt-row">
+            <span>Id</span
+            ><span
+              >Un numéro unique pour chaque patiente (inutile pour le ML)</span
+            ><span>Nombre</span>
+          </div>
+          <div class="rt-row">
+            <span>Race</span
+            ><span>L'ethnie de la patiente (White, Black, Other)</span
+            ><span>Catégorie</span>
+          </div>
+          <div class="rt-row">
+            <span>Marital Status</span
+            ><span>État civil (Married, Single, Divorced...)</span
+            ><span>Catégorie</span>
+          </div>
+          <div class="rt-row">
+            <span>T Stage</span
+            ><span>Taille de la tumeur : T1 (petit) → T4 (gros)</span
+            ><span>Cat. ordonnée</span>
+          </div>
+          <div class="rt-row">
+            <span>N Stage</span
+            ><span>Ganglions touchés : N1 (peu) → N3 (beaucoup)</span
+            ><span>Cat. ordonnée</span>
+          </div>
+          <div class="rt-row">
+            <span>6th Stage</span
+            ><span>Stade AJCC : I, IIA, IIB, IIIA, IIIB, IIIC</span
+            ><span>Cat. ordonnée</span>
+          </div>
+          <div class="rt-row">
+            <span>Differentiate</span
+            ><span>Aspect des cellules : Well → Poorly → Undifferentiated</span
+            ><span>Cat. ordonnée</span>
+          </div>
+          <div class="rt-row">
+            <span>Grade</span
+            ><span>Agressivité : 1 (lent) → 4 (très agressif)</span
+            ><span>Cat. ordonnée</span>
+          </div>
+          <div class="rt-row">
+            <span>A Stage</span
+            ><span>Regional (ganglions) ou Distant (métastases)</span
+            ><span>Catégorie</span>
+          </div>
+          <div class="rt-row">
+            <span>Tumor Size</span
+            ><span>Taille de la tumeur en millimètres</span><span>Nombre</span>
+          </div>
+          <div class="rt-row">
+            <span>Estrogen Status</span
+            ><span>Sensible aux œstrogènes ? (Positive / Negative)</span
+            ><span>Catégorie</span>
+          </div>
+          <div class="rt-row">
+            <span>Progesterone Status</span
+            ><span>Sensible à la progestérone ? (Positive / Negative)</span
+            ><span>Catégorie</span>
+          </div>
+          <div class="rt-row">
+            <span>Regional Node Examined</span
+            ><span>Combien de ganglions ont été retirés et examinés</span
+            ><span>Nombre</span>
+          </div>
+          <div class="rt-row">
+            <span>Regional Node Positive</span
+            ><span>Combien de ces ganglions étaient contaminés</span
+            ><span>Nombre</span>
+          </div>
+          <div class="rt-row">
+            <span>Survival Months</span
+            ><span>Espérance de vie estimée en mois (à prédire !)</span
+            ><span>Nombre ← CIBLE</span>
+          </div>
+          <div class="rt-row">
+            <span>Status</span
+            ><span>A survécu ? Alive ou Dead (à prédire !)</span
+            ><span>Cat. ← CIBLE</span>
+          </div>
+        </div>
+
+        <div class="callout callout-orange">
+          🎯 <strong>Les 2 colonnes cibles :</strong><br />
+          • <strong>Status</strong> → c'est ce qu'on prédit en
+          <strong>classification</strong> (Alive ou Dead)<br />
+          • <strong>Survival Months</strong> → c'est ce qu'on prédit en
+          <strong>régression</strong> (un nombre de mois)
+        </div>
+
+        <div class="callout callout-purple">
+          🔤 <strong>Catégoriel vs Numérique :</strong><br />
+          • Les colonnes <strong>textuelles</strong> (Race, Marital Status, T
+          Stage...) sont <strong>catégorielles</strong>. Il faudra les
+          <strong>encoder</strong> en nombres (One-Hot ou Ordinal) avant de les
+          donner au modèle.<br />
+          • Les colonnes <strong>numériques</strong> (Tumor Size, Regional
+          Node...) sont déjà des nombres, mais il faudra peut-être les
+          <strong>mettre à l'échelle</strong> (scaling).<br />
+          • <strong>Id</strong> est inutile pour le ML → on le supprime.
+        </div>
+
+        <h3>Train / Validation / Test — tu le fais toi-même !</h3>
+        <div class="callout callout-red">
+          ✂️ <strong>Le prof ne le fait PAS pour toi.</strong> Tu dois couper
+          toi-même le <code>train.csv</code> en 3 parties :<br />
+          • <strong>Entraînement</strong> (~70-80%) — le modèle apprend
+          dessus<br />
+          • <strong>Validation</strong> (~10-15%, optionnel) — pour ajuster les
+          paramètres<br />
+          • <strong>Test</strong> (~15-20%) — pour mesurer les vraies
+          performances<br />
+          Et il y a aussi un fichier <code>eval.csv</code> séparé (sans les
+          colonnes Status et Survival Months), sur lequel tu devras faire tes
+          prédictions finales.
+        </div>
+
+        <div class="code-block">
+          <span class="c-kw">import</span> pandas
+          <span class="c-kw">as</span> pd
+          <span class="c-kw">from</span> sklearn.model_selection
+          <span class="c-kw">import</span> train_test_split df =
+          pd.read_csv(<span class="c-str">"resource/train.csv"</span>)
+
+          <span class="c-comment"
+            ># Séparer les features (X) et les cibles (y)</span
+          >
+          X = df.drop([<span class="c-str">"Id"</span>,
+          <span class="c-str">"Status"</span>,
+          <span class="c-str">"Survival Months"</span>], axis=<span
+            class="c-num"
+            >1</span
+          >) y_class = df[<span class="c-str">"Status"</span>]
+          <span class="c-comment"># pour la classification</span> y_reg =
+          df[<span class="c-str">"Survival Months"</span>]
+          <span class="c-comment"># pour la régression</span>
+
+          <span class="c-comment"># Couper en train (85%) et test (15%)</span>
+          X_train, X_test, y_train, y_test = train_test_split( X, y_class,
+          test_size=<span class="c-num">0.15</span>, random_state=<span
+            class="c-num"
+            >42</span
+          >
+          )
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════
+     13 · RÉGRESSION — PRÉDIRE UN NOMBRE
+══════════════════════════════════════════════════════ -->
+      <section id="s13" class="section reveal">
+        <div class="sec-header">
+          <span class="sec-num">13</span>
+          <div>
+            <h2>Régression — prédire un nombre</h2>
+            <p class="sec-sub">Linéaire · Non linéaire · MSE · MAE · R²</p>
+          </div>
+        </div>
+
+        <div class="callout callout-teal">
+          📈
+          <strong
+            >La régression, c'est quand le modèle doit prédire un
+            NOMBRE.</strong
+          >
+          Dans le projet, on veut prédire
+          <strong>Survival Months</strong> (combien de mois la patiente va
+          vivre). C'est différent de la classification qui prédit une catégorie
+          (Alive/Dead).
+        </div>
+
+        <h3>Régression linéaire</h3>
+        <div class="callout callout-orange">
+          📏 <strong>L'idée la plus simple :</strong> on cherche une
+          <strong>droite</strong> qui passe « au mieux » à travers les points de
+          données. La formule : <code>y = a·x + b</code>. Avec plusieurs
+          variables, ça devient : <code>y = a₁·x₁ + a₂·x₂ + ... + b</code>.
+          L'algorithme trouve automatiquement les meilleurs coefficients a₁, a₂,
+          etc.
+        </div>
+
+        <div class="code-block">
+          <span class="c-kw">from</span> sklearn.linear_model
+          <span class="c-kw">import</span> LinearRegression reg =
+          LinearRegression() reg.fit(X_train, y_train)
+          <span class="c-comment"># entraîner</span> y_pred =
+          reg.predict(X_test)
+          <span class="c-comment"># prédire des nombres</span>
+
+          <span class="c-fn">print</span>(reg.coef_)
+          <span class="c-comment"
+            ># les coefficients (importance de chaque feature)</span
+          >
+          <span class="c-fn">print</span>(reg.intercept_)
+          <span class="c-comment"># la constante b</span>
+        </div>
+
+        <h3>Régression non linéaire</h3>
+        <div class="callout callout-purple">
+          🌀 Parfois, la relation entre les données n'est pas une
+          <strong>ligne droite</strong> mais une <strong>courbe</strong>. Dans
+          ce cas, on utilise des modèles plus flexibles : arbres de décision
+          pour la régression (<code>DecisionTreeRegressor</code>), forêts
+          aléatoires, ou des polynômes.
+        </div>
+
+        <div class="code-block">
+          <span class="c-kw">from</span> sklearn.tree
+          <span class="c-kw">import</span> DecisionTreeRegressor reg_tree =
+          DecisionTreeRegressor(max_depth=<span class="c-num">5</span>)
+          reg_tree.fit(X_train, y_train) y_pred = reg_tree.predict(X_test)
+        </div>
+
+        <h3>Métriques de régression — comment savoir si c'est bon ?</h3>
+        <div class="callout callout-amber">
+          📊 En classification, on regarde l'accuracy (% de bonnes réponses). En
+          régression, on mesure <strong>l'erreur</strong> entre les nombres
+          prédits et les vrais nombres. Plus l'erreur est petite, mieux c'est !
+        </div>
+
+        <div class="two-col">
+          <div class="info-card teal-card">
+            <h4>MSE — Mean Squared Error</h4>
+            <p>
+              On prend chaque erreur, on la met <strong>au carré</strong>, et on
+              fait la <strong>moyenne</strong>. Le carré punit beaucoup les
+              grosses erreurs. Plus c'est proche de <strong>0</strong> → mieux
+              c'est.
+            </p>
+            <div class="code-block">
+              <span class="c-kw">from</span> sklearn.metrics \
+              <span class="c-kw">import</span> mean_squared_error mse =
+              mean_squared_error(y_test, y_pred)
+            </div>
+          </div>
+          <div class="info-card orange-card">
+            <h4>MAE — Mean Absolute Error</h4>
+            <p>
+              On prend chaque erreur, on prend la
+              <strong>valeur absolue</strong>, et on fait la moyenne. Plus «
+              indulgent » que MSE pour les grosses erreurs. Plus c'est proche de
+              <strong>0</strong> → mieux c'est.
+            </p>
+            <div class="code-block">
+              <span class="c-kw">from</span> sklearn.metrics \
+              <span class="c-kw">import</span> mean_absolute_error mae =
+              mean_absolute_error(y_test, y_pred)
+            </div>
+          </div>
+        </div>
+
+        <div class="two-col">
+          <div class="info-card purple-card">
+            <h4>RMSE — Root Mean Squared Error</h4>
+            <p>
+              C'est la <strong>racine carrée du MSE</strong>. L'avantage : le
+              résultat est dans la même unité que tes données (ici : des mois).
+              Un RMSE de 15 = en moyenne, tu te trompes de 15 mois.
+            </p>
+            <div class="code-block">
+              rmse = mean_squared_error( y_test, y_pred, squared=<span
+                class="c-kw"
+                >False</span
+              >)
+            </div>
+          </div>
+          <div class="info-card green-card">
+            <h4>R² — Coefficient de détermination</h4>
+            <p>
+              Mesure <strong>quel % de la variation</strong> des données ton
+              modèle explique. <strong>R²=1</strong> = parfait.
+              <strong>R²=0</strong> = pas mieux que la moyenne.
+              <strong>R²&lt;0</strong> = pire que la moyenne !
+            </p>
+            <div class="code-block">
+              <span class="c-kw">from</span> sklearn.metrics
+              <span class="c-kw">import</span> r2_score r2 = r2_score(y_test,
+              y_pred)
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════
+     14 · MODÈLES AVANCÉS
+══════════════════════════════════════════════════════ -->
+      <section id="s14" class="section reveal">
+        <div class="sec-header">
+          <span class="sec-num">14</span>
+          <div>
+            <h2>Modèles avancés</h2>
+            <p class="sec-sub">
+              Régression logistique · SVM · Réseaux de neurones
+            </p>
+          </div>
+        </div>
+
+        <div class="callout callout-teal">
+          🧠
+          <strong>Le projet te demande au minimum 3 types de modèles.</strong>
+          Tu as déjà l'arbre de décision et la régression linéaire. Il te faut
+          un 3ème modèle capable de faire <strong>à la fois</strong> de la
+          classification ET de la régression. Voici tes options.
+        </div>
+
+        <h3>Régression logistique (c'est de la classification !)</h3>
+        <div class="callout callout-orange">
+          🎭 <strong>Le nom est trompeur !</strong> Malgré son nom, la
+          régression logistique fait de la <strong>classification</strong> (pas
+          de la régression !). Elle prédit la <strong>probabilité</strong> qu'un
+          événement arrive (entre 0 et 1). Si la proba &gt; 0.5 → « Alive ».
+          Sinon → « Dead ». Elle utilise une courbe en forme de S appelée
+          <strong>sigmoïde</strong>.
+        </div>
+
+        <div class="code-block">
+          <span class="c-kw">from</span> sklearn.linear_model
+          <span class="c-kw">import</span> LogisticRegression
+
+          <span class="c-comment"># Classification : prédire Alive/Dead</span>
+          log_clf = LogisticRegression(max_iter=<span class="c-num">1000</span>)
+          log_clf.fit(X_train, y_train) y_pred = log_clf.predict(X_test) probas
+          = log_clf.predict_proba(X_test)
+          <span class="c-comment"># les probabilités</span>
+        </div>
+
+        <h3>SVM — Machines à Vecteurs de Support</h3>
+        <div class="callout callout-purple">
+          📐 <strong>L'idée :</strong> imagine tes données comme des points sur
+          un graphique. Les « Alive » sont des points verts, les « Dead » des
+          points rouges. SVM cherche la <strong>ligne</strong> (ou le plan en
+          3D) qui sépare le mieux les deux groupes, avec la
+          <strong>plus grande marge possible</strong> entre les deux. Les points
+          les plus proches de cette ligne s'appellent les
+          <strong>vecteurs de support</strong>.
+        </div>
+
+        <div class="callout callout-amber">
+          🔮 <strong>Le Kernel Trick :</strong> et si les données ne sont pas
+          séparables par une ligne droite ? SVM peut les projeter dans un espace
+          de dimension supérieure où elles DEVIENNENT séparables ! C'est comme
+          si tu ne pouvais pas séparer des billes rouges et bleues sur une
+          table, mais en les lançant en l'air, tu peux passer une feuille entre
+          les deux groupes.
+        </div>
+
+        <div class="code-block">
+          <span class="c-kw">from</span> sklearn.svm
+          <span class="c-kw">import</span> SVC, SVR
+
+          <span class="c-comment"># Classification</span>
+          svm_clf = SVC(kernel=<span class="c-str">"rbf"</span>)
+          svm_clf.fit(X_train, y_train) y_pred = svm_clf.predict(X_test)
+
+          <span class="c-comment"
+            ># Régression (SVR = Support Vector Regression)</span
+          >
+          svm_reg = SVR(kernel=<span class="c-str">"rbf"</span>)
+          svm_reg.fit(X_train, y_train_reg) y_pred_months =
+          svm_reg.predict(X_test)
+        </div>
+
+        <h3>Réseaux de neurones</h3>
+        <div class="callout callout-green">
+          🧬
+          <strong
+            >Un réseau de neurones, c'est plein de petits « neurones »
+            artificiels connectés en couches.</strong
+          >
+          Chaque neurone reçoit des nombres, les multiplie par des poids, ajoute
+          un biais, et applique une fonction d'activation. C'est comme un
+          cerveau très simplifié. Plus il y a de couches et de neurones → plus
+          le modèle est puissant (mais aussi plus il risque l'overfitting !).
+        </div>
+
+        <div class="steps-grid">
+          <div class="step-card">
+            <span class="step-n">1</span>
+            <strong>Couche d'entrée</strong><br />Reçoit tes features (14
+            colonnes → 14 neurones d'entrée).
+          </div>
+          <div class="step-card">
+            <span class="step-n">2</span>
+            <strong>Couche(s) cachée(s)</strong><br />Font les calculs. Plus il
+            y a de couches → plus c'est « profond » (deep learning).
+          </div>
+          <div class="step-card">
+            <span class="step-n">3</span>
+            <strong>Couche de sortie</strong><br />Donne le résultat : 1 neurone
+            pour la régression, 2 pour la classification binaire.
+          </div>
+        </div>
+
+        <div class="code-block">
+          <span class="c-kw">from</span> sklearn.neural_network
+          <span class="c-kw">import</span> MLPClassifier, MLPRegressor
+
+          <span class="c-comment"># Classification</span>
+          nn_clf = MLPClassifier( hidden_layer_sizes=(<span class="c-num"
+            >100</span
+          >, <span class="c-num">50</span>),
+          <span class="c-comment"># 2 couches : 100 puis 50 neurones</span>
+          max_iter=<span class="c-num">500</span>, random_state=<span
+            class="c-num"
+            >42</span
+          >
+          ) nn_clf.fit(X_train, y_train)
+
+          <span class="c-comment"># Régression</span>
+          nn_reg = MLPRegressor( hidden_layer_sizes=(<span class="c-num"
+            >100</span
+          >, <span class="c-num">50</span>), max_iter=<span class="c-num"
+            >500</span
+          >, random_state=<span class="c-num">42</span>
+          ) nn_reg.fit(X_train, y_train_reg)
+        </div>
+
+        <h3>Quel modèle choisir ?</h3>
+        <div class="recap-table">
+          <div class="rt-hdr">
+            <span>Modèle</span><span>Classification</span
+            ><span>Régression</span>
+          </div>
+          <div class="rt-row">
+            <span>Rég. logistique</span><span>✅ LogisticRegression</span
+            ><span>❌ Non (malgré le nom)</span>
+          </div>
+          <div class="rt-row">
+            <span>SVM</span><span>✅ SVC</span><span>✅ SVR</span>
+          </div>
+          <div class="rt-row">
+            <span>Réseau neurones</span><span>✅ MLPClassifier</span
+            ><span>✅ MLPRegressor</span>
+          </div>
+        </div>
+
+        <div class="callout callout-red">
+          ⚡ <strong>Rappel :</strong> le 3ème modèle doit faire la
+          classification ET la régression. Donc si tu choisis la régression
+          logistique, elle ne peut faire que la classification ! Il te faudra un
+          autre modèle pour la régression (ex: Ridge, Lasso...).
+          <strong>SVM ou réseau de neurones</strong> peuvent faire les deux
+          directement.
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════
+     15 · CLUSTERING HIÉRARCHIQUE
+══════════════════════════════════════════════════════ -->
+      <section id="s15" class="section reveal">
+        <div class="sec-header">
+          <span class="sec-num">15</span>
+          <div>
+            <h2>Clustering hiérarchique</h2>
+            <p class="sec-sub">Agglomératif · Linkage · Dendrogramme</p>
+          </div>
+        </div>
+
+        <div class="callout callout-teal">
+          🌲
+          <strong
+            >Le clustering hiérarchique, c'est comme construire un arbre
+            généalogique de tes données.</strong
+          >
+          Au départ, chaque patiente est toute seule dans son groupe. Ensuite,
+          on fusionne les 2 groupes les plus proches. Puis encore les 2 plus
+          proches. Et ainsi de suite, jusqu'à n'avoir qu'un seul gros groupe. Le
+          résultat forme un <strong>arbre</strong> qu'on appelle
+          <strong>dendrogramme</strong>.
+        </div>
+
+        <h3>Les méthodes de liaison (linkage)</h3>
+        <div class="callout callout-orange">
+          🔗
+          <strong>Comment mesurer la « distance » entre deux GROUPES ?</strong>
+          Il y a plusieurs façons, et ça change beaucoup le résultat :
+        </div>
+
+        <div class="steps-grid">
+          <div class="step-card">
+            <span class="step-n">S</span>
+            <strong>Single linkage</strong><br />Distance = la plus PETITE
+            distance entre un point du groupe A et un point du groupe B. Tend à
+            faire des groupes « en chaîne ».
+          </div>
+          <div class="step-card">
+            <span class="step-n">C</span>
+            <strong>Complete linkage</strong><br />Distance = la plus GRANDE
+            distance. Tend à faire des groupes compacts et ronds.
+          </div>
+          <div class="step-card">
+            <span class="step-n">A</span>
+            <strong>Average linkage</strong><br />Distance = la MOYENNE de
+            toutes les distances. Un bon compromis entre les deux.
+          </div>
+          <div class="step-card">
+            <span class="step-n">W</span>
+            <strong>Ward</strong><br />Minimise la variance à l'intérieur des
+            groupes. Souvent le meilleur choix. Donne des groupes de taille
+            équilibrée.
+          </div>
+        </div>
+
+        <h3>Le dendrogramme — lire l'arbre</h3>
+        <div class="callout callout-purple">
+          📊 Le dendrogramme est un graphique en forme d'arbre. En bas, chaque
+          feuille = une donnée. Les branches montrent quand deux groupes
+          fusionnent. <strong>Plus une fusion est haute</strong> → plus les
+          groupes étaient éloignés. Pour choisir le nombre de clusters, tu
+          <strong>coupes l'arbre horizontalement</strong> à une certaine hauteur
+          : le nombre de branches coupées = le nombre de clusters.
+        </div>
+
+        <div class="code-block">
+          <span class="c-kw">from</span> scipy.cluster.hierarchy
+          <span class="c-kw">import</span> dendrogram, linkage, fcluster
+          <span class="c-kw">from</span> sklearn.cluster
+          <span class="c-kw">import</span> AgglomerativeClustering
+          <span class="c-kw">import</span> matplotlib.pyplot
+          <span class="c-kw">as</span> plt
+
+          <span class="c-comment"
+            ># Méthode 1 : avec scipy (pour dessiner le dendrogramme)</span
+          >
+          Z = linkage(X, method=<span class="c-str">'ward'</span>)
+          plt.figure(figsize=(<span class="c-num">12</span>,
+          <span class="c-num">5</span>)) dendrogram(Z, truncate_mode=<span
+            class="c-str"
+            >'lastp'</span
+          >, p=<span class="c-num">30</span>) plt.title(<span class="c-str"
+            >"Dendrogramme"</span
+          >) plt.show()
+
+          <span class="c-comment"
+            ># Couper l'arbre pour obtenir 3 clusters</span
+          >
+          labels = fcluster(Z, t=<span class="c-num">3</span>, criterion=<span
+            class="c-str"
+            >'maxclust'</span
+          >)
+
+          <span class="c-comment"
+            ># Méthode 2 : avec sklearn (plus direct)</span
+          >
+          hc = AgglomerativeClustering(n_clusters=<span class="c-num">3</span>,
+          linkage=<span class="c-str">'ward'</span>) labels = hc.fit_predict(X)
+        </div>
+
+        <h3>K-Means vs Hiérarchique</h3>
+        <div class="two-col">
+          <div class="info-card teal-card">
+            <h4>K-Means</h4>
+            <p>
+              • Il faut choisir K à l'avance<br />
+              • Rapide, même sur beaucoup de données<br />
+              • Fait des groupes ronds et de taille similaire<br />
+              • Résultat peut changer à chaque run (aléatoire)
+            </p>
+          </div>
+          <div class="info-card orange-card">
+            <h4>Hiérarchique</h4>
+            <p>
+              • Pas besoin de choisir K à l'avance<br />
+              • Plus lent sur beaucoup de données<br />
+              • Peut trouver des formes de groupes variées<br />
+              • Résultat toujours le même (déterministe)
+            </p>
+          </div>
+        </div>
+
+        <div class="callout callout-amber">
+          📐 <strong>Méthode du coude (elbow) pour K-Means :</strong> tu testes
+          K=2, K=3, K=4... et tu traces l'inertie (= la somme des distances au
+          centroïde). Quand la courbe fait un « coude » → c'est le bon K. C'est
+          comme essayer des pointures de chaussures : à un moment, ça ne
+          s'améliore plus d'en prendre une plus grande.
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════
+     16 · LE LIVRABLE
+══════════════════════════════════════════════════════ -->
+      <section id="s16" class="section reveal">
+        <div class="sec-header">
+          <span class="sec-num">16</span>
+          <div>
+            <h2>Le livrable — ce que tu dois rendre</h2>
+            <p class="sec-sub">predictions.csv · Service web · Rapport · Git</p>
+          </div>
+        </div>
+
+        <div class="callout callout-teal">
+          📋
+          <strong>Résumé de ce qui est attendu de toi :</strong> tu dois
+          entraîner des modèles, les évaluer, soumettre des prédictions à un
+          service web, et rédiger un rapport. Voici le détail, étape par étape.
+        </div>
+
+        <h3>Les modèles minimum à produire</h3>
+        <div class="callout callout-orange">
+          🔢
+          <strong>Tu dois produire au minimum ces modèles :</strong>
+        </div>
+        <div class="steps-grid">
+          <div class="step-card">
+            <span class="step-n">1</span>
+            <strong>Arbre de décision</strong><br />Classification (prédire
+            Status: Alive/Dead). DecisionTreeClassifier.
+          </div>
+          <div class="step-card">
+            <span class="step-n">2</span>
+            <strong>Régression</strong><br />Prédire Survival Months.
+            LinearRegression ou DecisionTreeRegressor..
+          </div>
+          <div class="step-card">
+            <span class="step-n">3</span>
+            <strong>3ème modèle — classif.</strong><br />SVM (SVC) ou réseau de
+            neurones (MLPClassifier) ou rég. logistique.
+          </div>
+          <div class="step-card">
+            <span class="step-n">4</span>
+            <strong>3ème modèle — régression</strong><br />Le MÊME type de
+            modèle, mais version régression (SVR, MLPRegressor...).
+          </div>
+          <div class="step-card">
+            <span class="step-n">5</span>
+            <strong>K-Means</strong><br />Clustering non supervisé. Regrouper
+            les patientes en profils similaires.
+          </div>
+          <div class="step-card">
+            <span class="step-n">6</span>
+            <strong>Clustering hiérar.</strong><br />Un 2ème modèle de
+            clustering. AgglomerativeClustering + Ward.
+          </div>
+        </div>
+
+        <h3>Le fichier predictions.csv</h3>
+        <div class="callout callout-purple">
+          📄 <strong>Format exact :</strong><br />
+          • 1ère ligne (en-tête) :
+          <code>Id,Survival Months,Status</code><br />
+          • Ensuite, une ligne par patiente du fichier
+          <code>eval.csv</code><br />
+          • Même nombre de lignes et mêmes identifiants que
+          <code>eval.csv</code><br />
+          • 3 colonnes seulement : Id, Survival Months prédit, Status prédit
+        </div>
+
+        <div class="code-block">
+          <span class="c-comment"
+            ># Exemple de création du predictions.csv</span
+          >
+          <span class="c-kw">import</span> pandas
+          <span class="c-kw">as</span> pd eval_df = pd.read_csv(<span
+            class="c-str"
+            >"resource/eval.csv"</span
+          >)
+
+          <span class="c-comment"
+            ># ... (preprocessing identique au train + prédiction) ...</span
+          >
+
+          predictions = pd.DataFrame({
+          <span class="c-str">"Id"</span>: eval_df[<span class="c-str"
+            >"Id"</span
+          >], <span class="c-str">"Survival Months"</span>: y_pred_months,
+          <span class="c-comment"># régression</span>
+          <span class="c-str">"Status"</span>: y_pred_status
+          <span class="c-comment"># classification</span> })
+          predictions.to_csv(<span class="c-str">"predictions.csv"</span>,
+          index=<span class="c-kw">False</span>)
+        </div>
+
+        <h3>Le service web</h3>
+        <div class="callout callout-amber">
+          🌐 Tu dois soumettre ton <code>predictions.csv</code> sur le site du
+          prof. Le site va comparer tes prédictions avec les vraies réponses et
+          te donner des <strong>métriques de performance</strong>. Note ces
+          métriques ! Tu en auras besoin le jour de l'évaluation.
+        </div>
+
+        <h3>Le rapport</h3>
+        <div class="callout callout-green">
+          📝 <strong>Format :</strong> Jupyter Notebook (.ipynb), Markdown (.md)
+          ou PDF.<br />Il doit contenir :
+        </div>
+        <div class="steps-grid">
+          <div class="step-card">
+            <span class="step-n">A</span>
+            <strong>Conclusions Data Mining</strong><br />Quels facteurs
+            influencent la survie ? Quels profils de patientes ? Tes
+            découvertes.
+          </div>
+          <div class="step-card">
+            <span class="step-n">B</span>
+            <strong>Métriques</strong><br />Toutes les métriques :
+            classification, régression, clustering. Sur train, test, ET service
+            web.
+          </div>
+          <div class="step-card">
+            <span class="step-n">C</span>
+            <strong>Comparaisons</strong><br />Pourquoi tel modèle est meilleur
+            ? Pourquoi tel autre est moins bon ? Explique tes choix.
+          </div>
+        </div>
+
+        <h3>Structure du dépôt Git</h3>
+        <div class="code-block">
+          <span class="c-comment"
+            ># Structure attendue à la racine du repo :</span
+          >
+          / ├── .gitignore ├── src/
+          <span class="c-comment"># ton code Python</span> │ ├── main.py │ └──
+          ... └── doc/ <span class="c-comment"># ton rapport</span>
+          └── rapport.ipynb
+        </div>
+
+        <div class="callout callout-red">
+          ⏰ <strong>Deadline : 15 mai 2026 à 18h.</strong> Aucun retard toléré.
+          Pousse ton code et ton rapport sur le dépôt Git qui t'a été créé.
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════
+     17 · ANTISÈCHE
+══════════════════════════════════════════════════════ -->
+      <section id="s17" class="section reveal">
+        <div class="sec-header">
+          <span class="sec-num">17</span>
+          <div>
+            <h2>Antisèche</h2>
+            <p class="sec-sub">Tout résumé en un seul endroit</p>
+          </div>
+        </div>
+
+        <h3>Tableau récapitulatif</h3>
+        <div class="recap-table">
+          <div class="rt-hdr">
+            <span>Concept</span><span>En 1 phrase</span><span>Exemple</span>
+          </div>
+          <div class="rt-row">
+            <span>Classe</span><span>Un moule pour créer des objets</span
+            ><span>class Dog:</span>
+          </div>
+          <div class="rt-row">
+            <span>Objet</span><span>Un truc réel créé à partir du moule</span
+            ><span>medor = Dog()</span>
+          </div>
+          <div class="rt-row">
+            <span>__init__</span
+            ><span>Le constructeur (se lance à la création)</span
+            ><span>def __init__(self):</span>
+          </div>
+          <div class="rt-row">
+            <span>self</span><span>L'objet lui-même ("moi")</span
+            ><span>self.name = "Rex"</span>
+          </div>
+          <div class="rt-row">
+            <span>Héritage</span
+            ><span>Un enfant récupère les trucs du parent</span
+            ><span>class Dog(Animal):</span>
+          </div>
+          <div class="rt-row">
+            <span>@property</span><span>Getter magique</span
+            ><span>medor.name</span>
+          </div>
+          <div class="rt-row">
+            <span>ndarray</span><span>Super-tableau NumPy</span
+            ><span>np.array([1,2,3])</span>
+          </div>
+          <div class="rt-row">
+            <span>reshape</span><span>Changer la forme d'un tableau</span
+            ><span>a.reshape(3,4)</span>
+          </div>
+          <div class="rt-row">
+            <span>César</span><span>Décaler chaque lettre d'un nombre fixe</span
+            ><span>clé=3 : A→D</span>
+          </div>
+          <div class="rt-row">
+            <span>χ² (chi²)</span
+            ><span>Mesurer la ressemblance de distributions</span
+            ><span>Plus petit = mieux</span>
+          </div>
+          <div class="rt-row">
+            <span>Vigenère</span
+            ><span>César avec un mot-clé (multi-décalage)</span
+            ><span>clé="INFO"</span>
+          </div>
+          <div class="rt-row">
+            <span>Classification</span><span>Prédire une catégorie</span
+            ><span>Spam ou pas spam</span>
+          </div>
+          <div class="rt-row">
+            <span>Régression</span><span>Prédire un nombre</span
+            ><span>Prix d'une maison</span>
+          </div>
+          <div class="rt-row">
+            <span>Clustering</span
+            ><span>Regrouper sans connaître les réponses</span
+            ><span>K-Means</span>
+          </div>
+          <div class="rt-row">
+            <span>Overfitting</span><span>Trop appris → ne généralise pas</span
+            ><span>max_depth trop grand</span>
+          </div>
+          <div class="rt-row">
+            <span>Accuracy</span><span>% de bonnes réponses</span
+            ><span>(TP+TN)/total</span>
+          </div>
+          <div class="rt-row">
+            <span>Silhouette</span><span>Qualité du clustering (-1 à 1)</span
+            ><span>Proche de 1 = bien</span>
+          </div>
+          <div class="rt-row">
+            <span>PCA</span><span>Réduire les dimensions</span
+            ><span>10 cols → 3 cols</span>
+          </div>
+          <div class="rt-row">
+            <span>Rég. linéaire</span
+            ><span>Trouver la droite qui colle aux données</span
+            ><span>y = ax + b</span>
+          </div>
+          <div class="rt-row">
+            <span>MSE</span><span>Erreur moyenne au carré (régression)</span
+            ><span>Plus petit = mieux</span>
+          </div>
+          <div class="rt-row">
+            <span>R²</span
+            ><span>% de variation expliquée (1=parfait, 0=nul)</span
+            ><span>r2_score()</span>
+          </div>
+          <div class="rt-row">
+            <span>Rég. logistique</span
+            ><span>Classification malgré le nom (sigmoïde)</span
+            ><span>LogisticRegression</span>
+          </div>
+          <div class="rt-row">
+            <span>SVM</span><span>Séparer par un plan avec max de marge</span
+            ><span>SVC / SVR</span>
+          </div>
+          <div class="rt-row">
+            <span>Réseau neurones</span
+            ><span>Neurones en couches (entrée→cachées→sortie)</span
+            ><span>MLPClassifier</span>
+          </div>
+          <div class="rt-row">
+            <span>Clust. hiérar.</span
+            ><span>Fusionner les groupes 2 par 2 (dendrogramme)</span
+            ><span>AgglomerativeClustering</span>
+          </div>
+          <div class="rt-row">
+            <span>TNM</span><span>Tumeur·Nodes·Métastases (stade cancer)</span
+            ><span>T1-T4, N0-N3, M0-M1</span>
+          </div>
+        </div>
+
+        <h3>Imports essentiels</h3>
+        <div class="code-block">
+          <span class="c-comment"># NumPy & SciPy</span>
+          <span class="c-kw">import</span> numpy <span class="c-kw">as</span> np
+          <span class="c-kw">from</span> scipy.stats
+          <span class="c-kw">import</span> norm, describe
+          <span class="c-kw">from</span> scipy.optimize
+          <span class="c-kw">import</span> curve_fit
+          <span class="c-kw">from</span> scipy.cluster.hierarchy
+          <span class="c-kw">import</span> dendrogram, linkage, fcluster
+
+          <span class="c-comment"># Visualisation</span>
+          <span class="c-kw">import</span> matplotlib.pyplot
+          <span class="c-kw">as</span> plt
+          <span class="c-kw">import</span> seaborn
+          <span class="c-kw">as</span> sns
+
+          <span class="c-comment"># Machine Learning — données</span>
+          <span class="c-kw">import</span> pandas
+          <span class="c-kw">as</span> pd
+          <span class="c-kw">from</span> sklearn.model_selection
+          <span class="c-kw">import</span> train_test_split
+          <span class="c-kw">from</span> sklearn.preprocessing
+          <span class="c-kw">import</span> StandardScaler, MinMaxScaler
+
+          <span class="c-comment"># Classification</span>
+          <span class="c-kw">from</span> sklearn.tree
+          <span class="c-kw">import</span> DecisionTreeClassifier
+          <span class="c-kw">from</span> sklearn.linear_model
+          <span class="c-kw">import</span> LogisticRegression
+          <span class="c-kw">from</span> sklearn.svm
+          <span class="c-kw">import</span> SVC, SVR
+          <span class="c-kw">from</span> sklearn.neural_network
+          <span class="c-kw">import</span> MLPClassifier, MLPRegressor
+
+          <span class="c-comment"># Régression</span>
+          <span class="c-kw">from</span> sklearn.linear_model
+          <span class="c-kw">import</span> LinearRegression
+          <span class="c-kw">from</span> sklearn.tree
+          <span class="c-kw">import</span> DecisionTreeRegressor
+
+          <span class="c-comment"># Clustering</span>
+          <span class="c-kw">from</span> sklearn.cluster
+          <span class="c-kw">import</span> KMeans, AgglomerativeClustering
+
+          <span class="c-comment"># Métriques</span>
+          <span class="c-kw">from</span> sklearn.metrics
+          <span class="c-kw">import</span> accuracy_score, precision_score,
+          recall_score <span class="c-kw">from</span> sklearn.metrics
+          <span class="c-kw">import</span> mean_squared_error,
+          mean_absolute_error, r2_score
+          <span class="c-kw">from</span> sklearn.metrics
+          <span class="c-kw">import</span> silhouette_score,
+          davies_bouldin_score
+        </div>
+
+        <h3>Pipeline complet</h3>
+        <div class="summary-bars">
+          <div class="sum-bar" style="border-left-color: var(--amber)">
+            <strong>📂 Données brutes</strong> — charger le CSV avec pandas
+          </div>
+          <div class="sum-bar" style="border-left-color: var(--teal)">
+            <strong>🕳 Valeurs manquantes</strong> — imputer (moyenne,
+            distribution, ou ML)
+          </div>
+          <div class="sum-bar" style="border-left-color: var(--red)">
+            <strong>⚠ Anomalies</strong> — détecter (k-NN) et traiter
+          </div>
+          <div class="sum-bar" style="border-left-color: var(--purple)">
+            <strong>🔤 Encodage</strong> — transformer le texte en nombres
+          </div>
+          <div class="sum-bar" style="border-left-color: var(--orange)">
+            <strong>📏 Mise à l'échelle</strong> — tout remettre à la même
+            échelle
+          </div>
+          <div class="sum-bar" style="border-left-color: var(--blue)">
+            <strong>📉 Dimensionnalité</strong> — réduire avec PCA/LDA si besoin
+          </div>
+          <div class="sum-bar" style="border-left-color: var(--green)">
+            <strong>🌳 Modèle</strong> — entraîner (arbre, K-Means...)
+          </div>
+          <div class="sum-bar" style="border-left-color: var(--pink)">
+            <strong>📊 Évaluation</strong> — accuracy, precision, silhouette...
+          </div>
+        </div>
+
+        <div class="final-note">
+          <span class="fn-emoji">🎓</span>
+          <div>
+            Tu as parcouru tout le guide ! Tu connais maintenant Python OOP,
+            NumPy, SciPy, la cryptanalyse, le Machine Learning, le Data Mining,
+            la régression, les SVM, les réseaux de neurones, le clustering
+            hiérarchique et tous les détails du projet cancer du sein. Tu es
+            prêt(e) pour tout déchirer ! 🚀
+          </div>
+        </div>
+      </section>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>
